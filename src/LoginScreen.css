@@ -1,0 +1,859 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+.login-screen {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 32px 20px;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255, 90, 22, 0.17),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 18% 78%,
+      rgba(255, 178, 31, 0.09),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 86% 70%,
+      rgba(255, 90, 22, 0.07),
+      transparent 24%
+    ),
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(255, 90, 22, 0.12),
+      transparent 42%
+    ),
+    #05090b;
+
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  isolation: isolate;
+}
+
+/* --------------------------------------------------
+   Large atmospheric glow
+-------------------------------------------------- */
+
+.login-screen::before {
+  content: "";
+  position: absolute;
+
+  width: min(105vw, 900px);
+  height: min(105vw, 900px);
+
+  top: -8%;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 90, 22, 0.15) 0%,
+      rgba(255, 90, 22, 0.075) 22%,
+      rgba(255, 178, 31, 0.025) 42%,
+      transparent 68%
+    );
+
+  filter: blur(35px);
+
+  pointer-events: none;
+
+  animation: loginAmbient 7s ease-in-out infinite;
+
+  z-index: 0;
+}
+
+/* --------------------------------------------------
+   Floating dust particles
+-------------------------------------------------- */
+
+.login-screen::after {
+  content: "";
+  position: absolute;
+
+  width: 3px;
+  height: 3px;
+
+  top: 25%;
+  left: 50%;
+
+  border-radius: 50%;
+
+  background: rgba(255, 138, 53, 0.82);
+
+  box-shadow:
+    0 0 7px rgba(255, 90, 22, 0.4),
+
+    /* Upper area around card */
+    -165px -70px 0 -1px rgba(255, 178, 31, 0.62),
+    -165px -70px 7px 0 rgba(255, 178, 31, 0.13),
+
+    -95px -25px 0 -1px rgba(255, 90, 22, 0.58),
+    -95px -25px 8px 0 rgba(255, 90, 22, 0.12),
+
+    115px -55px 0 -1px rgba(255, 178, 31, 0.58),
+    115px -55px 7px 0 rgba(255, 178, 31, 0.12),
+
+    175px -10px 0 -1px rgba(255, 90, 22, 0.55),
+    175px -10px 8px 0 rgba(255, 90, 22, 0.11),
+
+    /* Left side of card */
+    -205px 55px 0 -1px rgba(255, 90, 22, 0.62),
+    -205px 55px 8px 0 rgba(255, 90, 22, 0.12),
+
+    -150px 125px 0 -1px rgba(255, 178, 31, 0.58),
+    -150px 125px 7px 0 rgba(255, 178, 31, 0.12),
+
+    -190px 205px 0 -1px rgba(255, 90, 22, 0.55),
+    -190px 205px 8px 0 rgba(255, 90, 22, 0.11),
+
+    -135px 285px 0 -1px rgba(255, 178, 31, 0.5),
+    -135px 285px 7px 0 rgba(255, 178, 31, 0.1),
+
+    /* Right side of card */
+    205px 50px 0 -1px rgba(255, 178, 31, 0.6),
+    205px 50px 8px 0 rgba(255, 178, 31, 0.12),
+
+    155px 120px 0 -1px rgba(255, 90, 22, 0.58),
+    155px 120px 8px 0 rgba(255, 90, 22, 0.11),
+
+    195px 195px 0 -1px rgba(255, 178, 31, 0.55),
+    195px 195px 7px 0 rgba(255, 178, 31, 0.1),
+
+    140px 275px 0 -1px rgba(255, 90, 22, 0.5),
+    140px 275px 7px 0 rgba(255, 90, 22, 0.09),
+
+    /* Lower area around card */
+    -150px 355px 0 -1px rgba(255, 90, 22, 0.48),
+    -150px 355px 7px 0 rgba(255, 90, 22, 0.09),
+
+    -70px 390px 0 -1px rgba(255, 178, 31, 0.5),
+    -70px 390px 7px 0 rgba(255, 178, 31, 0.09),
+
+    85px 375px 0 -1px rgba(255, 90, 22, 0.5),
+    85px 375px 7px 0 rgba(255, 90, 22, 0.09),
+
+    175px 345px 0 -1px rgba(255, 178, 31, 0.48),
+    175px 345px 7px 0 rgba(255, 178, 31, 0.09),
+
+    /* A few farther particles */
+    -280px 20px 0 -1px rgba(255, 178, 31, 0.35),
+    -280px 20px 6px 0 rgba(255, 178, 31, 0.07),
+
+    285px 15px 0 -1px rgba(255, 90, 22, 0.35),
+    285px 15px 6px 0 rgba(255, 90, 22, 0.07),
+
+    -250px 320px 0 -1px rgba(255, 90, 22, 0.32),
+    -250px 320px 6px 0 rgba(255, 90, 22, 0.06),
+
+    265px 330px 0 -1px rgba(255, 178, 31, 0.32),
+    265px 330px 6px 0 rgba(255, 178, 31, 0.06);
+
+  opacity: 0.7;
+
+  pointer-events: none;
+
+  animation: dustDrift 12s linear infinite;
+
+  z-index: 1;
+}
+
+/* --------------------------------------------------
+   Login card
+-------------------------------------------------- */
+
+.login-card {
+  position: relative;
+  z-index: 3;
+
+  width: min(100%, 430px);
+  box-sizing: border-box;
+
+  padding: 38px 32px 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16, 23, 27, 0.95),
+      rgba(7, 12, 15, 0.975)
+    );
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(255, 90, 22, 0.075),
+    0 0 120px rgba(255, 90, 22, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  animation: loginCardIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* --------------------------------------------------
+   Subtle orbital ring behind card
+-------------------------------------------------- */
+
+.login-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 118%;
+  height: 118%;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%) rotate(-12deg);
+
+  border: 1px solid rgba(255, 90, 22, 0.11);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 25px rgba(255, 90, 22, 0.025),
+    inset 0 0 25px rgba(255, 178, 31, 0.018);
+
+  pointer-events: none;
+
+  z-index: -1;
+
+  animation: orbitFloat 10s ease-in-out infinite;
+}
+
+/* --------------------------------------------------
+   Subtle orange edge glow
+-------------------------------------------------- */
+
+.login-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 10%;
+  right: 10%;
+
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 90, 22, 0.7),
+    rgba(255, 178, 31, 0.65),
+    rgba(255, 90, 22, 0.7),
+    transparent
+  );
+
+  opacity: 0.8;
+
+  box-shadow:
+    0 0 12px rgba(255, 90, 22, 0.18),
+    0 0 25px rgba(255, 90, 22, 0.08);
+}
+
+/* --------------------------------------------------
+   Branding
+-------------------------------------------------- */
+
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 32px;
+
+  text-align: center;
+}
+
+/* --------------------------------------------------
+   GeoPlay logo
+-------------------------------------------------- */
+
+.login-logo {
+  width: min(76%, 275px);
+
+  margin-bottom: 14px;
+
+  animation:
+    logoEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) both,
+    logoFloat 5s ease-in-out 1s infinite;
+}
+
+.login-logo img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 20px rgba(255, 90, 22, 0.2))
+    drop-shadow(0 0 38px rgba(255, 178, 31, 0.07));
+
+  animation: logoGlow 4s ease-in-out 1.2s infinite;
+}
+
+/* --------------------------------------------------
+   Fallback text logo
+-------------------------------------------------- */
+
+.login-logo:not(:has(img)) {
+  color: #ffffff;
+
+  font-size: clamp(34px, 9vw, 48px);
+
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+
+  line-height: 1;
+}
+
+/* --------------------------------------------------
+   Tagline
+-------------------------------------------------- */
+
+.login-tagline {
+  margin: 0;
+
+  color: #a7afb2;
+
+  font-size: 14px;
+
+  font-weight: 400;
+
+  letter-spacing: 0.015em;
+}
+
+/* --------------------------------------------------
+   Form
+-------------------------------------------------- */
+
+.login-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.input-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.input-group label {
+  display: block;
+
+  width: 100%;
+
+  color: #d8dadc;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  text-align: left;
+}
+
+.input-group input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 15px 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 13px;
+
+  outline: none;
+
+  background: rgba(16, 23, 27, 0.9);
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 4px 12px rgba(0, 0, 0, 0.12);
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.input-group input::placeholder {
+  color: #6f797d;
+}
+
+.input-group input:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.input-group input:focus {
+  border-color: rgba(255, 90, 22, 0.7);
+
+  background: rgba(18, 27, 31, 0.96);
+
+  box-shadow:
+    0 0 0 3px rgba(255, 90, 22, 0.08),
+    0 0 22px rgba(255, 90, 22, 0.09),
+    0 0 40px rgba(255, 90, 22, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------
+   Login button
+-------------------------------------------------- */
+
+.login-button {
+  position: relative;
+
+  width: 100%;
+
+  margin-top: 4px;
+
+  padding: 15px 20px;
+
+  border: 0;
+
+  border-radius: 13px;
+
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    #ff5a16 0%,
+    #ff7419 48%,
+    #ffb21f 100%
+  );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 30px rgba(255, 90, 22, 0.22),
+    0 0 20px rgba(255, 90, 22, 0.08);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.login-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -80%;
+
+  width: 55%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.55s ease;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 36px rgba(255, 90, 22, 0.3),
+    0 0 28px rgba(255, 90, 22, 0.12);
+
+  filter: brightness(1.04);
+}
+
+.login-button:hover::before {
+  left: 130%;
+}
+
+.login-button:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 8px 20px rgba(255, 90, 22, 0.18);
+}
+
+/* --------------------------------------------------
+   Forgot password
+-------------------------------------------------- */
+
+.forgot-button {
+  display: block;
+
+  margin: 18px auto 0;
+
+  padding: 5px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #9ea5a8;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.forgot-button:hover {
+  color: #ffb21f;
+
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------
+   Sign up
+-------------------------------------------------- */
+
+.signup-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 25px;
+
+  color: #727b7f;
+
+  font-size: 13px;
+}
+
+.signup-button {
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #ff8a35;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.signup-button:hover {
+  color: #ffb21f;
+
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------
+   Animations
+-------------------------------------------------- */
+
+@keyframes loginCardIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(22px)
+      scale(0.975);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes loginAmbient {
+  0%,
+  100% {
+    opacity: 0.55;
+
+    transform:
+      translateX(-50%)
+      scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      scale(1.08);
+  }
+}
+
+/* --------------------------------------------------
+   Dust movement
+-------------------------------------------------- */
+
+@keyframes dustDrift {
+  0% {
+    opacity: 0.25;
+
+    transform:
+      translate3d(-18px, 16px, 0)
+      scale(0.96);
+  }
+
+  20% {
+    opacity: 0.52;
+
+    transform:
+      translate3d(5px, -2px, 0)
+      scale(1);
+  }
+
+  40% {
+    opacity: 0.62;
+
+    transform:
+      translate3d(28px, -20px, 0)
+      scale(1.02);
+  }
+
+  60% {
+    opacity: 0.5;
+
+    transform:
+      translate3d(52px, -7px, 0)
+      scale(0.98);
+  }
+
+  80% {
+    opacity: 0.38;
+
+    transform:
+      translate3d(78px, -28px, 0)
+      scale(1.01);
+  }
+
+  100% {
+    opacity: 0.18;
+
+    transform:
+      translate3d(105px, -44px, 0)
+      scale(0.95);
+  }
+}
+
+@keyframes orbitFloat {
+  0%,
+  100% {
+    opacity: 0.38;
+
+    transform:
+      translate(-50%, -50%)
+      rotate(-12deg)
+      scale(0.98);
+  }
+
+  50% {
+    opacity: 0.72;
+
+    transform:
+      translate(-50%, -50%)
+      rotate(2deg)
+      scale(1.02);
+  }
+}
+
+@keyframes logoEntrance {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(16px)
+      scale(0.9);
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes logoFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes logoGlow {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45))
+      drop-shadow(0 0 18px rgba(255, 90, 22, 0.15))
+      drop-shadow(0 0 32px rgba(255, 178, 31, 0.045));
+  }
+
+  50% {
+    filter:
+      drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45))
+      drop-shadow(0 0 24px rgba(255, 90, 22, 0.28))
+      drop-shadow(0 0 42px rgba(255, 178, 31, 0.09));
+  }
+}
+
+/* --------------------------------------------------
+   Mobile
+-------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .login-screen {
+    padding: 22px 17px;
+  }
+
+  .login-card {
+    padding: 34px 23px 27px;
+
+    border-radius: 23px;
+  }
+
+  .login-card::after {
+    width: 125%;
+    height: 125%;
+  }
+
+  .login-brand {
+    margin-bottom: 29px;
+  }
+
+  .login-logo {
+    width: min(78%, 260px);
+  }
+
+  .login-tagline {
+    font-size: 13px;
+  }
+}
+
+/* --------------------------------------------------
+   Short screens
+-------------------------------------------------- */
+
+@media (max-height: 700px) {
+  .login-screen {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .login-card {
+    padding-top: 27px;
+    padding-bottom: 23px;
+  }
+
+  .login-brand {
+    margin-bottom: 22px;
+  }
+
+  .login-form {
+    gap: 14px;
+  }
+
+  .signup-row {
+    margin-top: 18px;
+  }
+}
+
+/* --------------------------------------------------
+   Reduced motion
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .login-screen::before,
+  .login-screen::after,
+  .login-card,
+  .login-card::after,
+  .login-logo,
+  .login-logo img {
+    animation: none;
+  }
+
+  .login-card {
+    opacity: 1;
+
+    transform: none;
+  }
+
+  .login-logo {
+    opacity: 1;
+
+    transform: none;
+  }
+}
