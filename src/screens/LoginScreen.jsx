@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./LoginScreen.css";
 
-function LoginScreen() {
+function LoginScreen({ onSignUp }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,6 +16,17 @@ function LoginScreen() {
 
   return (
     <main className="login-screen">
+      {/* Background atmosphere */}
+      <div className="login-bg-wisp login-bg-wisp-one"></div>
+      <div className="login-bg-wisp login-bg-wisp-two"></div>
+
+      <div className="login-bg-glow login-bg-glow-left"></div>
+      <div className="login-bg-glow login-bg-glow-right"></div>
+
+      <div className="login-bg-speck login-bg-speck-one"></div>
+      <div className="login-bg-speck login-bg-speck-two"></div>
+      <div className="login-bg-speck login-bg-speck-three"></div>
+
       <section className="login-card">
         <div className="login-brand">
           <div className="login-logo">
@@ -73,7 +84,7 @@ function LoginScreen() {
           <button
             className="signup-button"
             type="button"
-            onClick={() => console.log("Sign up")}
+            onClick={onSignUp}
           >
             Sign up
           </button>
