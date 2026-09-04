@@ -231,6 +231,11 @@ function FTUEWelcomeScreen() {
           alt=""
         />
       </span>
+
+      {/* Close-up greeting bubble
+          Appears only after the waving robot has finished
+          sliding into its close-up position.
+          It disappears automatically when the backing phase begins. */}
     </main>
   );
 }
