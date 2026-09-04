@@ -39,6 +39,7 @@ const stars = [
 function FTUEWelcomeScreen() {
   return (
     <main className="ftue-welcome-screen">
+
       <div className="ftue-welcome-background">
 
         <div className="ftue-star-field" aria-hidden="true">
@@ -76,6 +77,46 @@ function FTUEWelcomeScreen() {
         />
 
       </div>
+
+      {/* Robot thruster effect */}
+      <span
+        className="ftue-robot-thruster"
+        aria-hidden="true"
+      >
+        <span className="ftue-robot-thruster-halo" />
+        <span className="ftue-robot-thruster-core" />
+        <span className="ftue-robot-thruster-flare" />
+      </span>
+
+      {/* Main FTUE robot: bottom-left → exact center */}
+      <img
+        className="ftue-robot-flying"
+        src="/robots/geoplay-robot-flying.png"
+        alt=""
+        aria-hidden="true"
+      />
+
+      {/* Propulsion particles: intentionally above the robot */}
+      <span
+        className="ftue-robot-particles"
+        aria-hidden="true"
+      >
+        <span className="ftue-robot-particle ftue-robot-particle-1" />
+        <span className="ftue-robot-particle ftue-robot-particle-2" />
+        <span className="ftue-robot-particle ftue-robot-particle-3" />
+        <span className="ftue-robot-particle ftue-robot-particle-4" />
+        <span className="ftue-robot-particle ftue-robot-particle-5" />
+        <span className="ftue-robot-particle ftue-robot-particle-6" />
+        <span className="ftue-robot-particle ftue-robot-particle-7" />
+        <span className="ftue-robot-particle ftue-robot-particle-8" />
+        <span className="ftue-robot-particle ftue-robot-particle-9" />
+        <span className="ftue-robot-particle ftue-robot-particle-10" />
+        <span className="ftue-robot-particle ftue-robot-particle-11" />
+        <span className="ftue-robot-particle ftue-robot-particle-12" />
+        <span className="ftue-robot-particle ftue-robot-particle-13" />
+        <span className="ftue-robot-particle ftue-robot-particle-14" />
+      </span>
+
     </main>
   );
 }
