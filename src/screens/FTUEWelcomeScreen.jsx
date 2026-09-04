@@ -1,0 +1,83 @@
+import "./FTUEWelcomeScreen.css";
+
+const stars = [
+  { x: 5, y: 9, size: 2.3, delay: 0.8, duration: 7.8, opacity: 0.9 },
+  { x: 24, y: 12, size: 1.7, delay: 5.4, duration: 8.6, opacity: 0.82 },
+  { x: 47, y: 7, size: 2.2, delay: 4.6, duration: 7.2, opacity: 0.92 },
+  { x: 74, y: 10, size: 1.8, delay: 6.2, duration: 8.4, opacity: 0.84 },
+  { x: 19, y: 58, size: 2.1, delay: 7.1, duration: 7.6, opacity: 0.86 },
+  { x: 69, y: 76, size: 1.9, delay: 3.8, duration: 8.1, opacity: 0.82 },
+  { x: 95, y: 68, size: 2.2, delay: 1.9, duration: 8.8, opacity: 0.88 },
+  { x: 27, y: 91, size: 1.8, delay: 2.2, duration: 7.9, opacity: 0.8 },
+
+  { x: 14, y: 24, size: 1.3, delay: 3.1, duration: 8.4, opacity: 0.68 },
+  { x: 34, y: 31, size: 1.1, delay: 1.7, duration: 9.1, opacity: 0.62 },
+  { x: 61, y: 18, size: 1.4, delay: 2.4, duration: 8.8, opacity: 0.7 },
+  { x: 91, y: 27, size: 1.2, delay: 1.1, duration: 9.4, opacity: 0.64 },
+
+  { x: 8, y: 43, size: 1.1, delay: 4.2, duration: 8.1, opacity: 0.6 },
+  { x: 31, y: 47, size: 1.3, delay: 2.8, duration: 9.7, opacity: 0.64 },
+  { x: 43, y: 72, size: 1.5, delay: 5.7, duration: 7.5, opacity: 0.7 },
+  { x: 57, y: 55, size: 1.1, delay: 0.5, duration: 8.9, opacity: 0.58 },
+  { x: 82, y: 49, size: 1.2, delay: 6.8, duration: 9.2, opacity: 0.62 },
+
+  { x: 4, y: 83, size: 1.2, delay: 5.1, duration: 8.6, opacity: 0.6 },
+  { x: 52, y: 88, size: 1.1, delay: 7.4, duration: 9.5, opacity: 0.56 },
+  { x: 77, y: 92, size: 1.3, delay: 4.9, duration: 6.8, opacity: 0.62 },
+  { x: 97, y: 89, size: 1.1, delay: 0.9, duration: 8.3, opacity: 0.58 },
+
+  { x: 12, y: 69, size: 0.9, delay: 6.5, duration: 10.2, opacity: 0.5 },
+  { x: 37, y: 15, size: 0.9, delay: 3.6, duration: 9.8, opacity: 0.48 },
+  { x: 55, y: 35, size: 1.0, delay: 8.1, duration: 10.5, opacity: 0.5 },
+  { x: 72, y: 38, size: 0.9, delay: 1.4, duration: 9.6, opacity: 0.52 },
+  { x: 87, y: 16, size: 1.0, delay: 5.8, duration: 10.8, opacity: 0.5 },
+  { x: 16, y: 37, size: 0.9, delay: 7.7, duration: 9.9, opacity: 0.48 },
+  { x: 63, y: 91, size: 0.9, delay: 2.9, duration: 10.1, opacity: 0.5 },
+  { x: 88, y: 61, size: 1.0, delay: 4.4, duration: 9.3, opacity: 0.52 },
+];
+
+function FTUEWelcomeScreen() {
+  return (
+    <main className="ftue-welcome-screen">
+      <div className="ftue-welcome-background">
+
+        <div className="ftue-star-field" aria-hidden="true">
+          {stars.map((star, index) => (
+            <span
+              key={index}
+              className="ftue-star"
+              style={{
+                left: `${star.x}%`,
+                top: `${star.y}%`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                opacity: star.opacity,
+                animationDelay: `${star.delay}s`,
+                animationDuration: `${star.duration}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Forward ship: bottom-left → upper-right */}
+        <img
+          className="ftue-space-ship ftue-space-ship-forward"
+          src="/ships/geoplay-space-ship.png"
+          alt=""
+          aria-hidden="true"
+        />
+
+        {/* Return ship: lower-right → upper-left */}
+        <img
+          className="ftue-space-ship ftue-space-ship-return"
+          src="/ships/geoplay-space-ship.png"
+          alt=""
+          aria-hidden="true"
+        />
+
+      </div>
+    </main>
+  );
+}
+
+export default FTUEWelcomeScreen;

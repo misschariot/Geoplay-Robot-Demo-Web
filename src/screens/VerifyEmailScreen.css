@@ -1,0 +1,1138 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+.verify-email-screen {
+  position: relative;
+
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px 20px;
+
+  background:
+    radial-gradient(
+      ellipse 32% 72% at -4% 48%,
+      rgba(255, 90, 22, 0.20),
+      rgba(255, 90, 22, 0.09) 38%,
+      rgba(255, 90, 22, 0.025) 65%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 32% 72% at 104% 42%,
+      rgba(255, 178, 31, 0.16),
+      rgba(255, 90, 22, 0.075) 38%,
+      rgba(255, 178, 31, 0.02) 65%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 65% 38% at 50% -8%,
+      rgba(255, 90, 22, 0.13),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 70% 42% at 50% 108%,
+      rgba(255, 178, 31, 0.105),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 55% 65% at 50% 48%,
+      rgba(255, 90, 22, 0.045),
+      transparent 78%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px
+    ),
+    #05090b;
+
+  background-size:
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    160px 100%;
+
+  background-position:
+    center,
+    center,
+    center,
+    center,
+    center,
+    center;
+
+  color: #ffffff;
+
+  font-family: "Poppins", sans-serif;
+
+  isolation: isolate;
+}
+
+/* --------------------------------------------------
+   Atmospheric glow
+-------------------------------------------------- */
+
+.verify-email-screen::before {
+  content: "";
+
+  position: absolute;
+
+  width: min(125vw, 1100px);
+  height: min(125vw, 1100px);
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 90, 22, 0.065) 0%,
+      rgba(255, 90, 22, 0.032) 28%,
+      rgba(255, 178, 31, 0.012) 46%,
+      transparent 70%
+    );
+
+  filter: blur(45px);
+
+  pointer-events: none;
+
+  animation: verifyAmbient 11s ease-in-out infinite;
+
+  z-index: 0;
+}
+
+/* --------------------------------------------------
+   Floating dust
+-------------------------------------------------- */
+
+.verify-email-screen::after {
+  content: "";
+
+  position: absolute;
+
+  width: 3px;
+  height: 3px;
+
+  top: 25%;
+  left: 50%;
+
+  border-radius: 50%;
+
+  background: rgba(255, 138, 53, 0.82);
+
+  box-shadow:
+    0 0 7px rgba(255, 90, 22, 0.4),
+
+    -165px -70px 0 -1px rgba(255, 178, 31, 0.62),
+    -165px -70px 7px 0 rgba(255, 178, 31, 0.13),
+
+    -95px -25px 0 -1px rgba(255, 90, 22, 0.58),
+    -95px -25px 8px 0 rgba(255, 90, 22, 0.12),
+
+    115px -55px 0 -1px rgba(255, 178, 31, 0.58),
+    115px -55px 7px 0 rgba(255, 178, 31, 0.12),
+
+    175px -10px 0 -1px rgba(255, 90, 22, 0.55),
+    175px -10px 8px 0 rgba(255, 90, 22, 0.11),
+
+    -205px 55px 0 -1px rgba(255, 90, 22, 0.62),
+    -205px 55px 8px 0 rgba(255, 90, 22, 0.12),
+
+    -150px 125px 0 -1px rgba(255, 178, 31, 0.58),
+    -150px 125px 7px 0 rgba(255, 178, 31, 0.12),
+
+    -190px 205px 0 -1px rgba(255, 90, 22, 0.55),
+    -190px 205px 8px 0 rgba(255, 90, 22, 0.11),
+
+    -135px 285px 0 -1px rgba(255, 178, 31, 0.5),
+    -135px 285px 7px 0 rgba(255, 178, 31, 0.1),
+
+    205px 50px 0 -1px rgba(255, 178, 31, 0.6),
+    205px 50px 8px 0 rgba(255, 178, 31, 0.12),
+
+    155px 120px 0 -1px rgba(255, 90, 22, 0.58),
+    155px 120px 8px 0 rgba(255, 90, 22, 0.11),
+
+    195px 195px 0 -1px rgba(255, 178, 31, 0.55),
+    195px 195px 7px 0 rgba(255, 178, 31, 0.1),
+
+    140px 275px 0 -1px rgba(255, 90, 22, 0.5),
+    140px 275px 7px 0 rgba(255, 90, 22, 0.09),
+
+    -150px 355px 0 -1px rgba(255, 90, 22, 0.48),
+    -150px 355px 7px 0 rgba(255, 90, 22, 0.09),
+
+    -70px 390px 0 -1px rgba(255, 178, 31, 0.5),
+    -70px 390px 7px 0 rgba(255, 178, 31, 0.09),
+
+    85px 375px 0 -1px rgba(255, 90, 22, 0.5),
+    85px 375px 7px 0 rgba(255, 90, 22, 0.09),
+
+    175px 345px 0 -1px rgba(255, 178, 31, 0.48),
+    175px 345px 7px 0 rgba(255, 178, 31, 0.09),
+
+    -280px 20px 0 -1px rgba(255, 178, 31, 0.35),
+    -280px 20px 6px 0 rgba(255, 178, 31, 0.07),
+
+    285px 15px 0 -1px rgba(255, 90, 22, 0.35),
+    285px 15px 6px 0 rgba(255, 90, 22, 0.07),
+
+    -250px 320px 0 -1px rgba(255, 90, 22, 0.32),
+    -250px 320px 6px 0 rgba(255, 90, 22, 0.06),
+
+    265px 330px 0 -1px rgba(255, 178, 31, 0.32),
+    265px 330px 6px 0 rgba(255, 178, 31, 0.06);
+
+  opacity: 0.7;
+
+  pointer-events: none;
+
+  animation: verifyDustDrift 12s linear infinite;
+
+  z-index: 1;
+}
+
+/* --------------------------------------------------
+   Verification card
+-------------------------------------------------- */
+
+.verify-email-card {
+  position: relative;
+
+  z-index: 3;
+
+  width: min(100%, 430px);
+
+  max-height: calc(100vh - 48px);
+  max-height: calc(100svh - 48px);
+
+  box-sizing: border-box;
+
+  padding: 38px 32px 30px;
+
+  border: none;
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16, 23, 27, 0.95),
+      rgba(7, 12, 15, 0.975)
+    );
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(255, 90, 22, 0.075),
+    0 0 120px rgba(255, 90, 22, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  animation:
+    verifyCardIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* --------------------------------------------------
+   Branding
+-------------------------------------------------- */
+
+.verify-email-brand {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  margin-bottom: 27px;
+
+  text-align: center;
+}
+
+.verify-email-logo {
+  width: min(76%, 275px);
+
+  margin-bottom: 14px;
+
+  animation:
+    verifyLogoEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) both,
+    verifyLogoFloat 5s ease-in-out 1s infinite;
+}
+
+.verify-email-logo img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 20px rgba(255, 90, 22, 0.2))
+    drop-shadow(0 0 38px rgba(255, 178, 31, 0.07));
+
+  animation: verifyLogoGlow 4s ease-in-out 1.2s infinite;
+}
+
+.verify-email-tagline {
+  margin: 0;
+
+  color: #a7afb2;
+
+  font-size: 14px;
+
+  font-weight: 400;
+
+  letter-spacing: 0.015em;
+}
+
+/* --------------------------------------------------
+   Verification content
+-------------------------------------------------- */
+
+.verify-email-content {
+  text-align: center;
+}
+
+.verify-email-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 54px;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 90, 22, 0.16),
+      rgba(255, 178, 31, 0.08)
+    );
+
+  color: #ff9a45;
+
+  font-size: 25px;
+
+  box-shadow:
+    0 0 25px rgba(255, 90, 22, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.verify-email-content h1 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 25px;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.verify-email-message {
+  margin: 12px 0 0;
+
+  color: #9ea5a8;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.verify-email-address {
+  margin: 3px 0 0;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------
+   Success icon
+-------------------------------------------------- */
+
+.verify-email-success-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 22px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 90, 22, 0.16),
+      rgba(255, 178, 31, 0.08)
+    );
+
+  color: #ff9a45;
+
+  font-size: 28px;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 0 28px rgba(255, 90, 22, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.verify-email-success-icon + h1 {
+  margin-bottom: 12px;
+}
+
+.verify-email-success-icon ~ .verify-email-message {
+  margin-top: 0;
+}
+
+.verify-email-success-icon ~ .verify-email-instructions {
+  max-width: none;
+
+  margin: 4px 0 24px;
+
+  color: #a7afb2;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------
+   Verification form
+-------------------------------------------------- */
+
+.verify-email-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  margin-top: 24px;
+
+  text-align: left;
+}
+
+.verify-email-form .input-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.verify-email-form .input-group label {
+  display: block;
+
+  color: #d8dadc;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  text-align: left;
+}
+
+.verify-email-form .input-group input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 15px 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 13px;
+
+  outline: none;
+
+  background: rgba(16, 23, 27, 0.9);
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.28em;
+
+  text-align: center;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 4px 12px rgba(0, 0, 0, 0.12);
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.verify-email-form .input-group input::placeholder {
+  color: #5f696d;
+
+  letter-spacing: 0.08em;
+}
+
+.verify-email-form .input-group input:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.verify-email-form .input-group input:focus {
+  border-color: rgba(255, 90, 22, 0.7);
+
+  background: rgba(18, 27, 31, 0.96);
+
+  box-shadow:
+    0 0 0 3px rgba(255, 90, 22, 0.08),
+    0 0 22px rgba(255, 90, 22, 0.09),
+    0 0 40px rgba(255, 90, 22, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------
+   Verify button
+-------------------------------------------------- */
+
+.verify-email-button {
+  position: relative;
+
+  width: 100%;
+
+  margin-top: 2px;
+
+  padding: 15px 20px;
+
+  border: 0;
+
+  border-radius: 13px;
+
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    #ff5a16 0%,
+    #ff7419 48%,
+    #ffb21f 100%
+  );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 30px rgba(255, 90, 22, 0.22),
+    0 0 20px rgba(255, 90, 22, 0.08);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.verify-email-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -80%;
+
+  width: 55%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.55s ease;
+}
+
+.verify-email-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 36px rgba(255, 90, 22, 0.3),
+    0 0 28px rgba(255, 90, 22, 0.12);
+
+  filter: brightness(1.04);
+}
+
+.verify-email-button:hover:not(:disabled)::before {
+  left: 130%;
+}
+
+.verify-email-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.verify-email-button:disabled {
+  opacity: 0.38;
+
+  cursor: not-allowed;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* --------------------------------------------------
+   Resend
+-------------------------------------------------- */
+
+.resend-section {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  margin-top: 20px;
+
+  color: #727b7f;
+
+  font-size: 12px;
+}
+
+.resend-section p {
+  margin: 0;
+}
+
+.resend-code-button {
+  padding: 3px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #ff8a35;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.resend-code-button:hover {
+  color: #ffb21f;
+
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------
+   Change email
+-------------------------------------------------- */
+
+.change-email-button {
+  display: block;
+
+  margin: 23px auto 0;
+
+  padding: 5px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #727b7f;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.change-email-button:hover {
+  color: #ffb21f;
+
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------
+   Animations
+-------------------------------------------------- */
+
+@keyframes verifyCardIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(22px)
+      scale(0.975);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes verifyAmbient {
+  0%,
+  100% {
+    opacity: 0.55;
+
+    transform:
+      translateX(-50%)
+      translateY(-50%)
+      scale(0.94);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      translateY(-50%)
+      scale(1.06);
+  }
+}
+
+@keyframes verifyDustDrift {
+  0% {
+    opacity: 0.25;
+
+    transform:
+      translate3d(-18px, 16px, 0)
+      scale(0.96);
+  }
+
+  20% {
+    opacity: 0.52;
+
+    transform:
+      translate3d(5px, -2px, 0)
+      scale(1);
+  }
+
+  40% {
+    opacity: 0.62;
+
+    transform:
+      translate3d(28px, -20px, 0)
+      scale(1.02);
+  }
+
+  60% {
+    opacity: 0.5;
+
+    transform:
+      translate3d(52px, -7px, 0)
+      scale(0.98);
+  }
+
+  80% {
+    opacity: 0.38;
+
+    transform:
+      translate3d(78px, -28px, 0)
+      scale(1.01);
+  }
+
+  100% {
+    opacity: 0.18;
+
+    transform:
+      translate3d(105px, -44px, 0)
+      scale(0.95);
+  }
+}
+
+@keyframes verifyLogoEntrance {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(16px)
+      scale(0.9);
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes verifyLogoFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes verifyLogoGlow {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45))
+      drop-shadow(0 0 18px rgba(255, 90, 22, 0.15))
+      drop-shadow(0 0 32px rgba(255, 178, 31, 0.045));
+  }
+
+  50% {
+    filter:
+      drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45))
+      drop-shadow(0 0 24px rgba(255, 90, 22, 0.28))
+      drop-shadow(0 0 42px rgba(255, 178, 31, 0.09));
+  }
+}
+
+/* --------------------------------------------------
+   Mobile
+-------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .verify-email-screen {
+    padding: 16px 15px;
+  }
+
+  .verify-email-card {
+    width: min(100%, 430px);
+
+    max-height: calc(100svh - 32px);
+
+    padding: 30px 23px 25px;
+
+    border-radius: 23px;
+  }
+
+  .verify-email-brand {
+    margin-bottom: 22px;
+  }
+
+  .verify-email-logo {
+    width: min(78%, 260px);
+
+    margin-bottom: 12px;
+  }
+
+  .verify-email-tagline {
+    font-size: 13px;
+  }
+
+  .verify-email-content h1 {
+    font-size: 23px;
+  }
+
+  .verify-email-icon {
+    width: 50px;
+    height: 50px;
+
+    margin-bottom: 15px;
+
+    font-size: 23px;
+  }
+
+  .verify-email-success-icon {
+    width: 54px;
+    height: 54px;
+
+    margin-bottom: 19px;
+
+    font-size: 26px;
+  }
+
+  .verify-email-success-icon ~ .verify-email-instructions {
+    margin-bottom: 20px;
+  }
+
+  .verify-email-form {
+    gap: 13px;
+
+    margin-top: 21px;
+  }
+
+  .verify-email-form .input-group {
+    gap: 7px;
+  }
+
+  .verify-email-form .input-group input {
+    padding: 14px 14px;
+
+    font-size: 19px;
+  }
+
+  .verify-email-button {
+    padding: 14px 18px;
+  }
+
+  .resend-section {
+    margin-top: 17px;
+  }
+
+  .change-email-button {
+    margin-top: 19px;
+  }
+}
+
+/* --------------------------------------------------
+   Short screens
+-------------------------------------------------- */
+
+@media (max-height: 700px) {
+  .verify-email-screen {
+    padding: 12px 16px;
+  }
+
+  .verify-email-card {
+    max-height: calc(100svh - 24px);
+
+    padding-top: 23px;
+    padding-bottom: 20px;
+  }
+
+  .verify-email-brand {
+    margin-bottom: 17px;
+  }
+
+  .verify-email-logo {
+    margin-bottom: 9px;
+  }
+
+  .verify-email-icon {
+    width: 46px;
+    height: 46px;
+
+    margin-bottom: 12px;
+
+    font-size: 21px;
+  }
+
+  .verify-email-form {
+    gap: 11px;
+
+    margin-top: 18px;
+  }
+
+  .verify-email-form .input-group {
+    gap: 6px;
+  }
+
+  .verify-email-form .input-group input {
+    padding: 12px 14px;
+  }
+
+  .verify-email-button {
+    padding: 13px 18px;
+  }
+
+  .resend-section {
+    margin-top: 13px;
+  }
+
+  .change-email-button {
+    margin-top: 13px;
+  }
+
+  .verify-email-success-icon {
+    width: 50px;
+    height: 50px;
+
+    margin-bottom: 15px;
+
+    font-size: 24px;
+  }
+
+  .verify-email-success-icon ~ .verify-email-instructions {
+    margin-bottom: 17px;
+  }
+}
+
+/* --------------------------------------------------
+   Very short screens
+-------------------------------------------------- */
+
+@media (max-height: 620px) {
+  .verify-email-screen {
+    padding: 8px 14px;
+  }
+
+  .verify-email-card {
+    max-height: calc(100svh - 16px);
+
+    padding: 19px 20px 17px;
+  }
+
+  .verify-email-brand {
+    margin-bottom: 13px;
+  }
+
+  .verify-email-logo {
+    width: min(70%, 220px);
+
+    margin-bottom: 7px;
+  }
+
+  .verify-email-tagline {
+    font-size: 12px;
+  }
+
+  .verify-email-content h1 {
+    font-size: 21px;
+  }
+
+  .verify-email-message {
+    margin-top: 8px;
+
+    font-size: 12px;
+  }
+
+  .verify-email-address {
+    font-size: 13px;
+  }
+
+  .verify-email-icon {
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 9px;
+
+    font-size: 19px;
+  }
+
+  .verify-email-form {
+    gap: 9px;
+
+    margin-top: 14px;
+  }
+
+  .verify-email-form .input-group label {
+    font-size: 12px;
+  }
+
+  .verify-email-form .input-group input {
+    padding: 10px 12px;
+
+    font-size: 17px;
+  }
+
+  .verify-email-button {
+    padding: 11px 16px;
+
+    font-size: 14px;
+  }
+
+  .resend-section {
+    margin-top: 10px;
+
+    font-size: 11px;
+  }
+
+  .change-email-button {
+    margin-top: 9px;
+
+    font-size: 11px;
+  }
+
+  .verify-email-success-icon {
+    width: 46px;
+    height: 46px;
+
+    margin-bottom: 11px;
+
+    font-size: 22px;
+  }
+
+  .verify-email-success-icon + h1 {
+    margin-bottom: 8px;
+  }
+
+  .verify-email-success-icon ~ .verify-email-instructions {
+    margin-top: 2px;
+    margin-bottom: 13px;
+
+    font-size: 12px;
+  }
+}
+
+/* --------------------------------------------------
+   Reduced motion
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .verify-email-screen::before,
+  .verify-email-screen::after,
+  .verify-email-card,
+  .verify-email-logo,
+  .verify-email-logo img {
+    animation: none;
+  }
+
+  .verify-email-card,
+  .verify-email-logo {
+    opacity: 1;
+
+    transform: none;
+  }
+}
