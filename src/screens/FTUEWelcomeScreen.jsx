@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import "./FTUEWelcomeScreen.css";
 
 const stars = [
@@ -37,9 +38,78 @@ const stars = [
 ];
 
 function FTUEWelcomeScreen() {
-  return (
-    <main className="ftue-welcome-screen">
+  const [robotPhase, setRobotPhase] = useState("flying");
 
+  useEffect(() => {
+    // Existing flight:
+    // 700ms delay + 5000ms flight = 5700ms
+    const transitionTimer = setTimeout(() => {
+      setRobotPhase("transitioning");
+    }, 5700);
+
+    return () => {
+      clearTimeout(transitionTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    // The waving robot finishes its 900ms slide-up
+    // after the existing 320ms delay.
+    //
+    // 320ms delay + 900ms animation = 1220ms
+    //
+    // Once that is complete, switch to the dedicated
+    // hovering phase so the floating animation takes
+    // over cleanly without competing with the slide.
+    if (robotPhase !== "transitioning") {
+      return;
+    }
+
+    const hoverTimer = setTimeout(() => {
+      setRobotPhase("hovering");
+    }, 1220);
+
+    return () => {
+      clearTimeout(hoverTimer);
+    };
+  }, [robotPhase]);
+
+  useEffect(() => {
+    // Give the robot a short hover before it smoothly backs away.
+    if (robotPhase !== "hovering") {
+      return;
+    }
+
+    const backingTimer = setTimeout(() => {
+      setRobotPhase("backing");
+    }, 1800);
+
+    return () => {
+      clearTimeout(backingTimer);
+    };
+  }, [robotPhase]);
+
+  useEffect(() => {
+    // The backing-away animation lasts 1100ms.
+    // Once complete, lock the robot into its final
+    // centered resting position.
+    if (robotPhase !== "backing") {
+      return;
+    }
+
+    const centeredTimer = setTimeout(() => {
+      setRobotPhase("centered");
+    }, 1100);
+
+    return () => {
+      clearTimeout(centeredTimer);
+    };
+  }, [robotPhase]);
+
+  return (
+    <main
+      className={`ftue-welcome-screen ftue-robot-phase-${robotPhase}`}
+    >
       <div className="ftue-welcome-background">
 
         <div className="ftue-star-field" aria-hidden="true">
@@ -60,7 +130,6 @@ function FTUEWelcomeScreen() {
           ))}
         </div>
 
-        {/* Forward ship: bottom-left → upper-right */}
         <img
           className="ftue-space-ship ftue-space-ship-forward"
           src="/ships/geoplay-space-ship.png"
@@ -68,55 +137,100 @@ function FTUEWelcomeScreen() {
           aria-hidden="true"
         />
 
-        {/* Return ship: lower-right → upper-left */}
         <img
           className="ftue-space-ship ftue-space-ship-return"
           src="/ships/geoplay-space-ship.png"
           alt=""
           aria-hidden="true"
         />
-
       </div>
 
-      {/* Robot thruster effect */}
-      <span
-        className="ftue-robot-thruster"
-        aria-hidden="true"
-      >
-        <span className="ftue-robot-thruster-halo" />
-        <span className="ftue-robot-thruster-core" />
-        <span className="ftue-robot-thruster-flare" />
-      </span>
+      {/* Robot thruster effect
+          Exists ONLY during the initial flight/POW portion. */}
+      {(robotPhase === "flying" || robotPhase === "transitioning") && (
+        <span
+          className="ftue-robot-thruster"
+          aria-hidden="true"
+        >
+          <span className="ftue-robot-thruster-halo" />
+          <span className="ftue-robot-thruster-core" />
+          <span className="ftue-robot-thruster-flare" />
+        </span>
+      )}
 
-      {/* Main FTUE robot: bottom-left → exact center */}
-      <img
-        className="ftue-robot-flying"
-        src="/robots/geoplay-robot-flying.png"
-        alt=""
+      {/* Flying robot
+          Exists ONLY during the initial flight and immediate POW.
+          Once POW completes, this element is removed from the DOM. */}
+      {(robotPhase === "flying" || robotPhase === "transitioning") && (
+        <img
+          className="ftue-robot-flying"
+          src="/robots/geoplay-robot-flying.png"
+          alt=""
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Propulsion particles
+          Exists ONLY during the initial flight/POW portion. */}
+      {(robotPhase === "flying" || robotPhase === "transitioning") && (
+        <span
+          className="ftue-robot-particles"
+          aria-hidden="true"
+        >
+          <span className="ftue-robot-particle ftue-robot-particle-1" />
+          <span className="ftue-robot-particle ftue-robot-particle-2" />
+          <span className="ftue-robot-particle ftue-robot-particle-3" />
+          <span className="ftue-robot-particle ftue-robot-particle-4" />
+          <span className="ftue-robot-particle ftue-robot-particle-5" />
+          <span className="ftue-robot-particle ftue-robot-particle-6" />
+          <span className="ftue-robot-particle ftue-robot-particle-7" />
+          <span className="ftue-robot-particle ftue-robot-particle-8" />
+          <span className="ftue-robot-particle ftue-robot-particle-9" />
+          <span className="ftue-robot-particle ftue-robot-particle-10" />
+          <span className="ftue-robot-particle ftue-robot-particle-11" />
+          <span className="ftue-robot-particle ftue-robot-particle-12" />
+          <span className="ftue-robot-particle ftue-robot-particle-13" />
+          <span className="ftue-robot-particle ftue-robot-particle-14" />
+        </span>
+      )}
+
+      {/* Large futuristic arrival POW */}
+      <span
+        className="ftue-robot-arrival-flash"
         aria-hidden="true"
       />
 
-      {/* Propulsion particles: intentionally above the robot */}
-      <span
-        className="ftue-robot-particles"
-        aria-hidden="true"
-      >
-        <span className="ftue-robot-particle ftue-robot-particle-1" />
-        <span className="ftue-robot-particle ftue-robot-particle-2" />
-        <span className="ftue-robot-particle ftue-robot-particle-3" />
-        <span className="ftue-robot-particle ftue-robot-particle-4" />
-        <span className="ftue-robot-particle ftue-robot-particle-5" />
-        <span className="ftue-robot-particle ftue-robot-particle-6" />
-        <span className="ftue-robot-particle ftue-robot-particle-7" />
-        <span className="ftue-robot-particle ftue-robot-particle-8" />
-        <span className="ftue-robot-particle ftue-robot-particle-9" />
-        <span className="ftue-robot-particle ftue-robot-particle-10" />
-        <span className="ftue-robot-particle ftue-robot-particle-11" />
-        <span className="ftue-robot-particle ftue-robot-particle-12" />
-        <span className="ftue-robot-particle ftue-robot-particle-13" />
-        <span className="ftue-robot-particle ftue-robot-particle-14" />
-      </span>
+      {/* Waving robot stage
+          The stage owns the existing waving/back-away/centered
+          transforms so the robot and its particles move together. */}
+      <span className="ftue-robot-waving-stage" aria-hidden="true">
 
+        {/* Waving robot particles
+            Separate system for the upright waving robot. */}
+        <span className="ftue-waving-robot-particles">
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-1" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-2" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-3" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-4" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-5" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-6" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-7" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-8" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-9" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-10" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-11" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-12" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-13" />
+          <span className="ftue-waving-robot-particle ftue-waving-robot-particle-14" />
+        </span>
+
+        {/* Waving robot */}
+        <img
+          className="ftue-robot-waving"
+          src="/robots/geoplay-robot-waving.png"
+          alt=""
+        />
+      </span>
     </main>
   );
 }

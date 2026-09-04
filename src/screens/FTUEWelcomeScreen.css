@@ -137,11 +137,6 @@
   animation-iteration-count: infinite;
 }
 
-/* --------------------------------------------------
-   Forward Ship
-   Bottom-left → upper-right ↗
--------------------------------------------------- */
-
 .ftue-space-ship-forward {
   animation-name: ftueSpaceShipForward;
 }
@@ -198,11 +193,6 @@
       scale(0.92);
   }
 }
-
-/* --------------------------------------------------
-   Return Ship
-   Lower-right → upper-left ↖
--------------------------------------------------- */
 
 .ftue-space-ship-return {
   transform: scaleX(-1);
@@ -271,7 +261,6 @@
 
 /* --------------------------------------------------
    Robot Thruster Effect
-   Separate from the robot animation
 -------------------------------------------------- */
 
 .ftue-robot-thruster {
@@ -348,10 +337,6 @@
     alternate;
 }
 
-/* --------------------------------------------------
-   Bright Thruster Core
--------------------------------------------------- */
-
 .ftue-robot-thruster-core {
   position: absolute;
 
@@ -395,10 +380,6 @@
     alternate;
 }
 
-/* --------------------------------------------------
-   Directional Energy Flare
--------------------------------------------------- */
-
 .ftue-robot-thruster-flare {
   position: absolute;
 
@@ -440,7 +421,6 @@
 
 /* --------------------------------------------------
    Diagonal Thruster Particles
-   Straight pressurized spray ↙
 -------------------------------------------------- */
 
 .ftue-robot-particle {
@@ -641,13 +621,11 @@
 
 /* --------------------------------------------------
    Particle Motion
-   Straight diagonal spray ↙
 -------------------------------------------------- */
 
 @keyframes ftueThrusterParticleOne {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -660,7 +638,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-62px, 58px)
@@ -671,7 +648,6 @@
 @keyframes ftueThrusterParticleTwo {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -684,7 +660,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-78px, 72px)
@@ -695,7 +670,6 @@
 @keyframes ftueThrusterParticleThree {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -708,7 +682,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-70px, 88px)
@@ -719,7 +692,6 @@
 @keyframes ftueThrusterParticleFour {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -732,7 +704,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-92px, 62px)
@@ -743,7 +714,6 @@
 @keyframes ftueThrusterParticleFive {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -756,7 +726,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-86px, 96px)
@@ -767,7 +736,6 @@
 @keyframes ftueThrusterParticleSix {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -780,7 +748,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-108px, 82px)
@@ -791,7 +758,6 @@
 @keyframes ftueThrusterParticleSeven {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -804,7 +770,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-76px, 104px)
@@ -815,7 +780,6 @@
 @keyframes ftueThrusterParticleEight {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -828,7 +792,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-116px, 76px)
@@ -839,7 +802,6 @@
 @keyframes ftueThrusterParticleNine {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -852,7 +814,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-84px, 70px)
@@ -863,7 +824,6 @@
 @keyframes ftueThrusterParticleTen {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -876,7 +836,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-98px, 90px)
@@ -887,7 +846,6 @@
 @keyframes ftueThrusterParticleEleven {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -900,7 +858,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-124px, 94px)
@@ -911,7 +868,6 @@
 @keyframes ftueThrusterParticleTwelve {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -924,7 +880,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-88px, 112px)
@@ -935,7 +890,6 @@
 @keyframes ftueThrusterParticleThirteen {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -948,7 +902,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-104px, 64px)
@@ -959,7 +912,6 @@
 @keyframes ftueThrusterParticleFourteen {
   0% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(0, 0)
@@ -972,7 +924,6 @@
 
   100% {
     opacity: 0;
-
     transform:
       translate(-50%, -50%)
       translate(-96px, 108px)
@@ -1048,7 +999,6 @@
 
 /* --------------------------------------------------
    Thruster Flight Animation
-   Matches robot flight exactly
 -------------------------------------------------- */
 
 @keyframes ftueRobotThrusterFlyIn {
@@ -1079,8 +1029,6 @@
 
 /* --------------------------------------------------
    Flying Robot
-   Bottom-left → exact viewport center
-   Always above the nebula
 -------------------------------------------------- */
 
 .ftue-robot-flying {
@@ -1148,7 +1096,6 @@
 
 /* --------------------------------------------------
    Propulsion Particles
-   Intentionally rendered ABOVE the robot
 -------------------------------------------------- */
 
 .ftue-robot-particles {
@@ -1321,10 +1268,6 @@
   animation: ftueNebulaWisps 34s ease-in-out infinite alternate;
 }
 
-/* --------------------------------------------------
-   Main Nebula Movement
--------------------------------------------------- */
-
 @keyframes ftueNebulaDrift {
   0% {
     transform: translate(-50%, -50%) scale(1);
@@ -1342,10 +1285,6 @@
     transform: translate(-49%, -52%) scale(1.02);
   }
 }
-
-/* --------------------------------------------------
-   Secondary Nebula Movement
--------------------------------------------------- */
 
 @keyframes ftueNebulaWisps {
   0% {
@@ -1641,84 +1580,1610 @@
 }
 
 /* --------------------------------------------------
+   POW Transition
+-------------------------------------------------- */
+
+.ftue-robot-phase-transitioning .ftue-robot-flying {
+  animation:
+    ftueRobotZapOut
+    180ms
+    cubic-bezier(0.7, 0, 0.9, 0.2)
+    forwards;
+}
+
+/* --------------------------------------------------
+   Keep Flying Robot Permanently Gone After POW
+-------------------------------------------------- */
+
+.ftue-robot-phase-hovering .ftue-robot-flying,
+.ftue-robot-phase-backing .ftue-robot-flying,
+.ftue-robot-phase-centered .ftue-robot-flying {
+  animation: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* --------------------------------------------------
+   Remove Flying Robot Propulsion During POW
+-------------------------------------------------- */
+
+.ftue-robot-phase-transitioning .ftue-robot-thruster,
+.ftue-robot-phase-transitioning .ftue-robot-particles {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+/* --------------------------------------------------
+   Keep Flying Robot Effects Permanently Gone After POW
+-------------------------------------------------- */
+
+.ftue-robot-phase-hovering .ftue-robot-thruster,
+.ftue-robot-phase-hovering .ftue-robot-particles,
+.ftue-robot-phase-backing .ftue-robot-thruster,
+.ftue-robot-phase-backing .ftue-robot-particles,
+.ftue-robot-phase-centered .ftue-robot-thruster,
+.ftue-robot-phase-centered .ftue-robot-particles {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+.ftue-robot-phase-hovering .ftue-robot-thruster-halo,
+.ftue-robot-phase-hovering .ftue-robot-thruster-core,
+.ftue-robot-phase-hovering .ftue-robot-thruster-flare,
+.ftue-robot-phase-hovering .ftue-robot-particle,
+.ftue-robot-phase-backing .ftue-robot-thruster-halo,
+.ftue-robot-phase-backing .ftue-robot-thruster-core,
+.ftue-robot-phase-backing .ftue-robot-thruster-flare,
+.ftue-robot-phase-backing .ftue-robot-particle,
+.ftue-robot-phase-centered .ftue-robot-thruster-halo,
+.ftue-robot-phase-centered .ftue-robot-thruster-core,
+.ftue-robot-phase-centered .ftue-robot-particle {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+/* --------------------------------------------------
+   Arrival POW
+-------------------------------------------------- */
+
+.ftue-robot-arrival-flash {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 72px;
+  height: 72px;
+
+  z-index: 22;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.08);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 1) 16%,
+      rgba(235, 255, 255, 1) 30%,
+      rgba(145, 242, 255, 1) 48%,
+      rgba(55, 200, 255, 0.72) 68%,
+      rgba(45, 150, 255, 0.2) 82%,
+      transparent 100%
+    );
+
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 1),
+    0 0 24px rgba(240, 255, 255, 1),
+    0 0 48px rgba(95, 235, 255, 1),
+    0 0 90px rgba(50, 185, 255, 0.85),
+    0 0 135px rgba(50, 125, 255, 0.5);
+
+  will-change: transform, opacity, filter;
+}
+
+/* --------------------------------------------------
+   Energy Rays
+-------------------------------------------------- */
+
+.ftue-robot-arrival-flash::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 360px;
+  height: 360px;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(170, 250, 255, 0.05) 4deg,
+      rgba(225, 255, 255, 0.9) 5deg,
+      rgba(120, 235, 255, 0.1) 7deg,
+      transparent 10deg,
+
+      transparent 25deg,
+      rgba(170, 250, 255, 0.04) 28deg,
+      rgba(225, 255, 255, 0.8) 29deg,
+      rgba(100, 225, 255, 0.08) 31deg,
+      transparent 34deg,
+
+      transparent 52deg,
+      rgba(180, 250, 255, 0.04) 55deg,
+      rgba(235, 255, 255, 0.9) 56deg,
+      rgba(100, 225, 255, 0.08) 58deg,
+      transparent 61deg,
+
+      transparent 83deg,
+      rgba(170, 250, 255, 0.05) 86deg,
+      rgba(225, 255, 255, 0.82) 87deg,
+      rgba(100, 225, 255, 0.08) 89deg,
+      transparent 92deg,
+
+      transparent 112deg,
+      rgba(170, 250, 255, 0.04) 115deg,
+      rgba(225, 255, 255, 0.88) 116deg,
+      rgba(100, 225, 255, 0.08) 118deg,
+      transparent 121deg,
+
+      transparent 145deg,
+      rgba(170, 250, 255, 0.05) 148deg,
+      rgba(225, 255, 255, 0.82) 149deg,
+      rgba(100, 225, 255, 0.08) 151deg,
+      transparent 154deg,
+
+      transparent 175deg,
+      rgba(170, 250, 255, 0.05) 178deg,
+      rgba(225, 255, 255, 0.92) 179deg,
+      rgba(100, 225, 255, 0.08) 181deg,
+      transparent 184deg,
+
+      transparent 205deg,
+      rgba(170, 250, 255, 0.04) 208deg,
+      rgba(225, 255, 255, 0.84) 209deg,
+      rgba(100, 225, 255, 0.08) 211deg,
+      transparent 214deg,
+
+      transparent 238deg,
+      rgba(170, 250, 255, 0.05) 241deg,
+      rgba(225, 255, 255, 0.88) 242deg,
+      rgba(100, 225, 255, 0.08) 244deg,
+      transparent 247deg,
+
+      transparent 270deg,
+      rgba(170, 250, 255, 0.04) 273deg,
+      rgba(225, 255, 255, 0.86) 274deg,
+      rgba(100, 225, 255, 0.08) 276deg,
+      transparent 279deg,
+
+      transparent 300deg,
+      rgba(170, 250, 255, 0.05) 303deg,
+      rgba(225, 255, 255, 0.84) 304deg,
+      rgba(100, 225, 255, 0.08) 306deg,
+      transparent 309deg,
+
+      transparent 328deg,
+      rgba(170, 250, 255, 0.05) 331deg,
+      rgba(225, 255, 255, 0.9) 332deg,
+      rgba(100, 225, 255, 0.08) 334deg,
+      transparent 337deg,
+
+      transparent 360deg
+    );
+
+  filter: blur(1px);
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.08);
+
+  opacity: 0;
+
+  will-change: transform, opacity;
+}
+
+/* --------------------------------------------------
+   Energy Halo Ring
+-------------------------------------------------- */
+
+.ftue-robot-arrival-flash::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 86px;
+  height: 86px;
+
+  border-radius: 50%;
+
+  border:
+    2px solid
+    rgba(235, 255, 255, 0.95);
+
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 1),
+    0 0 24px rgba(115, 240, 255, 1),
+    0 0 48px rgba(55, 200, 255, 0.72);
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.12);
+
+  opacity: 0;
+
+  will-change: transform, opacity;
+}
+
+/* --------------------------------------------------
+   POW Animation
+-------------------------------------------------- */
+
+.ftue-robot-phase-transitioning .ftue-robot-arrival-flash {
+  animation:
+    ftueRobotArrivalBurst
+    360ms
+    cubic-bezier(0.12, 0.82, 0.18, 1)
+    forwards;
+}
+
+.ftue-robot-phase-transitioning .ftue-robot-arrival-flash::before {
+  animation:
+    ftueRobotArrivalRays
+    330ms
+    cubic-bezier(0.08, 0.86, 0.12, 1)
+    forwards;
+}
+
+.ftue-robot-phase-transitioning .ftue-robot-arrival-flash::after {
+  animation:
+    ftueRobotArrivalHalo
+    300ms
+    cubic-bezier(0.08, 0.88, 0.14, 1)
+    5ms
+    forwards;
+}
+
+/* --------------------------------------------------
+   Main Light Burst
+-------------------------------------------------- */
+
+@keyframes ftueRobotArrivalBurst {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.08);
+
+    filter: blur(4px);
+  }
+
+  7% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.58);
+
+    filter: blur(0);
+  }
+
+  15% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.08);
+
+    filter: blur(0);
+  }
+
+  24% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.22);
+
+    filter: blur(0);
+  }
+
+  40% {
+    opacity: 0.82;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.04);
+
+    filter: blur(0.5px);
+  }
+
+  62% {
+    opacity: 0.42;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.78);
+
+    filter: blur(1px);
+  }
+
+  82% {
+    opacity: 0.12;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.5);
+
+    filter: blur(2px);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.3);
+
+    filter: blur(5px);
+  }
+}
+
+/* --------------------------------------------------
+   Ray Burst
+-------------------------------------------------- */
+
+@keyframes ftueRobotArrivalRays {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.08);
+  }
+
+  7% {
+    opacity: 0.95;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.38);
+  }
+
+  14% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.72);
+  }
+
+  23% {
+    opacity: 0.9;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.12);
+  }
+
+  38% {
+    opacity: 0.62;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.42);
+  }
+
+  58% {
+    opacity: 0.3;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.7);
+  }
+
+  80% {
+    opacity: 0.1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.92);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(2.08);
+  }
+}
+
+/* --------------------------------------------------
+   Halo Ring
+-------------------------------------------------- */
+
+@keyframes ftueRobotArrivalHalo {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.12);
+  }
+
+  12% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.7);
+  }
+
+  26% {
+    opacity: 0.9;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.35);
+  }
+
+  48% {
+    opacity: 0.5;
+
+    transform:
+      translate(-50%, -50%)
+      scale(2.15);
+  }
+
+  72% {
+    opacity: 0.18;
+
+    transform:
+      translate(-50%, -50%)
+      scale(2.8);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(3.35);
+  }
+}
+
+/* --------------------------------------------------
+   Robot Zap-Out
+-------------------------------------------------- */
+
+@keyframes ftueRobotZapOut {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  18% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      translate(-50%, -50%)
+      scale(1.01);
+  }
+
+  38% {
+    opacity: 0.98;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      translate(-50%, -50%)
+      scale(0.99);
+  }
+
+  52% {
+    opacity: 0.72;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      translate(-50%, -50%)
+      scale(0.94);
+  }
+
+  68% {
+    opacity: 0.28;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      translate(-50%, -50%)
+      scale(0.84);
+  }
+
+  82% {
+    opacity: 0.04;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      translate(-50%, -50%)
+      scale(0.68);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      translate(-50%, -50%)
+      scale(0.5);
+  }
+}
+
+/* ==================================================
+   WAVING ROBOT
+================================================== */
+
+/*
+   The stage now owns the exact same transform/animation
+   that previously belonged to the waving robot image.
+
+   The robot image and its particles are children of this
+   stage, so they move and scale together without changing
+   the working FTUE flow.
+*/
+.ftue-robot-waving-stage {
+  --robot-close-scale: 2.6;
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: clamp(215px, 30vw, 420px);
+  aspect-ratio: 1 / 1;
+
+  z-index: 23;
+
+  pointer-events: none;
+  user-select: none;
+
+  opacity: 0;
+
+  transform:
+    translate3d(
+      0,
+      82vh,
+      0
+    )
+    translate(-50%, -50%)
+    translateZ(0)
+    scale(2.6);
+
+  transform-origin: center center;
+
+  will-change: transform;
+
+  backface-visibility: hidden;
+
+  -webkit-backface-visibility: hidden;
+}
+
+.ftue-robot-waving-stage > .ftue-robot-waving {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  pointer-events: none;
+  user-select: none;
+
+  opacity: 1;
+
+  filter:
+    drop-shadow(0 0 14px rgba(40, 190, 255, 0.22))
+    drop-shadow(0 0 30px rgba(40, 150, 255, 0.14));
+
+  transform: none;
+
+  will-change: auto;
+
+  backface-visibility: hidden;
+
+  -webkit-backface-visibility: hidden;
+}
+
+/* --------------------------------------------------
+   Waving Robot Slide-Up
+-------------------------------------------------- */
+
+.ftue-robot-phase-transitioning .ftue-robot-waving-stage {
+  animation:
+    ftueRobotWavingSlideUp
+    900ms
+    ease-out
+    320ms
+    forwards;
+}
+
+@keyframes ftueRobotWavingSlideUp {
+  from {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        82vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.6);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        10vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.6);
+  }
+}
+
+/* ==================================================
+   SIMPLE ROBOT HOVER
+================================================== */
+
+.ftue-robot-phase-hovering .ftue-robot-waving-stage {
+  opacity: 1;
+
+  animation:
+    ftueRobotWavingHover
+    3.2s
+    ease-in-out
+    infinite;
+}
+
+@keyframes ftueRobotWavingHover {
+  0% {
+    transform:
+      translate3d(
+        0,
+        10vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.6);
+  }
+
+  50% {
+    transform:
+      translate3d(
+        0,
+        calc(10vh - 8px),
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.6);
+  }
+
+  100% {
+    transform:
+      translate3d(
+        0,
+        10vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.6);
+  }
+}
+
+/* ==================================================
+   ROBOT BACKING AWAY
+================================================== */
+
+.ftue-robot-phase-backing .ftue-robot-waving-stage {
+  opacity: 1;
+
+  animation:
+    ftueRobotWavingBackAway
+    1100ms
+    ease-in-out
+    forwards;
+}
+
+@keyframes ftueRobotWavingBackAway {
+  0% {
+    transform:
+      translate3d(0, calc(10vh - 8px), 0)
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(var(--robot-close-scale));
+  }
+
+  100% {
+    transform:
+      translate3d(0, 0, 0)
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(0.8);
+  }
+}
+
+/* --------------------------------------------------
+   Final Centered Robot
+-------------------------------------------------- */
+
+.ftue-robot-phase-centered .ftue-robot-waving-stage {
+  opacity: 1;
+
+  animation:
+    ftueRobotWavingCenteredHover
+    3.2s
+    ease-in-out
+    infinite;
+
+  transition: none;
+
+  transform:
+    translate3d(0, 0, 0)
+    translate(-50%, -50%)
+    translateZ(0)
+    scale(0.8);
+}
+
+@keyframes ftueRobotWavingCenteredHover {
+  0% {
+    transform:
+      translate3d(0, 0, 0)
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(0.8);
+  }
+
+  50% {
+    transform:
+      translate3d(0, -7px, 0)
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(0.8);
+  }
+
+  100% {
+    transform:
+      translate3d(0, 0, 0)
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(0.8);
+  }
+}
+
+/* ==================================================
+   WAVING ROBOT PARTICLES
+   Separate system from the flying robot particles.
+
+   These are CHILDREN of the waving robot stage, so they
+   stay physically attached to the robot while the robot
+   moves, hovers, backs away, and centers.
+================================================== */
+
+.ftue-waving-robot-particles {
+  position: absolute;
+
+  left: calc(50% - 6px);
+  top: 80%;
+
+  width: 78px;
+  height: 100px;
+
+  z-index: 22;
+
+  pointer-events: none;
+  user-select: none;
+
+  opacity: 0;
+
+  transform:
+    translate(-50%, 0);
+
+  will-change: opacity;
+}
+
+.ftue-waving-robot-particle {
+  position: absolute;
+
+  left: 50%;
+  top: 0;
+
+  display: block;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(170, 250, 255, 1) 26%,
+      rgba(65, 215, 255, 0.85) 58%,
+      transparent 100%
+    );
+
+  box-shadow:
+    0 0 9px rgba(225, 255, 255, 1),
+    0 0 19px rgba(85, 230, 255, 1),
+    0 0 31px rgba(45, 190, 255, 0.72),
+    0 0 44px rgba(45, 150, 255, 0.32);
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  will-change: transform, opacity;
+
+  transform:
+    translate(-50%, 0)
+    scale(0.72);
+}
+
+/* --------------------------------------------------
+   Waving Particle Timing
+-------------------------------------------------- */
+
+.ftue-waving-robot-particle-1 {
+  width: 11px;
+  height: 11px;
+  animation: ftueWavingParticle1 850ms 80ms infinite;
+}
+
+.ftue-waving-robot-particle-2 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle2 1050ms 330ms infinite;
+}
+
+.ftue-waving-robot-particle-3 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle3 950ms 540ms infinite;
+}
+
+.ftue-waving-robot-particle-4 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle4 760ms 210ms infinite;
+}
+
+.ftue-waving-robot-particle-5 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle5 1150ms 720ms infinite;
+}
+
+.ftue-waving-robot-particle-6 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle6 900ms 450ms infinite;
+}
+
+.ftue-waving-robot-particle-7 {
+  width: 11px;
+  height: 11px;
+  animation: ftueWavingParticle7 1000ms 860ms infinite;
+}
+
+.ftue-waving-robot-particle-8 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle8 820ms 600ms infinite;
+}
+
+.ftue-waving-robot-particle-9 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle9 930ms 160ms infinite;
+}
+
+.ftue-waving-robot-particle-10 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle10 1080ms 400ms infinite;
+}
+
+.ftue-waving-robot-particle-11 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle11 880ms 670ms infinite;
+}
+
+.ftue-waving-robot-particle-12 {
+  width: 11px;
+  height: 11px;
+  animation: ftueWavingParticle12 1120ms 520ms infinite;
+}
+
+.ftue-waving-robot-particle-13 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle13 790ms 290ms infinite;
+}
+
+.ftue-waving-robot-particle-14 {
+  width: 7px;
+  height: 7px;
+  animation: ftueWavingParticle14 970ms 760ms infinite;
+}
+
+/* --------------------------------------------------
+   Tight Downward Propulsion Stream
+   Narrow at the nozzle, gradually widening below it.
+-------------------------------------------------- */
+
+@keyframes ftueWavingParticle1 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(-11px, 38px) scale(0.18);
+  }
+}
+
+@keyframes ftueWavingParticle2 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
+  }
+
+  12% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(13px, 48px) scale(0.18);
+  }
+}
+
+@keyframes ftueWavingParticle3 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.78);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(-9px, 60px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle4 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
+  }
+
+  14% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(12px, 42px) scale(0.18);
+  }
+}
+
+@keyframes ftueWavingParticle5 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
+  }
+
+  11% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(-17px, 68px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle6 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
+  }
+
+  13% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(16px, 56px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle7 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(-12px, 76px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle8 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
+  }
+
+  14% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(18px, 50px) scale(0.14);
+  }
+}
+
+@keyframes ftueWavingParticle9 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
+  }
+
+  12% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(-14px, 48px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle10 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
+  }
+
+  11% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(15px, 64px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle11 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
+  }
+
+  13% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(-20px, 66px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle12 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(10px, 80px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle13 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
+  }
+
+  14% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(15px, 44px) scale(0.15);
+  }
+}
+
+@keyframes ftueWavingParticle14 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
+  }
+
+  11% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) translate(-17px, 76px) scale(0.15);
+  }
+}
+
+/* --------------------------------------------------
+   Waving Robot Particle Visibility
+-------------------------------------------------- */
+
+.ftue-robot-phase-hovering .ftue-waving-robot-particles,
+.ftue-robot-phase-backing .ftue-waving-robot-particles,
+.ftue-robot-phase-centered .ftue-waving-robot-particles {
+  opacity: 1;
+}
+
+/* --------------------------------------------------
+   Waving Particle Mobile Glow
+-------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .ftue-waving-robot-particles {
+    width: 70px;
+    height: 88px;
+  }
+
+  .ftue-waving-robot-particle {
+    box-shadow:
+      0 0 8px rgba(210, 255, 255, 1),
+      0 0 17px rgba(70, 220, 255, 1),
+      0 0 28px rgba(45, 185, 255, 0.7),
+      0 0 40px rgba(45, 150, 255, 0.3);
+  }
+}
+
+@media (max-width: 430px) {
+  .ftue-waving-robot-particles {
+    width: 66px;
+    height: 86px;
+  }
+
+  .ftue-waving-robot-particle {
+    box-shadow:
+      0 0 8px rgba(210, 255, 255, 1),
+      0 0 16px rgba(70, 220, 255, 1),
+      0 0 26px rgba(45, 185, 255, 0.7),
+      0 0 38px rgba(45, 150, 255, 0.3);
+  }
+}
+
+/* --------------------------------------------------
+   Responsive Waving Robot
+-------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .ftue-robot-waving-stage {
+    --robot-close-scale: 2.5;
+
+    width: clamp(220px, 34vw, 300px);
+
+    transform:
+      translate3d(
+        0,
+        82vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.5);
+  }
+
+  @keyframes ftueRobotWavingSlideUp {
+    from {
+      opacity: 1;
+
+      transform:
+        translate3d(0, 82vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.5);
+    }
+
+    to {
+      opacity: 1;
+
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.5);
+    }
+  }
+
+  @keyframes ftueRobotWavingHover {
+    0% {
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.5);
+    }
+
+    50% {
+      transform:
+        translate3d(0, calc(10vh - 7px), 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.5);
+    }
+
+    100% {
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.5);
+    }
+  }
+
+  @keyframes ftueRobotWavingBackAway {
+    0% {
+      transform:
+        translate3d(0, calc(10vh - 7px), 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.5);
+    }
+
+    100% {
+      transform:
+        translate3d(0, 0, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(0.8);
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .ftue-robot-waving-stage {
+    --robot-close-scale: 2.45;
+
+    width: 230px;
+
+    transform:
+      translate3d(
+        0,
+        82vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.45);
+  }
+
+  @keyframes ftueRobotWavingSlideUp {
+    from {
+      opacity: 1;
+
+      transform:
+        translate3d(0, 82vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.45);
+    }
+
+    to {
+      opacity: 1;
+
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.45);
+    }
+  }
+
+  @keyframes ftueRobotWavingHover {
+    0% {
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.45);
+    }
+
+    50% {
+      transform:
+        translate3d(0, calc(10vh - 7px), 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.45);
+    }
+
+    100% {
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.45);
+    }
+  }
+
+  @keyframes ftueRobotWavingBackAway {
+    0% {
+      transform:
+        translate3d(0, calc(10vh - 7px), 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.45);
+    }
+
+    100% {
+      transform:
+        translate3d(0, 0, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(0.8);
+    }
+  }
+}
+
+@media (max-width: 430px) {
+  .ftue-robot-waving-stage {
+    --robot-close-scale: 2.4;
+
+    width: 215px;
+
+    transform:
+      translate3d(
+        0,
+        82vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.4);
+  }
+
+  @keyframes ftueRobotWavingSlideUp {
+    from {
+      opacity: 1;
+
+      transform:
+        translate3d(0, 82vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.4);
+    }
+
+    to {
+      opacity: 1;
+
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.4);
+    }
+  }
+
+  @keyframes ftueRobotWavingHover {
+    0% {
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.4);
+    }
+
+    50% {
+      transform:
+        translate3d(0, calc(10vh - 6px), 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.4);
+    }
+
+    100% {
+      transform:
+        translate3d(0, 10vh, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.4);
+    }
+  }
+
+  @keyframes ftueRobotWavingBackAway {
+    0% {
+      transform:
+        translate3d(0, calc(10vh - 6px), 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(2.4);
+    }
+
+    100% {
+      transform:
+        translate3d(0, 0, 0)
+        translate(-50%, -50%)
+        translateZ(0)
+        scale(0.8);
+    }
+  }
+}
+
+/* --------------------------------------------------
    Reduced Motion
 -------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .ftue-welcome-screen,
-  .ftue-welcome-background,
-  .ftue-welcome-screen::before,
-  .ftue-welcome-screen::after,
-  .ftue-star,
-  .ftue-space-ship,
-  .ftue-robot-flying,
-  .ftue-robot-thruster,
-  .ftue-robot-thruster-halo,
-  .ftue-robot-thruster-core,
-  .ftue-robot-thruster-flare,
-  .ftue-robot-particle,
-  .ftue-robot-particles {
+  .ftue-robot-arrival-flash {
     animation: none;
-  }
-
-  .ftue-welcome-screen,
-  .ftue-welcome-background,
-  .ftue-robot-thruster,
-  .ftue-robot-particles {
-    opacity: 1;
-  }
-
-  .ftue-welcome-screen::before,
-  .ftue-welcome-screen::after {
-    transform: translate(-50%, -50%);
-  }
-
-  .ftue-star {
-    opacity: 0.55;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  .ftue-space-ship {
     opacity: 0;
   }
 
-  .ftue-robot-flying {
-    opacity: 1;
-
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      )
-      translate(-50%, -50%);
-  }
-
-  .ftue-robot-thruster {
-    opacity: 0.9;
-
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      )
-      translate(-50%, -50%);
-  }
-
-  .ftue-robot-particles {
-    opacity: 1;
-
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      )
-      translate(-50%, -50%);
-  }
-
-  .ftue-robot-particle {
+  .ftue-robot-arrival-flash::before,
+  .ftue-robot-arrival-flash::after {
+    animation: none;
     opacity: 0;
+  }
+
+  .ftue-robot-phase-transitioning .ftue-robot-flying {
+    animation: none;
+    opacity: 0;
+  }
+
+  .ftue-robot-phase-hovering .ftue-robot-flying,
+  .ftue-robot-phase-backing .ftue-robot-flying,
+  .ftue-robot-phase-centered .ftue-robot-flying {
+    animation: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .ftue-robot-phase-transitioning .ftue-robot-thruster,
+  .ftue-robot-phase-transitioning .ftue-robot-particles {
+    animation: none;
+    opacity: 0;
+  }
+
+  .ftue-robot-phase-hovering .ftue-robot-thruster,
+  .ftue-robot-phase-hovering .ftue-robot-particles {
+    animation: none;
+    opacity: 0;
+  }
+
+  .ftue-robot-phase-hovering .ftue-robot-thruster-halo,
+  .ftue-robot-phase-hovering .ftue-robot-thruster-core,
+  .ftue-robot-phase-hovering .ftue-robot-thruster-flare,
+  .ftue-robot-phase-hovering .ftue-robot-particle {
+    animation: none;
+    opacity: 0;
+  }
+
+  .ftue-robot-phase-transitioning .ftue-robot-waving {
+    animation: none;
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        10vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.6);
+  }
+
+  .ftue-robot-phase-hovering .ftue-robot-waving {
+    animation: none;
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        10vh,
+        0
+      )
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(2.6);
   }
 }
