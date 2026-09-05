@@ -41,8 +41,141 @@
 
 
 /* --------------------------------------------------
+   Prominent Circular Geoplay Ambient Glow
+   Matches the supplied HTML reference more closely:
+   a visible warm orange energy field centered behind
+   the robot and greeting bubble.
+-------------------------------------------------- */
+
+.ftue-welcome-screen::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 43%;
+
+  width: min(88vw, 760px);
+  height: min(88vw, 760px);
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 90, 22, 0.22) 0%,
+      rgba(255, 90, 22, 0.105) 28%,
+      rgba(255, 90, 22, 0.035) 52%,
+      transparent 72%
+    );
+
+  filter: blur(22px);
+
+  pointer-events: none;
+
+  z-index: 1;
+}
+
+/* Broader, softer outer warmth — still behind all robot UI. */
+.ftue-welcome-screen::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 43%;
+
+  width: min(108vw, 900px);
+  height: min(108vw, 900px);
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 90, 22, 0.075) 0%,
+      rgba(255, 90, 22, 0.028) 38%,
+      transparent 70%
+    );
+
+  filter: blur(34px);
+
+  pointer-events: none;
+
+  z-index: 1;
+}
+
+/* --------------------------------------------------
    Individual Star Field
 -------------------------------------------------- */
+
+
+/* ==================================================
+   Background Orange Dust
+   Atmospheric only — kept behind the robot layers.
+================================================== */
+
+.ftue-background-dust {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ftue-background-dust-particle {
+  position: absolute;
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 90, 22, 0.88);
+  box-shadow:
+    0 0 7px rgba(255, 90, 22, 0.62),
+    0 0 14px rgba(255, 90, 22, 0.28);
+  opacity: 0;
+  animation: ftueBackgroundDustDrift 8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Keep the center intentionally open for the robot. */
+.ftue-background-dust-particle-1  { left:  7%; top: 16%; animation-delay: -1.0s; }
+.ftue-background-dust-particle-2  { left: 17%; top: 34%; animation-delay: -4.2s; }
+.ftue-background-dust-particle-3  { left:  9%; top: 72%; animation-delay: -2.7s; }
+.ftue-background-dust-particle-4  { left: 28%; top: 13%; animation-delay: -6.1s; }
+.ftue-background-dust-particle-5  { left: 74%; top: 14%; animation-delay: -3.4s; }
+.ftue-background-dust-particle-6  { left: 90%; top: 30%; animation-delay: -7.0s; }
+.ftue-background-dust-particle-7  { left: 94%; top: 73%; animation-delay: -1.8s; }
+.ftue-background-dust-particle-8  { left: 79%; top: 87%; animation-delay: -5.5s; }
+.ftue-background-dust-particle-9  { left: 22%; top: 88%; animation-delay: -3.0s; }
+.ftue-background-dust-particle-10 { left: 87%; top: 52%; animation-delay: -6.6s; }
+.ftue-background-dust-particle-11 { left: 39%; top:  7%; animation-delay: -4.8s; }
+.ftue-background-dust-particle-12 { left: 62%; top: 92%; animation-delay: -2.1s; }
+
+@keyframes ftueBackgroundDustDrift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.8);
+  }
+  25% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 0.42;
+    transform: translate3d(5px, -7px, 0) scale(1);
+  }
+  75% {
+    opacity: 0.72;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-4px, 5px, 0) scale(0.82);
+  }
+}
 
 .ftue-star-field {
   position: absolute;
@@ -143,6 +276,8 @@
   animation-duration: 12s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  animation-delay: 3s;
+  animation-fill-mode: backwards;
 }
 
 .ftue-space-ship-forward {
@@ -1053,7 +1188,7 @@
   pointer-events: none;
   user-select: none;
 
-  opacity: 0;
+  opacity: 1;
 
   filter:
     drop-shadow(0 0 12px rgba(40, 190, 255, 0.2))
@@ -1078,7 +1213,7 @@
 
 @keyframes ftueRobotFlyIn {
   0% {
-    opacity: 0;
+    opacity: 1;
 
     transform:
       translate3d(
@@ -1252,6 +1387,50 @@
 }
 
 /* --------------------------------------------------
+   Greeting Bubble — Tablet
+   Keep a comfortable gap above the larger centered robot
+   without changing the mobile layout.
+-------------------------------------------------- */
+
+@media (max-width: 900px) and (min-width: 601px) {
+  .ftue-robot-greeting-logo {
+    top: clamp(34px, calc(25% - 145px), 125px);
+  }
+
+.ftue-robot-greeting {
+    transform:
+      translate(-50%, calc(-50% - 190px))
+      scale(0.96);
+  }
+
+  @keyframes ftueRobotGreetingAppear {
+    0% {
+      opacity: 0;
+
+      transform:
+        translate(-50%, calc(-50% - 180px))
+        scale(0.92);
+    }
+
+    60% {
+      opacity: 0.92;
+
+      transform:
+        translate(-50%, calc(-50% - 195px))
+        scale(1.01);
+    }
+
+    100% {
+      opacity: 1;
+
+      transform:
+        translate(-50%, calc(-50% - 190px))
+        scale(1);
+    }
+  }
+}
+
+/* --------------------------------------------------
    Mobile
 -------------------------------------------------- */
 
@@ -1311,21 +1490,21 @@
   }
 
   .ftue-welcome-screen::before {
-    width: 145%;
-    height: 62%;
+    width: 125vw;
+    height: 125vw;
 
     left: 50%;
-    top: 48%;
+    top: 45%;
 
-    filter: blur(27px);
+    filter: blur(20px);
   }
 
   .ftue-welcome-screen::after {
-    width: 135%;
-    height: 56%;
+    width: 150vw;
+    height: 150vw;
 
-    left: 47%;
-    top: 53%;
+    left: 50%;
+    top: 45%;
 
     filter: blur(30px);
   }
@@ -1333,7 +1512,7 @@
 
 @keyframes ftueRobotFlyInMobile {
   0% {
-    opacity: 0;
+    opacity: 1;
 
     transform:
       translate3d(
@@ -1415,7 +1594,7 @@
 
 @media (max-width: 430px) {
   .ftue-space-ship {
-    width: 86px;
+    width: 76px;
   }
 
   .ftue-robot-flying {
@@ -1692,7 +1871,7 @@
   left: 50%;
   top: 50%;
 
-  width: 86px;
+  width: 76px;
   height: 86px;
 
   border-radius: 50%;
@@ -2992,11 +3171,281 @@
   }
 }
 
+
+/* ==================================================
+   GEOPLAY GREETING LOGO
+   Positioned by the vertical space above the greeting bubble
+   rather than by a fixed distance from the viewport center.
+
+   The logo's center sits approximately halfway between the top
+   edge of the app viewport and the top edge of the greeting bubble.
+   Using 25% of the viewport height keeps that relationship stable
+   across different screen heights and aspect ratios.
+================================================== */
+
+.ftue-robot-greeting-logo {
+  position: absolute;
+
+  left: 50%;
+  top: clamp(28px, calc(25% - 160px), 150px);
+
+  z-index: 31;
+
+  /* Keep the logo intentionally understated. */
+  width: 152px;
+  height: auto;
+
+  pointer-events: none;
+  user-select: none;
+
+  opacity: 0;
+
+  transform:
+    translateX(-50%)
+    translateY(6px);
+
+  animation:
+    ftueRobotGreetingLogoAppear
+    600ms
+    ease-out
+    180ms
+    forwards;
+}
+
+.ftue-robot-greeting-logo img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255, 90, 22, 0.10))
+    drop-shadow(0 0 10px rgba(255, 178, 31, 0.05));
+}
+
+@keyframes ftueRobotGreetingLogoAppear {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      translateY(6px);
+  }
+
+  100% {
+    opacity: 0.94;
+
+    transform:
+      translateX(-50%)
+      translateY(0);
+  }
+}
+
+/* ==================================================
+   GEOPLAY GREETING
+   Compact robot-anchored speech bubble.
+   Appears only after the robot reaches center.
+================================================== */
+
+.ftue-robot-greeting {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  z-index: 30;
+
+  width: min(285px, calc(100vw - 48px));
+
+  padding: 12px 15px 13px;
+
+  border: 1px solid transparent;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25, 18, 14, 0.96),
+      rgba(10, 11, 12, 0.95)
+    ) padding-box,
+    linear-gradient(
+      120deg,
+      rgba(255, 90, 22, 0.82),
+      rgba(255, 178, 31, 0.58),
+      rgba(255, 90, 22, 0.34)
+    ) border-box;
+
+  box-shadow:
+    0 0 18px rgba(255, 90, 22, 0.12),
+    0 0 42px rgba(255, 90, 22, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.075);
+
+  pointer-events: none;
+  user-select: none;
+
+  opacity: 0;
+
+  transform:
+    translate(-50%, calc(-50% - 215px))
+    scale(0.92);
+
+  transform-origin: 50% 100%;
+
+  animation:
+    ftueRobotGreetingAppear
+    650ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    180ms
+    forwards;
+}
+
+.ftue-robot-greeting p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.96);
+
+  font-family: Poppins, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: 0.01em;
+
+  text-align: center;
+}
+
+.ftue-robot-greeting-tail {
+  position: absolute;
+
+  left: 50%;
+  bottom: -7px;
+
+  width: 14px;
+  height: 14px;
+
+  background: #14100d;
+
+  border-right: 1px solid rgba(255, 178, 31, 0.62);
+  border-bottom: 1px solid rgba(255, 90, 22, 0.62);
+
+  transform:
+    translateX(-50%)
+    rotate(45deg);
+}
+
+@keyframes ftueRobotGreetingAppear {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, calc(-50% - 205px))
+      scale(0.92);
+  }
+
+  60% {
+    opacity: 0.92;
+
+    transform:
+      translate(-50%, calc(-50% - 220px))
+      scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, calc(-50% - 215px))
+      scale(1);
+  }
+}
+
+/* --------------------------------------------------
+   Greeting Bubble — Small Screens
+-------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .ftue-robot-greeting-logo {
+    top: clamp(28px, calc(25% - 118px), 110px);
+  }
+
+  .ftue-robot-greeting {
+    width: min(280px, calc(100vw - 44px));
+
+    padding: 11px 14px 12px;
+
+    border-radius: 16px;
+
+    transform:
+      translate(-50%, calc(-50% - 140px))
+      scale(0.92);
+  }
+
+  .ftue-robot-greeting p {
+    font-size: 13px;
+    line-height: 1.42;
+  }
+
+  @keyframes ftueRobotGreetingAppear {
+    0% {
+      opacity: 0;
+
+      transform:
+        translate(-50%, calc(-50% - 130px))
+        scale(0.92);
+    }
+
+    60% {
+      opacity: 0.92;
+
+      transform:
+        translate(-50%, calc(-50% - 145px))
+        scale(1.01);
+    }
+
+    100% {
+      opacity: 1;
+
+      transform:
+        translate(-50%, calc(-50% - 140px))
+        scale(1);
+    }
+  }
+}
+
+@media (max-width: 430px) {
+  .ftue-robot-greeting {
+    width: min(280px, calc(100vw - 42px));
+
+    padding: 11px 14px 12px;
+  }
+
+  .ftue-robot-greeting p {
+    font-size: 12.5px;
+  }
+}
+
 /* --------------------------------------------------
    Reduced Motion
 -------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+  .ftue-robot-greeting-logo {
+    animation: none;
+    opacity: 0.94;
+
+    transform:
+      translateX(-50%)
+      translateY(0);
+  }
+
+  .ftue-robot-greeting {
+    animation: none;
+    opacity: 1;
+
+    transform:
+      translate(-50%, calc(-50% - 155px))
+      scale(1);
+  }
+
   .ftue-robot-arrival-flash {
     animation: none;
     opacity: 0;
@@ -3069,5 +3518,228 @@
       translate(-50%, -50%)
       translateZ(0)
       scale(2.6);
+  }
+}
+
+/* ==================================================
+   GREETING CALL TO ACTION
+   Appears after the greeting bubble finishes entering.
+   The greeting bubble remains visible underneath the CTA.
+
+   The CTA uses the same primary-button treatment as the
+   Login and Sign Up screens for visual consistency.
+================================================== */
+
+.ftue-robot-greeting-cta {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 32;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: min(310px, calc(100vw - 42px));
+
+  transform:
+    translate(-50%, 130px);
+
+  opacity: 0;
+
+  animation:
+    ftueRobotGreetingCtaAppear
+    600ms
+    ease-out
+    forwards;
+
+  pointer-events: auto;
+}
+
+.ftue-robot-get-started {
+  position: relative;
+
+  appearance: none;
+
+  width: auto;
+  min-width: 190px;
+  min-height: 48px;
+
+  margin: 0;
+  padding: 15px 28px;
+
+  border: 0;
+  border-radius: 13px;
+
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    #ff5a16 0%,
+    #ff7419 48%,
+    #ffb21f 100%
+  );
+
+  color: #ffffff;
+
+  font-family: Poppins, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 30px rgba(255, 90, 22, 0.22),
+    0 0 20px rgba(255, 90, 22, 0.08);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.ftue-robot-get-started::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -80%;
+
+  width: 55%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.55s ease;
+}
+
+.ftue-robot-get-started:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 36px rgba(255, 90, 22, 0.3),
+    0 0 28px rgba(255, 90, 22, 0.12);
+
+  filter: brightness(1.04);
+}
+
+.ftue-robot-get-started:hover::before {
+  left: 130%;
+}
+
+.ftue-robot-get-started:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 8px 20px rgba(255, 90, 22, 0.18);
+}
+
+.ftue-robot-get-started:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
+}
+
+.ftue-robot-maybe-later {
+  appearance: none;
+
+  margin: 11px 0 0;
+  padding: 2px 8px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #ff8a35;
+
+  font-family: Poppins, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ftue-robot-maybe-later:hover {
+  color: #ffb21f;
+
+  transform: translateY(-1px);
+}
+
+.ftue-robot-maybe-later:focus-visible {
+  outline: 1px solid rgba(255, 178, 31, 0.7);
+  outline-offset: 3px;
+}
+
+@keyframes ftueRobotGreetingCtaAppear {
+  0% {
+    opacity: 0;
+    transform:
+      translate(-50%, 138px)
+      translateY(5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translate(-50%, 130px)
+      translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .ftue-robot-greeting-cta {
+    width: min(292px, calc(100vw - 34px));
+    transform:
+      translate(-50%, 126px);
+  }
+
+  .ftue-robot-get-started {
+    min-width: 180px;
+    min-height: 46px;
+    padding: 14px 25px;
+    font-size: 14px;
+  }
+
+  .ftue-robot-maybe-later {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  @keyframes ftueRobotGreetingCtaAppear {
+    0% {
+      opacity: 0;
+      transform:
+        translate(-50%, 134px)
+        translateY(5px);
+    }
+
+    100% {
+      opacity: 1;
+      transform:
+        translate(-50%, 126px)
+        translateY(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ftue-robot-greeting-cta {
+    animation: none;
+    opacity: 1;
+    transform:
+      translate(-50%, 130px);
   }
 }

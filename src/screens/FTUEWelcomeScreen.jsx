@@ -39,6 +39,7 @@ const stars = [
 
 function FTUEWelcomeScreen() {
   const [robotPhase, setRobotPhase] = useState("flying");
+  const [showGreetingCta, setShowGreetingCta] = useState(false);
 
   useEffect(() => {
     // Existing flight:
@@ -106,11 +107,43 @@ function FTUEWelcomeScreen() {
     };
   }, [robotPhase]);
 
+  useEffect(() => {
+    // Let the greeting bubble finish its entrance animation first.
+    // The bubble remains visible; only the CTA waits for this moment.
+    if (robotPhase !== "centered") {
+      setShowGreetingCta(false);
+      return;
+    }
+
+    const ctaTimer = setTimeout(() => {
+      setShowGreetingCta(true);
+    }, 900);
+
+    return () => {
+      clearTimeout(ctaTimer);
+    };
+  }, [robotPhase]);
+
   return (
     <main
       className={`ftue-welcome-screen ftue-robot-phase-${robotPhase}`}
     >
       <div className="ftue-welcome-background">
+
+        <div className="ftue-background-dust" aria-hidden="true">
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-1" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-2" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-3" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-4" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-5" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-6" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-7" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-8" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-9" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-10" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-11" />
+          <span className="ftue-background-dust-particle ftue-background-dust-particle-12" />
+        </div>
 
         <div className="ftue-star-field" aria-hidden="true">
           {stars.map((star, index) => (
@@ -232,10 +265,38 @@ function FTUEWelcomeScreen() {
         />
       </span>
 
-      {/* Close-up greeting bubble
-          Appears only after the waving robot has finished
-          sliding into its close-up position.
-          It disappears automatically when the backing phase begins. */}
+      {/* Geoplay greeting bubble
+          Appears only after the robot has reached its final
+          centered position. It is anchored visually to the robot
+          without inheriting the robot stage's scale transform. */}
+      {robotPhase === "centered" && (
+        <>
+          <div className="ftue-robot-greeting-logo" aria-hidden="true">
+            <img
+              src="/geoplay-logo.png"
+              alt=""
+            />
+          </div>
+
+          <div className="ftue-robot-greeting" aria-label="Geoplay greeting">
+          <span className="ftue-robot-greeting-tail" aria-hidden="true" />
+          <p>
+            Welcome to geoplay! Let’s find participating properties near you!
+          </p>
+          </div>
+
+          {showGreetingCta && (
+            <div className="ftue-robot-greeting-cta">
+              <button type="button" className="ftue-robot-get-started">
+                GET STARTED
+              </button>
+              <button type="button" className="ftue-robot-maybe-later">
+                Maybe later
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </main>
   );
 }
