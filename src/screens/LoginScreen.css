@@ -1190,3 +1190,67 @@
     transform: none;
   }
 }
+
+/* --------------------------------------------------
+   Map shortcut
+-------------------------------------------------- */
+
+.login-map-shortcut {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  border: 1px solid rgba(255, 138, 53, 0.25);
+  border-radius: 50%;
+
+  background: rgba(255, 138, 53, 0.06);
+
+  color: #ff9a45;
+
+  font-family: inherit;
+  font-size: 17px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 5;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.login-map-shortcut span {
+  display: block;
+  transform: translateY(-1px);
+}
+
+.login-map-shortcut:hover {
+  color: #ffb21f;
+  background: rgba(255, 138, 53, 0.10);
+  border-color: rgba(255, 178, 31, 0.45);
+  box-shadow: 0 0 14px rgba(255, 90, 22, 0.12);
+  transform: translateY(-1px);
+}
+
+.login-map-shortcut:active {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-map-shortcut {
+    transition: none;
+  }
+}

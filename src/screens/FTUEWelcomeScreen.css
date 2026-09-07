@@ -1301,29 +1301,6 @@
 }
 
 /* --------------------------------------------------
-   Main Nebula
--------------------------------------------------- */
-
-
-
-/* --------------------------------------------------
-   Secondary Nebula Wisps
--------------------------------------------------- */
-
-
-
-
-
-
-
-/* --------------------------------------------------
-   Close-up Bubble — Small Screens
--------------------------------------------------- */
-
-@media (max-width: 600px) {
-  }
-
-/* --------------------------------------------------
    Scene Fade
 -------------------------------------------------- */
 
@@ -1344,6 +1321,71 @@
 
   to {
     opacity: 1;
+  }
+}
+
+/* --------------------------------------------------
+   Large-Screen Hi Bubble — Tablet / iPad / Desktop
+   Desktop follows the same spacious composition family
+   as tablet, while remaining independent from mobile.
+-------------------------------------------------- */
+
+/* --------------------------------------------------
+   Desktop Hi Bubble — Extra Vertical Clearance
+   Lift the close-up greeting slightly higher on
+   desktop only. Tablet and phone composition remain
+   unchanged.
+-------------------------------------------------- */
+
+@media (min-width: 1025px) {
+  .ftue-welcome-screen {
+    --ftue-hi-bubble-offset: 325px;
+  }
+}
+
+@media (min-width: 901px) {
+  .ftue-robot-hi-bubble {
+    width: min(220px, calc(100vw - 120px));
+    padding: 14px 22px 15px;
+    border-radius: 19px;
+  }
+
+  .ftue-robot-hi-bubble p {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .ftue-robot-hi-bubble-tail {
+    bottom: -8px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* --------------------------------------------------
+   Hi Bubble — Larger Tablet / iPad Landscape
+-------------------------------------------------- */
+
+@media (max-width: 1024px) and (min-width: 901px) {
+  .ftue-welcome-screen {
+    --ftue-hi-bubble-offset: 300px;
+  }
+
+  .ftue-robot-hi-bubble {
+    width: min(210px, calc(100vw - 120px));
+    padding: 14px 21px 15px;
+    border-radius: 19px;
+  }
+
+  .ftue-robot-hi-bubble p {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .ftue-robot-hi-bubble-tail {
+    bottom: -8px;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -1391,6 +1433,32 @@
    Keep a comfortable gap above the larger centered robot
    without changing the mobile layout.
 -------------------------------------------------- */
+
+/* --------------------------------------------------
+   Close-Up Hi Bubble — iPad / Tablet
+   The close-up robot is intentionally large on tablets.
+   Give the bubble its own larger footprint and enough
+   vertical clearance to sit visibly above the robot.
+-------------------------------------------------- */
+
+@media (max-width: 900px) and (min-width: 601px) {
+  .ftue-robot-hi-bubble {
+    width: min(220px, calc(100vw - 120px));
+    padding: 14px 22px 15px;
+    border-radius: 19px;
+  }
+
+  .ftue-robot-hi-bubble p {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .ftue-robot-hi-bubble-tail {
+    bottom: -8px;
+    width: 16px;
+    height: 16px;
+  }
+}
 
 @media (max-width: 900px) and (min-width: 601px) {
   .ftue-robot-greeting-logo {
@@ -2235,22 +2303,32 @@
 ================================================== */
 
 /*
-   The stage now owns the exact same transform/animation
-   that previously belonged to the waving robot image.
-
-   The robot image and its particles are children of this
-   stage, so they move and scale together without changing
-   the working FTUE flow.
+   Responsive composition is controlled through the FTUE scene
+   variables below. The animation machinery remains transform-based
+   and centered on the viewport so the working flight / POW / hover /
+   backing / centered behavior is preserved.
 */
-.ftue-robot-waving-stage {
-  --robot-close-scale: 2.6;
 
+.ftue-welcome-screen {
+  --ftue-robot-close-scale: 2.5;
+  --ftue-robot-close-width: clamp(220px, 34vw, 300px);
+  --ftue-robot-close-y: 10vh;
+  --ftue-robot-hover-lift: 8px;
+
+  --ftue-hi-bubble-offset: 365px;
+  --ftue-greeting-offset: 215px;
+  --ftue-greeting-logo-top: clamp(28px, calc(25% - 160px), 150px);
+  /* Final centered robot is 0.8x the desktop stage; keep CTA below its visual footprint. */
+  --ftue-cta-offset: clamp(170px, 23vh, 200px);
+}
+
+.ftue-robot-waving-stage {
   position: absolute;
 
   left: 50%;
   top: 50%;
 
-  width: clamp(215px, 30vw, 420px);
+  width: var(--ftue-robot-close-width);
   aspect-ratio: 1 / 1;
 
   z-index: 23;
@@ -2261,21 +2339,16 @@
   opacity: 0;
 
   transform:
-    translate3d(
-      0,
-      82vh,
-      0
-    )
+    translate3d(0, 82vh, 0)
     translate(-50%, -50%)
     translateZ(0)
-    scale(2.6);
+    scale(var(--ftue-robot-close-scale));
 
   transform-origin: center center;
 
   will-change: transform;
 
   backface-visibility: hidden;
-
   -webkit-backface-visibility: hidden;
 }
 
@@ -2305,7 +2378,6 @@
   will-change: auto;
 
   backface-visibility: hidden;
-
   -webkit-backface-visibility: hidden;
 }
 
@@ -2327,28 +2399,20 @@
     opacity: 1;
 
     transform:
-      translate3d(
-        0,
-        82vh,
-        0
-      )
+      translate3d(0, 82vh, 0)
       translate(-50%, -50%)
       translateZ(0)
-      scale(2.6);
+      scale(var(--ftue-robot-close-scale));
   }
 
   to {
     opacity: 1;
 
     transform:
-      translate3d(
-        0,
-        10vh,
-        0
-      )
+      translate3d(0, var(--ftue-robot-close-y), 0)
       translate(-50%, -50%)
       translateZ(0)
-      scale(2.6);
+      scale(var(--ftue-robot-close-scale));
   }
 }
 
@@ -2369,38 +2433,30 @@
 @keyframes ftueRobotWavingHover {
   0% {
     transform:
-      translate3d(
-        0,
-        10vh,
-        0
-      )
+      translate3d(0, var(--ftue-robot-close-y), 0)
       translate(-50%, -50%)
       translateZ(0)
-      scale(2.6);
+      scale(var(--ftue-robot-close-scale));
   }
 
   50% {
     transform:
       translate3d(
         0,
-        calc(10vh - 8px),
+        calc(var(--ftue-robot-close-y) - var(--ftue-robot-hover-lift)),
         0
       )
       translate(-50%, -50%)
       translateZ(0)
-      scale(2.6);
+      scale(var(--ftue-robot-close-scale));
   }
 
   100% {
     transform:
-      translate3d(
-        0,
-        10vh,
-        0
-      )
+      translate3d(0, var(--ftue-robot-close-y), 0)
       translate(-50%, -50%)
       translateZ(0)
-      scale(2.6);
+      scale(var(--ftue-robot-close-scale));
   }
 }
 
@@ -2421,10 +2477,14 @@
 @keyframes ftueRobotWavingBackAway {
   0% {
     transform:
-      translate3d(0, calc(10vh - 8px), 0)
+      translate3d(
+        0,
+        calc(var(--ftue-robot-close-y) - var(--ftue-robot-hover-lift)),
+        0
+      )
       translate(-50%, -50%)
       translateZ(0)
-      scale(var(--robot-close-scale));
+      scale(var(--ftue-robot-close-scale));
   }
 
   100% {
@@ -2486,11 +2546,6 @@
 
 /* ==================================================
    WAVING ROBOT PARTICLES
-   Separate system from the flying robot particles.
-
-   These are CHILDREN of the waving robot stage, so they
-   stay physically attached to the robot while the robot
-   moves, hovers, backs away, and centers.
 ================================================== */
 
 .ftue-waving-robot-particles {
@@ -2509,8 +2564,7 @@
 
   opacity: 0;
 
-  transform:
-    translate(-50%, 0);
+  transform: translate(-50%, 0);
 
   will-change: opacity;
 }
@@ -2644,231 +2698,90 @@
 
 /* --------------------------------------------------
    Tight Downward Propulsion Stream
-   Narrow at the nozzle, gradually widening below it.
 -------------------------------------------------- */
 
 @keyframes ftueWavingParticle1 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
-  }
-
-  12% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(-11px, 38px) scale(0.18);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.72); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(-11px, 38px) scale(0.18); }
 }
 
 @keyframes ftueWavingParticle2 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
-  }
-
-  12% {
-    opacity: 0.95;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(13px, 48px) scale(0.18);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.65); }
+  12% { opacity: 0.95; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(13px, 48px) scale(0.18); }
 }
 
 @keyframes ftueWavingParticle3 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.78);
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(-9px, 60px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.78); }
+  10% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(-9px, 60px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle4 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
-  }
-
-  14% {
-    opacity: 0.95;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(12px, 42px) scale(0.18);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.72); }
+  14% { opacity: 0.95; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(12px, 42px) scale(0.18); }
 }
 
 @keyframes ftueWavingParticle5 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
-  }
-
-  11% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(-17px, 68px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.72); }
+  11% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(-17px, 68px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle6 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
-  }
-
-  13% {
-    opacity: 0.95;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(16px, 56px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.65); }
+  13% { opacity: 0.95; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(16px, 56px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle7 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
-  }
-
-  12% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(-12px, 76px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.72); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(-12px, 76px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle8 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
-  }
-
-  14% {
-    opacity: 0.95;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(18px, 50px) scale(0.14);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.65); }
+  14% { opacity: 0.95; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(18px, 50px) scale(0.14); }
 }
 
 @keyframes ftueWavingParticle9 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
-  }
-
-  12% {
-    opacity: 0.9;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(-14px, 48px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.65); }
+  12% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(-14px, 48px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle10 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
-  }
-
-  11% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(15px, 64px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.72); }
+  11% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(15px, 64px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle11 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
-  }
-
-  13% {
-    opacity: 0.95;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(-20px, 66px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.65); }
+  13% { opacity: 0.95; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(-20px, 66px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle12 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
-  }
-
-  12% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(10px, 80px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.72); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(10px, 80px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle13 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.65);
-  }
-
-  14% {
-    opacity: 0.9;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(15px, 44px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.65); }
+  14% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(15px, 44px) scale(0.15); }
 }
 
 @keyframes ftueWavingParticle14 {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(0, 0) scale(0.72);
-  }
-
-  11% {
-    opacity: 0.95;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-50%, 0) translate(-17px, 76px) scale(0.15);
-  }
+  0% { opacity: 0; transform: translate(-50%, 0) translate(0, 0) scale(0.72); }
+  11% { opacity: 0.95; }
+  100% { opacity: 0; transform: translate(-50%, 0) translate(-17px, 76px) scale(0.15); }
 }
 
 /* --------------------------------------------------
@@ -2882,7 +2795,7 @@
 }
 
 /* --------------------------------------------------
-   Waving Particle Mobile Glow
+   Responsive Waving Robot Particles
 -------------------------------------------------- */
 
 @media (max-width: 600px) {
@@ -2916,282 +2829,56 @@
 }
 
 /* --------------------------------------------------
-   Responsive Waving Robot
+   Responsive Composition
+   Only composition variables change here.
+   Animation definitions stay shared across breakpoints.
 -------------------------------------------------- */
 
 @media (max-width: 900px) {
-  .ftue-robot-waving-stage {
-    --robot-close-scale: 2.5;
-
-    width: clamp(220px, 34vw, 300px);
-
-    transform:
-      translate3d(
-        0,
-        82vh,
-        0
-      )
-      translate(-50%, -50%)
-      translateZ(0)
-      scale(2.5);
-  }
-
-  @keyframes ftueRobotWavingSlideUp {
-    from {
-      opacity: 1;
-
-      transform:
-        translate3d(0, 82vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.5);
-    }
-
-    to {
-      opacity: 1;
-
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.5);
-    }
-  }
-
-  @keyframes ftueRobotWavingHover {
-    0% {
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.5);
-    }
-
-    50% {
-      transform:
-        translate3d(0, calc(10vh - 7px), 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.5);
-    }
-
-    100% {
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.5);
-    }
-  }
-
-  @keyframes ftueRobotWavingBackAway {
-    0% {
-      transform:
-        translate3d(0, calc(10vh - 7px), 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.5);
-    }
-
-    100% {
-      transform:
-        translate3d(0, 0, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(0.8);
-    }
+  .ftue-welcome-screen {
+    --ftue-robot-close-scale: 2.5;
+    --ftue-robot-close-width: clamp(220px, 34vw, 300px);
+    --ftue-robot-hover-lift: 7px;
+    --ftue-hi-bubble-offset: 300px;
+    --ftue-greeting-offset: 190px;
+    --ftue-greeting-logo-top: clamp(34px, calc(25% - 145px), 125px);
+    --ftue-cta-offset: clamp(145px, 18vh, 160px);
   }
 }
 
 @media (max-width: 600px) {
-  .ftue-robot-waving-stage {
-    --robot-close-scale: 2.45;
-
-    width: 230px;
-
-    transform:
-      translate3d(
-        0,
-        82vh,
-        0
-      )
-      translate(-50%, -50%)
-      translateZ(0)
-      scale(2.45);
-  }
-
-  @keyframes ftueRobotWavingSlideUp {
-    from {
-      opacity: 1;
-
-      transform:
-        translate3d(0, 82vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.45);
-    }
-
-    to {
-      opacity: 1;
-
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.45);
-    }
-  }
-
-  @keyframes ftueRobotWavingHover {
-    0% {
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.45);
-    }
-
-    50% {
-      transform:
-        translate3d(0, calc(10vh - 7px), 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.45);
-    }
-
-    100% {
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.45);
-    }
-  }
-
-  @keyframes ftueRobotWavingBackAway {
-    0% {
-      transform:
-        translate3d(0, calc(10vh - 7px), 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.45);
-    }
-
-    100% {
-      transform:
-        translate3d(0, 0, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(0.8);
-    }
+  .ftue-welcome-screen {
+    --ftue-robot-close-scale: 2.45;
+    --ftue-robot-close-width: 230px;
+    --ftue-robot-hover-lift: 7px;
+    --ftue-hi-bubble-offset: 220px;
+    --ftue-greeting-offset: 140px;
+    --ftue-greeting-logo-top: clamp(28px, calc(25% - 118px), 110px);
+    --ftue-cta-offset: clamp(120px, 16vh, 140px);
   }
 }
 
 @media (max-width: 430px) {
-  .ftue-robot-waving-stage {
-    --robot-close-scale: 2.4;
-
-    width: 215px;
-
-    transform:
-      translate3d(
-        0,
-        82vh,
-        0
-      )
-      translate(-50%, -50%)
-      translateZ(0)
-      scale(2.4);
-  }
-
-  @keyframes ftueRobotWavingSlideUp {
-    from {
-      opacity: 1;
-
-      transform:
-        translate3d(0, 82vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.4);
-    }
-
-    to {
-      opacity: 1;
-
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.4);
-    }
-  }
-
-  @keyframes ftueRobotWavingHover {
-    0% {
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.4);
-    }
-
-    50% {
-      transform:
-        translate3d(0, calc(10vh - 6px), 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.4);
-    }
-
-    100% {
-      transform:
-        translate3d(0, 10vh, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.4);
-    }
-  }
-
-  @keyframes ftueRobotWavingBackAway {
-    0% {
-      transform:
-        translate3d(0, calc(10vh - 6px), 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(2.4);
-    }
-
-    100% {
-      transform:
-        translate3d(0, 0, 0)
-        translate(-50%, -50%)
-        translateZ(0)
-        scale(0.8);
-    }
+  .ftue-welcome-screen {
+    --ftue-robot-close-scale: 2.4;
+    --ftue-robot-close-width: 215px;
+    --ftue-robot-hover-lift: 6px;
+    --ftue-hi-bubble-offset: 205px;
   }
 }
 
-
 /* ==================================================
    GEOPLAY GREETING LOGO
-   Positioned by the vertical space above the greeting bubble
-   rather than by a fixed distance from the viewport center.
-
-   The logo's center sits approximately halfway between the top
-   edge of the app viewport and the top edge of the greeting bubble.
-   Using 25% of the viewport height keeps that relationship stable
-   across different screen heights and aspect ratios.
 ================================================== */
 
 .ftue-robot-greeting-logo {
   position: absolute;
 
   left: 50%;
-  top: clamp(28px, calc(25% - 160px), 150px);
+  top: var(--ftue-greeting-logo-top);
 
   z-index: 31;
 
-  /* Keep the logo intentionally understated. */
   width: 152px;
   height: auto;
 
@@ -3242,9 +2929,154 @@
 }
 
 /* ==================================================
+   CLOSE-UP ROBOT GREETING
+================================================== */
+
+.ftue-robot-hi-bubble {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  z-index: 30;
+
+  width: min(150px, calc(100vw - 80px));
+
+  padding: 11px 18px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25, 18, 14, 0.96),
+      rgba(10, 11, 12, 0.95)
+    ) padding-box,
+    linear-gradient(
+      120deg,
+      rgba(255, 90, 22, 0.82),
+      rgba(255, 178, 31, 0.58),
+      rgba(255, 90, 22, 0.34)
+    ) border-box;
+
+  box-shadow:
+    0 0 18px rgba(255, 90, 22, 0.12),
+    0 0 42px rgba(255, 90, 22, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.075);
+
+  pointer-events: none;
+  user-select: none;
+
+  opacity: 0;
+
+  transform:
+    translate(-50%, calc(-50% - var(--ftue-hi-bubble-offset)))
+    scale(0.92);
+
+  transform-origin: 50% 100%;
+
+  animation:
+    ftueRobotHiBubbleAppear
+    600ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    120ms
+    forwards;
+}
+
+.ftue-robot-hi-bubble p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.96);
+
+  font-family: Poppins, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+
+  text-align: center;
+}
+
+.ftue-robot-hi-bubble-tail {
+  position: absolute;
+
+  left: 50%;
+  bottom: -7px;
+
+  width: 14px;
+  height: 14px;
+
+  background: #14100d;
+
+  border-right: 1px solid rgba(255, 178, 31, 0.62);
+  border-bottom: 1px solid rgba(255, 90, 22, 0.62);
+
+  transform:
+    translateX(-50%)
+    rotate(45deg);
+}
+
+@keyframes ftueRobotHiBubbleAppear {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(
+        -50%,
+        calc(-50% - var(--ftue-hi-bubble-offset) + 10px)
+      )
+      scale(0.92);
+  }
+
+  60% {
+    opacity: 0.92;
+
+    transform:
+      translate(
+        -50%,
+        calc(-50% - var(--ftue-hi-bubble-offset) - 5px)
+      )
+      scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, calc(-50% - var(--ftue-hi-bubble-offset)))
+      scale(1);
+  }
+}
+
+.ftue-robot-hi-bubble-backing {
+  animation:
+    ftueRobotHiBubbleFadeOut
+    260ms
+    ease-out
+    forwards;
+}
+
+@keyframes ftueRobotHiBubbleFadeOut {
+  from {
+    opacity: 1;
+
+    transform:
+      translate(-50%, calc(-50% - var(--ftue-hi-bubble-offset)))
+      scale(1);
+  }
+
+  to {
+    opacity: 0;
+
+    transform:
+      translate(-50%, calc(-50% - var(--ftue-hi-bubble-offset)))
+      scale(0.98);
+  }
+}
+
+/* ==================================================
    GEOPLAY GREETING
-   Compact robot-anchored speech bubble.
-   Appears only after the robot reaches center.
 ================================================== */
 
 .ftue-robot-greeting {
@@ -3286,7 +3118,7 @@
   opacity: 0;
 
   transform:
-    translate(-50%, calc(-50% - 215px))
+    translate(-50%, calc(-50% - var(--ftue-greeting-offset)))
     scale(0.92);
 
   transform-origin: 50% 100%;
@@ -3337,7 +3169,10 @@
     opacity: 0;
 
     transform:
-      translate(-50%, calc(-50% - 205px))
+      translate(
+        -50%,
+        calc(-50% - var(--ftue-greeting-offset) + 10px)
+      )
       scale(0.92);
   }
 
@@ -3345,7 +3180,10 @@
     opacity: 0.92;
 
     transform:
-      translate(-50%, calc(-50% - 220px))
+      translate(
+        -50%,
+        calc(-50% - var(--ftue-greeting-offset) - 5px)
+      )
       scale(1.01);
   }
 
@@ -3353,7 +3191,7 @@
     opacity: 1;
 
     transform:
-      translate(-50%, calc(-50% - 215px))
+      translate(-50%, calc(-50% - var(--ftue-greeting-offset)))
       scale(1);
   }
 }
@@ -3362,60 +3200,41 @@
    Greeting Bubble — Small Screens
 -------------------------------------------------- */
 
+/* --------------------------------------------------
+   Close-Up Hi Bubble — Phone
+-------------------------------------------------- */
+
 @media (max-width: 600px) {
-  .ftue-robot-greeting-logo {
-    top: clamp(28px, calc(25% - 118px), 110px);
+  .ftue-robot-hi-bubble {
+    width: min(190px, calc(100vw - 70px));
+    padding: 12px 18px 13px;
+    border-radius: 18px;
   }
 
+  .ftue-robot-hi-bubble p {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+}
+
+@media (max-width: 600px) {
   .ftue-robot-greeting {
     width: min(280px, calc(100vw - 44px));
 
     padding: 11px 14px 12px;
 
     border-radius: 16px;
-
-    transform:
-      translate(-50%, calc(-50% - 140px))
-      scale(0.92);
   }
 
   .ftue-robot-greeting p {
     font-size: 13px;
     line-height: 1.42;
   }
-
-  @keyframes ftueRobotGreetingAppear {
-    0% {
-      opacity: 0;
-
-      transform:
-        translate(-50%, calc(-50% - 130px))
-        scale(0.92);
-    }
-
-    60% {
-      opacity: 0.92;
-
-      transform:
-        translate(-50%, calc(-50% - 145px))
-        scale(1.01);
-    }
-
-    100% {
-      opacity: 1;
-
-      transform:
-        translate(-50%, calc(-50% - 140px))
-        scale(1);
-    }
-  }
 }
 
 @media (max-width: 430px) {
   .ftue-robot-greeting {
     width: min(280px, calc(100vw - 42px));
-
-    padding: 11px 14px 12px;
   }
 
   .ftue-robot-greeting p {
@@ -3423,11 +3242,24 @@
   }
 }
 
-/* --------------------------------------------------
-   Reduced Motion
--------------------------------------------------- */
+/* ==================================================
+   REDUCED MOTION
+================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+  .ftue-robot-hi-bubble {
+    animation: none;
+    opacity: 1;
+
+    transform:
+      translate(-50%, calc(-50% - var(--ftue-hi-bubble-offset)))
+      scale(1);
+  }
+
+  .ftue-robot-hi-bubble-backing {
+    opacity: 0;
+  }
+
   .ftue-robot-greeting-logo {
     animation: none;
     opacity: 0.94;
@@ -3442,7 +3274,7 @@
     opacity: 1;
 
     transform:
-      translate(-50%, calc(-50% - 155px))
+      translate(-50%, calc(-50% - var(--ftue-greeting-offset)))
       scale(1);
   }
 
@@ -3477,7 +3309,11 @@
   }
 
   .ftue-robot-phase-hovering .ftue-robot-thruster,
-  .ftue-robot-phase-hovering .ftue-robot-particles {
+  .ftue-robot-phase-hovering .ftue-robot-particles,
+  .ftue-robot-phase-backing .ftue-robot-thruster,
+  .ftue-robot-phase-backing .ftue-robot-particles,
+  .ftue-robot-phase-centered .ftue-robot-thruster,
+  .ftue-robot-phase-centered .ftue-robot-particles {
     animation: none;
     opacity: 0;
   }
@@ -3485,49 +3321,60 @@
   .ftue-robot-phase-hovering .ftue-robot-thruster-halo,
   .ftue-robot-phase-hovering .ftue-robot-thruster-core,
   .ftue-robot-phase-hovering .ftue-robot-thruster-flare,
-  .ftue-robot-phase-hovering .ftue-robot-particle {
+  .ftue-robot-phase-hovering .ftue-robot-particle,
+  .ftue-robot-phase-backing .ftue-robot-thruster-halo,
+  .ftue-robot-phase-backing .ftue-robot-thruster-core,
+  .ftue-robot-phase-backing .ftue-robot-thruster-flare,
+  .ftue-robot-phase-backing .ftue-robot-particle,
+  .ftue-robot-phase-centered .ftue-robot-thruster-halo,
+  .ftue-robot-phase-centered .ftue-robot-thruster-core,
+  .ftue-robot-phase-centered .ftue-robot-thruster-flare,
+  .ftue-robot-phase-centered .ftue-robot-particle {
     animation: none;
     opacity: 0;
   }
 
-  .ftue-robot-phase-transitioning .ftue-robot-waving {
+  .ftue-robot-phase-transitioning .ftue-robot-waving-stage,
+  .ftue-robot-phase-hovering .ftue-robot-waving-stage {
     animation: none;
     opacity: 1;
 
     transform:
-      translate3d(
-        0,
-        10vh,
-        0
-      )
+      translate3d(0, var(--ftue-robot-close-y), 0)
       translate(-50%, -50%)
       translateZ(0)
-      scale(2.6);
+      scale(var(--ftue-robot-close-scale));
   }
 
-  .ftue-robot-phase-hovering .ftue-robot-waving {
+  .ftue-robot-phase-backing .ftue-robot-waving-stage {
     animation: none;
     opacity: 1;
 
     transform:
-      translate3d(
-        0,
-        10vh,
-        0
-      )
+      translate3d(0, 0, 0)
       translate(-50%, -50%)
       translateZ(0)
-      scale(2.6);
+      scale(0.8);
+  }
+
+  .ftue-robot-phase-centered .ftue-robot-waving-stage {
+    animation: none;
+    opacity: 1;
+
+    transform:
+      translate3d(0, 0, 0)
+      translate(-50%, -50%)
+      translateZ(0)
+      scale(0.8);
+  }
+
+  .ftue-welcome-screen {
+    /* Keep the final responsive composition variables active. */
   }
 }
 
 /* ==================================================
    GREETING CALL TO ACTION
-   Appears after the greeting bubble finishes entering.
-   The greeting bubble remains visible underneath the CTA.
-
-   The CTA uses the same primary-button treatment as the
-   Login and Sign Up screens for visual consistency.
 ================================================== */
 
 .ftue-robot-greeting-cta {
@@ -3543,7 +3390,7 @@
   width: min(310px, calc(100vw - 42px));
 
   transform:
-    translate(-50%, 130px);
+    translate(-50%, var(--ftue-cta-offset));
 
   opacity: 0;
 
@@ -3651,8 +3498,8 @@
 .ftue-robot-maybe-later {
   appearance: none;
 
-  margin: 11px 0 0;
-  padding: 2px 8px;
+  margin: 20px 0 0;
+  padding: 8px 14px;
 
   border: 0;
 
@@ -3687,14 +3534,14 @@
   0% {
     opacity: 0;
     transform:
-      translate(-50%, 138px)
+      translate(-50%, calc(var(--ftue-cta-offset) + 8px))
       translateY(5px);
   }
 
   100% {
     opacity: 1;
     transform:
-      translate(-50%, 130px)
+      translate(-50%, var(--ftue-cta-offset))
       translateY(0);
   }
 }
@@ -3702,8 +3549,7 @@
 @media (max-width: 600px) {
   .ftue-robot-greeting-cta {
     width: min(292px, calc(100vw - 34px));
-    transform:
-      translate(-50%, 126px);
+    --ftue-cta-offset: 140px;
   }
 
   .ftue-robot-get-started {
@@ -3714,24 +3560,9 @@
   }
 
   .ftue-robot-maybe-later {
-    margin-top: 10px;
+    margin-top: 18px;
+    padding: 8px 14px;
     font-size: 12px;
-  }
-
-  @keyframes ftueRobotGreetingCtaAppear {
-    0% {
-      opacity: 0;
-      transform:
-        translate(-50%, 134px)
-        translateY(5px);
-    }
-
-    100% {
-      opacity: 1;
-      transform:
-        translate(-50%, 126px)
-        translateY(0);
-    }
   }
 }
 
@@ -3740,6 +3571,6 @@
     animation: none;
     opacity: 1;
     transform:
-      translate(-50%, 130px);
+      translate(-50%, var(--ftue-cta-offset));
   }
 }

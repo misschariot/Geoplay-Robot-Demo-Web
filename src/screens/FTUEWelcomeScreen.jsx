@@ -37,7 +37,7 @@ const stars = [
   { x: 88, y: 61, size: 1.0, delay: 4.4, duration: 9.3, opacity: 0.52 },
 ];
 
-function FTUEWelcomeScreen() {
+function FTUEWelcomeScreen({ onMaybeLater, onGetStarted }) {
   const [robotPhase, setRobotPhase] = useState("flying");
   const [showGreetingCta, setShowGreetingCta] = useState(false);
 
@@ -265,6 +265,22 @@ function FTUEWelcomeScreen() {
         />
       </span>
 
+      {/* Close-up robot greeting
+          Appears when the robot reaches its close-up hover position.
+          It uses the same Geoplay speech-bubble treatment as the
+          final greeting, then gently fades away as backing begins. */}
+      {(robotPhase === "hovering" || robotPhase === "backing") && (
+        <div
+          className={`ftue-robot-hi-bubble ${
+            robotPhase === "backing" ? "ftue-robot-hi-bubble-backing" : ""
+          }`}
+          aria-label="Robot greeting"
+        >
+          <span className="ftue-robot-hi-bubble-tail" aria-hidden="true" />
+          <p>Hi there!</p>
+        </div>
+      )}
+
       {/* Geoplay greeting bubble
           Appears only after the robot has reached its final
           centered position. It is anchored visually to the robot
@@ -287,10 +303,18 @@ function FTUEWelcomeScreen() {
 
           {showGreetingCta && (
             <div className="ftue-robot-greeting-cta">
-              <button type="button" className="ftue-robot-get-started">
+              <button
+                type="button"
+                className="ftue-robot-get-started"
+                onClick={onGetStarted}
+              >
                 GET STARTED
               </button>
-              <button type="button" className="ftue-robot-maybe-later">
+              <button
+                type="button"
+                className="ftue-robot-maybe-later"
+                onClick={onMaybeLater}
+              >
                 Maybe later
               </button>
             </div>

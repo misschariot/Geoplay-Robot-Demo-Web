@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./LoginScreen.css";
 
-function LoginScreen({ onSignUp }) {
+function LoginScreen({ onSignUp, onMapShortcut }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -28,6 +28,16 @@ function LoginScreen({ onSignUp }) {
       <div className="login-bg-speck login-bg-speck-three"></div>
 
       <section className="login-card">
+        {/* Map shortcut for testing */}
+        <button
+          type="button"
+          className="login-map-shortcut"
+          onClick={onMapShortcut}
+          aria-label="Open map"
+          title="Open map"
+        >
+          <span aria-hidden="true">⌖</span>
+        </button>
         <div className="login-brand">
           <div className="login-logo">
             <img src="/geoplay-logo.png" alt="GeoPlay" />

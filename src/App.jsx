@@ -4,10 +4,13 @@ import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import VerifyEmailScreen from "./screens/VerifyEmailScreen";
 import FTUEWelcomeScreen from "./screens/FTUEWelcomeScreen";
+import HomeScreen from "./screens/HomeScreen";
+import GeoPlayMap from "./screens/GeoPlayMap";
 import "./App.css";
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const [showMapSplash, setShowMapSplash] = useState(false);
   const [currentScreen, setCurrentScreen] = useState("login");
   const [verificationEmail, setVerificationEmail] = useState("");
 
@@ -18,6 +21,18 @@ function App() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!showMapSplash) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setShowMapSplash(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [showMapSplash]);
 
   function goToLogin() {
     setCurrentScreen("login");
@@ -41,12 +56,51 @@ function App() {
     setCurrentScreen("ftue");
   }
 
+  function goToMap() {
+    console.log("App: navigating to Map");
+
+    // Mount the map immediately underneath the intentional
+    // 5-second splash transition so MapLibre can initialize
+    // while the splash is being displayed.
+    setCurrentScreen("map");
+    setShowMapSplash(true);
+  }
+
+  function goToHome() {
+    console.log("App: navigating to Home");
+
+    setCurrentScreen("home");
+  }
+
   if (showSplash) {
     return <SplashScreen />;
   }
 
+  if (currentScreen === "map") {
+    return (
+      <>
+        <GeoPlayMap />
+
+        {showMapSplash && (
+          <div className="map-transition-overlay">
+            <SplashScreen />
+          </div>
+        )}
+      </>
+    );
+  }
+
   if (currentScreen === "ftue") {
-    return <FTUEWelcomeScreen />;
+    return (
+      <FTUEWelcomeScreen
+        onMaybeLater={goToHome}
+        onGetStarted={goToMap}
+      />
+    );
+  }
+
+  if (currentScreen === "home") {
+    return <HomeScreen />;
   }
 
   if (currentScreen === "verify-email") {
@@ -68,7 +122,7 @@ function App() {
     );
   }
 
-  return <LoginScreen onSignUp={goToSignUp} />;
+  return <LoginScreen onSignUp={goToSignUp} onMapShortcut={goToMap} />;
 }
 
 export default App;
