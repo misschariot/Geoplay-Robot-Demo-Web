@@ -79,7 +79,9 @@ function App() {
   if (currentScreen === "map") {
     return (
       <>
-        <GeoPlayMap />
+        {/* MapLibre initializes underneath the splash, but the FTUE
+            sequence does not begin until the splash is gone. */}
+        <GeoPlayMap startFtue={!showMapSplash} />
 
         {showMapSplash && (
           <div className="map-transition-overlay">

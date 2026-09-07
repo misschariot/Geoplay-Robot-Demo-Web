@@ -30,13 +30,575 @@
   outline: none;
 }
 
-.geoplay-earth-container .maplibregl-ctrl-attrib {
-  opacity: 0.45;
-  font-size: 9px;
-}
-
 @media (max-width: 600px) {
   .geoplay-earth {
     height: 100vh;
+  }
+}
+
+/* --------------------------------------------------
+   Earth FTUE interaction layer
+-------------------------------------------------- */
+
+.geoplay-earth-ftue-layer {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: 50%;
+  width: min(420px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Hidden completely while requesting permission and during the camera flight. */
+.geoplay-earth-ftue-layer.is-location-result {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transform: none;
+}
+
+.geoplay-earth-guide-unit {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  width: min(285px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+/* Keep the returning robot away from the centered location marker. */
+.geoplay-earth-guide-unit.is-location-result {
+  left: auto;
+  top: auto;
+  right: clamp(16px, 3vw, 40px);
+  bottom: clamp(18px, 3vh, 30px);
+  width: min(285px, calc(100vw - 32px));
+  transform: none;
+}
+
+.geoplay-earth-guide-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 100%;
+}
+
+.geoplay-earth-robot-image {
+  display: block;
+  position: relative;
+  top: 7px;
+  width: clamp(210px, 24vw, 310px);
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateX(115%) scale(0.94);
+  filter:
+    drop-shadow(0 0 14px rgba(40, 190, 255, 0.22))
+    drop-shadow(0 0 30px rgba(40, 150, 255, 0.14));
+  transition: none;
+}
+
+.geoplay-earth-robot-image.is-visible {
+  animation:
+    geoplayEarthRobotEnter
+    1.3s
+    ease-out
+    0s
+    forwards,
+    geoplayEarthRobotFloat
+    3.4s
+    ease-in-out
+    1.3s
+    infinite;
+}
+
+/* Simple prototype marker; the final YOU ARE HERE design can replace it later. */
+.geoplay-earth-location-marker {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  background: #ff7419;
+  box-shadow:
+    0 0 0 6px rgba(255, 116, 25, 0.20),
+    0 0 18px rgba(255, 116, 25, 0.75),
+    0 0 32px rgba(255, 178, 31, 0.35);
+
+  /*
+    IMPORTANT:
+    MapLibre positions custom markers by applying a transform to the
+    marker element itself. The pulse animation therefore must NOT
+    animate transform, or it would replace MapLibre's geographic
+    positioning and pin the marker to the corner of the map.
+  */
+  animation: geoplayEarthLocationMarkerPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes geoplayEarthLocationMarkerPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 6px rgba(255, 116, 25, 0.20),
+      0 0 18px rgba(255, 116, 25, 0.75),
+      0 0 32px rgba(255, 178, 31, 0.35);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 9px rgba(255, 116, 25, 0.12),
+      0 0 22px rgba(255, 116, 25, 0.82),
+      0 0 38px rgba(255, 178, 31, 0.42);
+  }
+}
+
+@keyframes geoplayEarthRobotEnter {
+  0% { opacity: 0; transform: translateX(115%) scale(0.94); }
+  72% { opacity: 1; transform: translateX(-3%) scale(1.01); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes geoplayEarthRobotFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/*
+  Same visual treatment as the FTUEWelcome greeting bubble.
+  It is intentionally revealed only after the robot entrance.
+*/
+.geoplay-earth-dialogue {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(285px, calc(100vw - 48px));
+
+  margin-bottom: 10px;
+
+  padding: 12px 15px 13px;
+
+  border: 1px solid transparent;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25, 18, 14, 0.96),
+      rgba(10, 11, 12, 0.95)
+    ) padding-box,
+    linear-gradient(
+      120deg,
+      rgba(255, 90, 22, 0.82),
+      rgba(255, 178, 31, 0.58),
+      rgba(255, 90, 22, 0.34)
+    ) border-box;
+
+  box-shadow:
+    0 0 18px rgba(255, 90, 22, 0.12),
+    0 0 42px rgba(255, 90, 22, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.075);
+
+  color: rgba(255, 255, 255, 0.96);
+
+  font-family: Poppins, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: 0.01em;
+
+  text-align: center;
+
+  opacity: 0;
+
+  transform:
+    translateY(10px)
+    scale(0.98);
+
+  transform-origin: 50% 100%;
+
+  visibility: hidden;
+}
+
+.geoplay-earth-dialogue.is-visible {
+  visibility: visible;
+
+  animation:
+    geoplayEarthDialogueIn
+    650ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    forwards;
+}
+
+.geoplay-earth-guide-unit.is-location-result .geoplay-earth-dialogue.is-visible {
+  animation:
+    geoplayEarthDialogueIn
+    650ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    1.15s
+    forwards;
+}
+
+.geoplay-earth-dialogue::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -7px;
+
+  width: 14px;
+  height: 14px;
+
+  background: #14100d;
+
+  border-right: 1px solid rgba(255, 178, 31, 0.62);
+  border-bottom: 1px solid rgba(255, 90, 22, 0.62);
+
+  transform:
+    translateX(-50%)
+    rotate(45deg);
+}
+
+@keyframes geoplayEarthRobotEnter {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateX(115%)
+      scale(0.94);
+  }
+
+  72% {
+    opacity: 1;
+
+    transform:
+      translateX(-3%)
+      scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateX(0)
+      scale(1);
+  }
+}
+
+@keyframes geoplayEarthRobotFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes geoplayEarthDialogueIn {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(10px)
+      scale(0.92);
+  }
+
+  60% {
+    opacity: 0.92;
+
+    transform:
+      translateY(-5px)
+      scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* --------------------------------------------------
+   Earth location CTA buttons
+-------------------------------------------------- */
+
+.geoplay-earth-location-actions {
+  position: absolute;
+
+  z-index: 6;
+
+  /* The FTUE layer is visual-only, but the CTA stack must receive taps. */
+  pointer-events: auto;
+
+  left: 50%;
+  top: calc(50% + clamp(155px, 17vw, 205px));
+
+  width: min(285px, calc(100vw - 48px));
+
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  align-items: stretch;
+
+  opacity: 0;
+
+  transform:
+    translateX(-50%)
+    translateY(8px)
+    scale(0.98);
+
+  visibility: hidden;
+}
+
+.geoplay-earth-location-actions.is-visible {
+  visibility: visible;
+
+  animation:
+    geoplayEarthActionsIn
+    650ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    forwards;
+}
+
+.geoplay-earth-allow-button,
+.geoplay-earth-deny-button {
+  position: relative;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 15px 20px;
+
+  border-radius: 13px;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  cursor: pointer;
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+/* Primary CTA — same visual treatment as LoginScreen .login-button. */
+
+.geoplay-earth-allow-button {
+  margin-top: 4px;
+
+  border: 0;
+
+  border-radius: 13px;
+
+  background: linear-gradient(
+    135deg,
+    #ff5a16 0%,
+    #ff7419 48%,
+    #ffb21f 100%
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 12px 30px rgba(255, 90, 22, 0.22),
+    0 0 20px rgba(255, 90, 22, 0.08);
+}
+
+/*
+  Exact shine treatment used by LoginScreen .login-button.
+*/
+.geoplay-earth-allow-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -80%;
+
+  width: 55%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.55s ease;
+}
+
+.geoplay-earth-allow-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 36px rgba(255, 90, 22, 0.3),
+    0 0 28px rgba(255, 90, 22, 0.12);
+
+  filter: brightness(1.04);
+}
+
+.geoplay-earth-allow-button:hover::before {
+  left: 130%;
+}
+
+.geoplay-earth-allow-button:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 8px 20px rgba(255, 90, 22, 0.18);
+}
+
+/* Secondary CTA — dark fill, with the same orange/gold edge language. */
+
+.geoplay-earth-deny-button {
+  border: 1px solid rgba(255, 138, 53, 0.32);
+
+  border-radius: 13px;
+
+  background: #090a0c;
+
+  color: #ff9a45;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.geoplay-earth-deny-button:hover {
+  transform: translateY(-1px);
+
+  color: #ffb21f;
+
+  background: #101114;
+
+  border-color: rgba(255, 178, 31, 0.45);
+
+  box-shadow: 0 0 14px rgba(255, 90, 22, 0.12);
+}
+
+.geoplay-earth-deny-button:active {
+  transform: translateY(0);
+}
+
+@keyframes geoplayEarthActionsIn {
+  0% {
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      translateY(8px)
+      scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  .geoplay-earth-ftue-layer {
+    width: calc(100vw - 24px);
+  }
+
+  .geoplay-earth-guide-unit.is-location-result {
+    right: 12px;
+    bottom: 16px;
+    width: min(220px, calc(100vw - 24px));
+  }
+
+  .geoplay-earth-robot-image {
+    width: clamp(150px, 43vw, 205px);
+  }
+
+  .geoplay-earth-dialogue {
+    width: min(190px, calc(100vw - 44px));
+
+    margin-bottom: 8px;
+
+    padding: 11px 14px 12px;
+
+    border-radius: 16px;
+
+    font-size: 13px;
+    line-height: 1.42;
+  }
+
+  .geoplay-earth-location-actions {
+    width: min(280px, calc(100vw - 44px));
+
+    top: calc(50% + clamp(135px, 37vw, 170px));
+
+    gap: 8px;
+  }
+
+  .geoplay-earth-allow-button,
+  .geoplay-earth-deny-button {
+    padding: 13px 18px;
+
+    border-radius: 13px;
+
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 430px) {
+  .geoplay-earth-dialogue,
+  .geoplay-earth-location-actions {
+    width: min(280px, calc(100vw - 42px));
+  }
+
+  .geoplay-earth-dialogue {
+    font-size: 12.5px;
+  }
+
+
+  .geoplay-earth-allow-button,
+  .geoplay-earth-deny-button {
+    padding: 12px 17px;
+
+    font-size: 12.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geoplay-earth-robot-image.is-visible,
+  .geoplay-earth-dialogue.is-visible,
+  .geoplay-earth-location-actions.is-visible,
+  .geoplay-earth-guide-unit.is-location-result .geoplay-earth-dialogue.is-visible,
+  .geoplay-earth-location-marker {
+    opacity: 1;
+    animation: none;
+  }
+
+  .geoplay-earth-guide-unit.is-location-result .geoplay-earth-guide-content {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 }
