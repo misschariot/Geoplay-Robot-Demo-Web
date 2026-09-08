@@ -37,6 +37,372 @@
 }
 
 /* --------------------------------------------------
+   Location search status
+-------------------------------------------------- */
+
+.geoplay-earth-location-status {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+  box-sizing: border-box;
+
+  pointer-events: none;
+}
+
+.geoplay-earth-location-status {
+  transition: opacity 450ms ease;
+}
+
+.geoplay-earth-location-status.is-fading {
+  opacity: 0;
+}
+
+.geoplay-earth-location-status-card {
+  width: min(340px, calc(100vw - 48px));
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 24px 24px 22px;
+
+  border: 1px solid rgba(255, 138, 53, 0.28);
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 13, 12, 0.92),
+      rgba(5, 7, 9, 0.88)
+    );
+
+  box-shadow:
+    0 0 24px rgba(255, 90, 22, 0.10),
+    0 18px 55px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  backdrop-filter: blur(8px);
+
+  opacity: 0;
+  transform: translateY(-6px) scale(0.985);
+
+  animation:
+    geoplayEarthLocationStatusIn
+    500ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    forwards;
+
+  transition:
+    opacity 450ms ease,
+    transform 450ms cubic-bezier(0.16, 0.82, 0.24, 1);
+}
+
+.geoplay-earth-location-status.is-fading .geoplay-earth-location-status-card {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.985);
+}
+
+.geoplay-earth-location-logo {
+  display: block;
+
+  width: min(180px, 62vw);
+  height: auto;
+
+  margin-bottom: 22px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 16px rgba(255, 90, 22, 0.16))
+    drop-shadow(0 0 28px rgba(255, 178, 31, 0.08));
+}
+
+.geoplay-earth-location-status-title {
+  color: #ffffff;
+
+  font-family: Poppins, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.045em;
+
+  text-align: center;
+}
+
+.geoplay-earth-location-status-message {
+  margin-top: 7px;
+
+  color: rgba(255, 255, 255, 0.68);
+
+  font-family: Poppins, sans-serif;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.4;
+
+  text-align: center;
+}
+
+.geoplay-earth-location-status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  margin-top: 18px;
+
+  height: 10px;
+}
+
+.geoplay-earth-location-status-indicator span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #ff8a35;
+
+  opacity: 0.35;
+
+  animation:
+    geoplayEarthLocationStatusDot
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+.geoplay-earth-location-status-indicator span:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.geoplay-earth-location-status-indicator span:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+@keyframes geoplayEarthLocationStatusIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes geoplayEarthLocationStatusDot {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* --------------------------------------------------
+   Nearby casino search
+-------------------------------------------------- */
+
+.geoplay-earth-nearby-search {
+  position: absolute;
+  inset: 0;
+  z-index: 21;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  padding: clamp(88px, 13vh, 125px) 24px 24px;
+  box-sizing: border-box;
+
+  pointer-events: none;
+
+  animation:
+    geoplayEarthNearbySearchIn
+    500ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    forwards;
+}
+
+.geoplay-earth-nearby-search-card {
+  width: min(320px, calc(100vw - 48px));
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 15px 19px 14px;
+
+  border: 1px solid rgba(255, 138, 53, 0.28);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 13, 12, 0.90),
+      rgba(5, 7, 9, 0.84)
+    );
+
+  box-shadow:
+    0 0 24px rgba(255, 90, 22, 0.10),
+    0 16px 45px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055);
+
+  backdrop-filter: blur(8px);
+}
+
+.geoplay-earth-nearby-search-title {
+  color: #ffffff;
+
+  font-family: Poppins, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+
+  text-align: center;
+}
+
+.geoplay-earth-nearby-search-message {
+  margin-top: 5px;
+
+  color: rgba(255, 255, 255, 0.62);
+
+  font-family: Poppins, sans-serif;
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.35;
+
+  text-align: center;
+}
+
+.geoplay-earth-nearby-search-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  margin-top: 10px;
+
+  height: 7px;
+}
+
+.geoplay-earth-nearby-search-indicator span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #ff8a35;
+
+  opacity: 0.28;
+
+  animation:
+    geoplayEarthNearbySearchDot
+    1.1s
+    ease-in-out
+    infinite;
+}
+
+.geoplay-earth-nearby-search-indicator span:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.geoplay-earth-nearby-search-indicator span:nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+@keyframes geoplayEarthNearbySearchIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-7px) scale(0.985);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes geoplayEarthNearbySearchDot {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+/* The user's location becomes the origin of the simulated radar scan. */
+.geoplay-earth-location-marker.is-searching {
+  animation:
+    geoplayEarthLocationMarkerPulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+.geoplay-earth-location-marker.is-searching::before,
+.geoplay-earth-location-marker.is-searching::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 24px;
+  height: 24px;
+
+  border: 1px solid rgba(255, 116, 25, 0.72);
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%) scale(0.25);
+  opacity: 0;
+
+  pointer-events: none;
+
+  animation:
+    geoplayEarthNearbyRadarPulse
+    2.4s
+    ease-out
+    infinite;
+}
+
+.geoplay-earth-location-marker.is-searching::after {
+  animation-delay: 1.2s;
+}
+
+@keyframes geoplayEarthNearbyRadarPulse {
+  0% {
+    opacity: 0.78;
+    transform: translate(-50%, -50%) scale(0.25);
+  }
+
+  70% {
+    opacity: 0.16;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(7);
+  }
+}
+
+/* --------------------------------------------------
    Earth FTUE interaction layer
 -------------------------------------------------- */
 
@@ -82,6 +448,14 @@
   bottom: clamp(18px, 3vh, 30px);
   width: min(285px, calc(100vw - 32px));
   transform: none;
+}
+
+
+/* During nearby search the robot remains in the same lower-right position,
+   while its dialogue updates to continue the story. */
+.geoplay-earth-guide-unit.is-nearby-searching {
+  right: clamp(16px, 3vw, 40px);
+  bottom: clamp(18px, 3vh, 30px);
 }
 
 .geoplay-earth-guide-content {
@@ -236,6 +610,10 @@
     650ms
     cubic-bezier(0.16, 0.82, 0.24, 1)
     forwards;
+}
+
+.geoplay-earth-dialogue.is-location-result {
+  width: min(150px, calc(100vw - 48px));
 }
 
 .geoplay-earth-guide-unit.is-location-result .geoplay-earth-dialogue.is-visible {
@@ -522,6 +900,29 @@
 }
 
 @media (max-width: 600px) {
+  .geoplay-earth-location-status {
+    padding: 20px;
+  }
+
+  .geoplay-earth-location-status-card {
+    width: min(320px, calc(100vw - 40px));
+    padding: 21px 20px 20px;
+    border-radius: 18px;
+  }
+
+  .geoplay-earth-location-logo {
+    width: min(165px, 58vw);
+    margin-bottom: 19px;
+  }
+
+  .geoplay-earth-location-status-title {
+    font-size: 13.5px;
+  }
+
+  .geoplay-earth-location-status-message {
+    font-size: 12px;
+  }
+
   .geoplay-earth-ftue-layer {
     width: calc(100vw - 24px);
   }
@@ -530,6 +931,30 @@
     right: 12px;
     bottom: 16px;
     width: min(220px, calc(100vw - 24px));
+  }
+
+
+  .geoplay-earth-guide-unit.is-nearby-searching {
+    right: 12px;
+    bottom: 16px;
+  }
+
+  .geoplay-earth-nearby-search {
+    padding-top: 76px;
+  }
+
+  .geoplay-earth-nearby-search-card {
+    width: min(300px, calc(100vw - 40px));
+    padding: 13px 16px 12px;
+    border-radius: 15px;
+  }
+
+  .geoplay-earth-nearby-search-title {
+    font-size: 12px;
+  }
+
+  .geoplay-earth-nearby-search-message {
+    font-size: 10.5px;
   }
 
   .geoplay-earth-robot-image {
@@ -547,6 +972,10 @@
 
     font-size: 13px;
     line-height: 1.42;
+  }
+
+  .geoplay-earth-dialogue.is-location-result {
+    width: min(150px, calc(100vw - 44px));
   }
 
   .geoplay-earth-location-actions {
@@ -587,11 +1016,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .geoplay-earth-location-status,
+  .geoplay-earth-location-status-card,
+  .geoplay-earth-location-status-indicator span,
   .geoplay-earth-robot-image.is-visible,
   .geoplay-earth-dialogue.is-visible,
   .geoplay-earth-location-actions.is-visible,
   .geoplay-earth-guide-unit.is-location-result .geoplay-earth-dialogue.is-visible,
-  .geoplay-earth-location-marker {
+  .geoplay-earth-location-marker,
+  .geoplay-earth-location-marker.is-searching::before,
+  .geoplay-earth-location-marker.is-searching::after,
+  .geoplay-earth-nearby-search,
+  .geoplay-earth-nearby-search-indicator span {
     opacity: 1;
     animation: none;
   }

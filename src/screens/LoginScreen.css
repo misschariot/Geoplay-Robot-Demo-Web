@@ -644,6 +644,18 @@
   transition: left 0.55s ease;
 }
 
+.login-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -45%;
+  width: 30%;
+  height: 100%;
+  transform: skewX(-20deg);
+  background: rgba(255, 255, 255, 0.18);
+  animation: loginShine 4s ease-in-out infinite;
+}
+
 .login-button:hover {
   transform: translateY(-2px);
 
@@ -663,6 +675,17 @@
 
   box-shadow:
     0 8px 20px rgba(255, 90, 22, 0.18);
+}
+
+@keyframes loginShine {
+  0%,
+  65% {
+    left: -45%;
+  }
+
+  100% {
+    left: 130%;
+  }
 }
 
 /* --------------------------------------------------

@@ -3,6 +3,10 @@ import { Map, Marker, setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./GeoPlayMap.css";
+import GeoPlayNearbySearch from "./GeoPlayNearbySearch";
+import GeoPlayLocationSearch from "./GeoPlayLocationSearch";
+import GeoPlayRobotDialogue from "./GeoPlayRobotDialogue";
+import GeoPlayLocationActions from "./GeoPlayLocationActions";
 
 setWorkerUrl(workerUrl);
 
@@ -13,6 +17,8 @@ function GeoPlayMap({ startFtue = false }) {
   const locationMarkerRef = useRef(null);
   const locationWatchIdRef = useRef(null);
   const locationWatchTimeoutRef = useRef(null);
+  const locationStatusDismissTimeoutRef = useRef(null);
+  const nearbySearchTimerRef = useRef(null);
   const isFlyingToLocationRef = useRef(false);
 
   const [ftuePhase, setFtuePhase] = useState("earth");
@@ -31,6 +37,16 @@ function GeoPlayMap({ startFtue = false }) {
       window.clearTimeout(locationWatchTimeoutRef.current);
       locationWatchTimeoutRef.current = null;
     }
+
+    if (locationStatusDismissTimeoutRef.current !== null) {
+      window.clearTimeout(locationStatusDismissTimeoutRef.current);
+      locationStatusDismissTimeoutRef.current = null;
+    }
+
+    if (nearbySearchTimerRef.current !== null) {
+      window.clearTimeout(nearbySearchTimerRef.current);
+      nearbySearchTimerRef.current = null;
+    }
   }
 
   function handleAllowLocation() {
@@ -40,8 +56,13 @@ function GeoPlayMap({ startFtue = false }) {
       return;
     }
 
-    // Hide the entire FTUE overlay immediately while the browser requests
-    // permission and while we collect the best available location reading.
+    // Show the location status while we request permission and collect
+    // the best available location reading.
+    if (locationStatusDismissTimeoutRef.current !== null) {
+      window.clearTimeout(locationStatusDismissTimeoutRef.current);
+      locationStatusDismissTimeoutRef.current = null;
+    }
+
     setLocationStatus("requesting");
 
     const locationReadings = [];
@@ -90,6 +111,18 @@ function GeoPlayMap({ startFtue = false }) {
       isFlyingToLocationRef.current = true;
       setLocationStatus("flying");
 
+      /*
+        The location is now known, so the search card should leave as the
+        Earth begins its camera flight. Keep it mounted just long enough
+        for the fade-out animation to finish.
+      */
+      locationStatusDismissTimeoutRef.current = window.setTimeout(() => {
+        locationStatusDismissTimeoutRef.current = null;
+        if (isFlyingToLocationRef.current) {
+          setLocationStatus("flight");
+        }
+      }, 500);
+
       console.log("GeoPlay camera flight starting from best reading:", {
         latitude,
         longitude,
@@ -101,12 +134,19 @@ function GeoPlayMap({ startFtue = false }) {
         // House-level view for testing the returned coordinates.
         zoom: 17.5,
         curve: 1.0,
-        speed: 0.8,
+        // Slightly quicker so the location reveal keeps momentum without
+        // feeling abrupt.
+        speed: 1.2,
         essential: true,
       });
 
       earthMap.once("moveend", () => {
         isFlyingToLocationRef.current = false;
+
+        if (locationStatusDismissTimeoutRef.current !== null) {
+          window.clearTimeout(locationStatusDismissTimeoutRef.current);
+          locationStatusDismissTimeoutRef.current = null;
+        }
 
         if (locationMarkerRef.current) {
           locationMarkerRef.current.remove();
@@ -125,7 +165,23 @@ function GeoPlayMap({ startFtue = false }) {
           .setLngLat([longitude, latitude])
           .addTo(earthMap);
 
-        setLocationStatus("located");
+        /*
+          Let the status card finish its exit animation before revealing
+          the located state and returning the robot.
+        */
+        locationStatusDismissTimeoutRef.current = window.setTimeout(() => {
+          locationStatusDismissTimeoutRef.current = null;
+          setLocationStatus("located");
+
+          /*
+            Give the player a moment to enjoy the location reveal, then
+            naturally continue into the simulated nearby-property search.
+          */
+          nearbySearchTimerRef.current = window.setTimeout(() => {
+            nearbySearchTimerRef.current = null;
+            setLocationStatus("searching");
+          }, 2400);
+        }, 450);
 
         console.log("GeoPlay camera flight complete:", {
           latitude,
@@ -327,6 +383,21 @@ function GeoPlayMap({ startFtue = false }) {
     return () => {
       stopLocationWatch();
 
+      if (nearbySearchTimerRef.current !== null) {
+        window.clearTimeout(nearbySearchTimerRef.current);
+        nearbySearchTimerRef.current = null;
+      }
+
+      if (locationStatusDismissTimeoutRef.current !== null) {
+        window.clearTimeout(locationStatusDismissTimeoutRef.current);
+        locationStatusDismissTimeoutRef.current = null;
+      }
+
+      if (nearbySearchTimerRef.current !== null) {
+        window.clearTimeout(nearbySearchTimerRef.current);
+        nearbySearchTimerRef.current = null;
+      }
+
       if (rotationFrameRef.current !== null) {
         cancelAnimationFrame(rotationFrameRef.current);
         rotationFrameRef.current = null;
@@ -347,73 +418,53 @@ function GeoPlayMap({ startFtue = false }) {
   }, []);
 
   const isLocationFlightActive =
-    locationStatus === "requesting" || locationStatus === "flying";
+    locationStatus === "requesting" ||
+    locationStatus === "flying" ||
+    locationStatus === "flight";
+
+  const isLocationStatusFading =
+    locationStatus === "flying" || locationStatus === "flight";
+
+  const isNearbySearchActive = locationStatus === "searching";
+
+  useEffect(() => {
+    if (!locationMarkerRef.current) return;
+
+    const markerElement = locationMarkerRef.current.getElement();
+    markerElement.classList.toggle("is-searching", isNearbySearchActive);
+  }, [isNearbySearchActive]);
 
   return (
     <div className="geoplay-earth">
       <div ref={mapContainer} className="geoplay-earth-container" />
 
+      {isLocationFlightActive && (
+        <GeoPlayLocationSearch isFading={isLocationStatusFading} />
+      )}
+
+      {isNearbySearchActive && <GeoPlayNearbySearch />}
+
       <div
         className={`geoplay-earth-ftue-layer ${
-          locationStatus === "located" ? "is-location-result" : ""
+          locationStatus === "located" || locationStatus === "searching"
+            ? "is-location-result"
+            : ""
         }`}
         aria-hidden={isLocationFlightActive}
       >
         {ftuePhase !== "earth" && !isLocationFlightActive && (
           <>
-            <div
-              className={`geoplay-earth-guide-unit ${
-                locationStatus === "located" ? "is-location-result" : ""
-              }`}
-            >
-              <div className="geoplay-earth-guide-content">
-                <div
-                  className={`geoplay-earth-dialogue ${
-                    ftuePhase === "dialogue" ||
-                    ftuePhase === "actions" ||
-                    locationStatus === "located"
-                      ? "is-visible"
-                      : ""
-                  }`}
-                >
-                  {locationStatus === "located"
-                    ? "There you are!"
-                    : "Before we find casinos that serve geoplay games, I need to check your location."}
-                </div>
+            <GeoPlayRobotDialogue
+              ftuePhase={ftuePhase}
+              locationStatus={locationStatus}
+            />
 
-                <img
-                  className="geoplay-earth-robot-image is-visible"
-                  src="/robots/geoplay-robot-waving.png"
-                  alt=""
-                />
-              </div>
-            </div>
-
-            {ftuePhase === "actions" &&
-              (locationStatus === "idle" ||
-                locationStatus === "denied" ||
-                locationStatus === "error" ||
-                locationStatus === "unsupported") && (
-                <div
-                  className="geoplay-earth-location-actions is-visible"
-                  aria-label="Location choices"
-                >
-                  <button
-                    type="button"
-                    className="geoplay-earth-allow-button"
-                    onClick={handleAllowLocation}
-                  >
-                    ALLOW LOCATION
-                  </button>
-
-                  <button
-                    type="button"
-                    className="geoplay-earth-deny-button"
-                  >
-                    DENY
-                  </button>
-                </div>
-              )}
+            <GeoPlayLocationActions
+              ftuePhase={ftuePhase}
+              locationStatus={locationStatus}
+              onAllowLocation={handleAllowLocation}
+              onNotNow={() => setFtuePhase("dialogue")}
+            />
           </>
         )}
       </div>
