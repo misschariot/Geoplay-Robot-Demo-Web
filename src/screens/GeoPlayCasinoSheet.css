@@ -1,0 +1,520 @@
+/* --------------------------------------------------
+   GeoPlay Casino Sheet
+   One continuous bottom sheet:
+   collapsed → partial → full
+
+   The collapsed state is NOT a separate preview card.
+   The same sheet simply exposes a smaller portion of
+   its real content.
+-------------------------------------------------- */
+
+.geoplay-casino-sheet-scrim {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.34);
+  opacity: 1;
+  cursor: default;
+  transition: opacity 260ms ease;
+}
+
+.geoplay-casino-sheet-scrim.is-collapsed {
+  background: transparent;
+  pointer-events: none;
+}
+
+.geoplay-casino-sheet {
+  position: fixed;
+  z-index: 91;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(88vh, 720px);
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 11, 13, 0.99),
+      rgba(4, 6, 8, 0.99)
+    );
+  box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.42);
+  will-change: transform;
+  transform: translate3d(0, calc(100% - 210px), 0);
+}
+
+.geoplay-casino-sheet-drag-region {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 34px;
+  box-sizing: border-box;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.geoplay-casino-sheet-drag-region:active {
+  cursor: grabbing;
+}
+
+.geoplay-casino-sheet-handle {
+  width: 42px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.geoplay-casino-sheet-drag-region:hover
+.geoplay-casino-sheet-handle {
+  background: rgba(255, 178, 31, 0.68);
+}
+
+.geoplay-casino-sheet-close {
+  position: absolute;
+  z-index: 30;
+  top: 46px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  background: rgba(4, 6, 8, 0.72);
+  color: #fff;
+  font: 400 24px/1 Poppins, sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.geoplay-casino-sheet-content {
+  height: calc(100% - 34px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  scrollbar-width: none;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.geoplay-casino-sheet-content::-webkit-scrollbar {
+  display: none;
+}
+
+.geoplay-casino-sheet.is-collapsed
+.geoplay-casino-sheet-content {
+  overflow: hidden;
+}
+
+.geoplay-casino-sheet-hero {
+  position: relative;
+  width: 100%;
+  height: 126px;
+}
+
+.geoplay-casino-sheet-hero-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.geoplay-casino-sheet-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.02),
+      rgba(0, 0, 0, 0.72)
+    );
+}
+
+.geoplay-casino-sheet-logo {
+  position: relative;
+  z-index: 3;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 9px 14px;
+  padding: 7px;
+  box-sizing: border-box;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.geoplay-casino-sheet-logo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.geoplay-casino-sheet-header {
+  padding: 0 14px;
+}
+
+.geoplay-casino-sheet-header h2 {
+  margin: 0;
+  color: #fff;
+  font: 800 21px/1.14 Poppins, sans-serif;
+}
+
+.geoplay-casino-sheet-identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-top: 7px;
+  color: rgba(255, 255, 255, 0.45);
+  font: 700 7.5px/1.2 Poppins, sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.geoplay-casino-sheet-identity span:last-child {
+  color: #ffb21f;
+}
+
+.geoplay-casino-sheet-location {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 14px 0;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.geoplay-casino-sheet-location-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255, 178, 31, 0.12);
+  color: #ffb21f;
+  font-size: 12px;
+}
+
+.geoplay-casino-sheet-location div:nth-child(2) {
+  min-width: 0;
+}
+
+.geoplay-casino-sheet-location strong,
+.geoplay-casino-sheet-location span {
+  display: block;
+}
+
+.geoplay-casino-sheet-location strong {
+  color: rgba(255, 255, 255, 0.48);
+  font: 800 7px/1 Poppins, sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.geoplay-casino-sheet-location div:nth-child(2) span {
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.82);
+  font: 600 9px/1.35 Poppins, sans-serif;
+}
+
+.geoplay-casino-sheet-location > span:last-child {
+  color: rgba(255, 178, 31, 0.8);
+  font-size: 22px;
+}
+
+.geoplay-casino-sheet-section {
+  margin: 22px 14px 0;
+}
+
+.geoplay-casino-sheet-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.geoplay-casino-sheet-section-heading h3 {
+  margin: 0;
+  color: #ffb21f;
+  font: 800 12px/1.1 Poppins, sans-serif;
+  letter-spacing: 0.09em;
+}
+
+.geoplay-casino-sheet-section-heading p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.33);
+  font: 600 7px/1.25 Poppins, sans-serif;
+}
+
+.geoplay-casino-sheet-section-heading > span:last-child {
+  color: rgba(255, 255, 255, 0.25);
+  font: 800 6.5px/1 Poppins, sans-serif;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.geoplay-casino-sheet-games {
+  display: flex;
+  gap: 11px;
+  margin-top: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1px 1px 9px;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.geoplay-casino-sheet-games::-webkit-scrollbar {
+  display: none;
+}
+
+.geoplay-casino-sheet-game {
+  flex: 0 0 104px;
+  width: 104px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.geoplay-casino-sheet-game-art {
+  width: 104px;
+  height: 122px;
+  overflow: hidden;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.24);
+}
+
+.geoplay-casino-sheet-game-art img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.geoplay-casino-sheet-game-copy {
+  padding: 7px 2px 0;
+}
+
+.geoplay-casino-sheet-game-copy strong,
+.geoplay-casino-sheet-game-copy span {
+  display: block;
+}
+
+.geoplay-casino-sheet-game-copy strong {
+  overflow: hidden;
+  font: 800 8px/1.2 Poppins, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.geoplay-casino-sheet-game-copy span {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.38);
+  font: 600 6.5px/1 Poppins, sans-serif;
+  text-transform: uppercase;
+}
+
+.geoplay-casino-sheet-live {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #ffb21f !important;
+}
+
+.geoplay-casino-sheet-live span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffb21f;
+  box-shadow: 0 0 8px rgba(255, 178, 31, 0.8);
+  animation: geoplayCasinoLivePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes geoplayCasinoLivePulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.geoplay-casino-sheet-winners {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.geoplay-casino-sheet-winner {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 7px 9px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.geoplay-casino-sheet-winner-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: rgba(255, 178, 31, 0.1);
+  color: #ffb21f;
+  font-size: 12px;
+}
+
+.geoplay-casino-sheet-winner-copy strong,
+.geoplay-casino-sheet-winner-copy span {
+  display: block;
+}
+
+.geoplay-casino-sheet-winner-copy strong {
+  color: rgba(255, 255, 255, 0.86);
+  font: 800 8.5px/1.15 Poppins, sans-serif;
+}
+
+.geoplay-casino-sheet-winner-copy span {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.33);
+  font: 600 6.5px/1 Poppins, sans-serif;
+}
+
+.geoplay-casino-sheet-winner-amount {
+  text-align: right;
+}
+
+.geoplay-casino-sheet-winner-amount span {
+  display: block;
+  color: rgba(255, 255, 255, 0.24);
+  font: 800 5.5px/1 Poppins, sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.geoplay-casino-sheet-winner-amount b {
+  display: block;
+  margin-top: 2px;
+  color: #ffb21f;
+  font: 800 12px/1 Poppins, sans-serif;
+}
+
+.geoplay-casino-sheet-play {
+  width: calc(100% - 28px);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 14px 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 14px;
+  background: #ffb21f;
+  color: #050608;
+  font: 800 11px/1 Poppins, sans-serif;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.geoplay-casino-sheet-play span:last-child {
+  font-size: 18px;
+}
+
+.geoplay-casino-sheet-footer {
+  padding: 18px 14px 28px;
+  color: rgba(255, 255, 255, 0.18);
+  text-align: center;
+  font: 700 6px/1 Poppins, sans-serif;
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 480px) {
+  .geoplay-casino-sheet {
+    border-radius: 20px 20px 0 0;
+  }
+
+  .geoplay-casino-sheet-hero {
+    height: 118px;
+  }
+
+  .geoplay-casino-sheet-logo {
+    width: 60px;
+    height: 60px;
+    margin-top: -30px;
+    margin-left: 12px;
+  }
+
+  .geoplay-casino-sheet-header {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .geoplay-casino-sheet-header h2 {
+    font-size: 18px;
+  }
+
+  .geoplay-casino-sheet-location,
+  .geoplay-casino-sheet-section {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  .geoplay-casino-sheet-play {
+    width: calc(100% - 24px);
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .geoplay-casino-sheet-game {
+    flex-basis: 90px;
+    width: 90px;
+  }
+
+  .geoplay-casino-sheet-game-art {
+    width: 90px;
+    height: 105px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geoplay-casino-sheet,
+  .geoplay-casino-sheet-scrim {
+    transition: none;
+  }
+
+  .geoplay-casino-sheet-live span {
+    animation: none;
+  }
+}

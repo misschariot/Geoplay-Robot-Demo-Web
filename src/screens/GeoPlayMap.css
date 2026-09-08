@@ -348,6 +348,7 @@
 }
 
 /* The user's location becomes the origin of the simulated radar scan. */
+
 .geoplay-earth-location-marker.is-searching {
   animation:
     geoplayEarthLocationMarkerPulse
@@ -370,7 +371,10 @@
   border: 1px solid rgba(255, 116, 25, 0.72);
   border-radius: 50%;
 
-  transform: translate(-50%, -50%) scale(0.25);
+  transform:
+    translate(-50%, -50%)
+    scale(0.25);
+
   opacity: 0;
 
   pointer-events: none;
@@ -389,7 +393,9 @@
 @keyframes geoplayEarthNearbyRadarPulse {
   0% {
     opacity: 0.78;
-    transform: translate(-50%, -50%) scale(0.25);
+    transform:
+      translate(-50%, -50%)
+      scale(0.25);
   }
 
   70% {
@@ -398,7 +404,107 @@
 
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(7);
+    transform:
+      translate(-50%, -50%)
+      scale(7);
+  }
+}
+
+/* --------------------------------------------------
+   Nearby casino markers
+-------------------------------------------------- */
+
+.geoplay-earth-casino-marker {
+  position: relative;
+
+  width: 20px;
+  height: 20px;
+
+  box-sizing: border-box;
+
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+
+  background: #ffb21f;
+
+  box-shadow:
+    0 0 0 5px rgba(255, 178, 31, 0.18),
+    0 0 16px rgba(255, 116, 25, 0.72),
+    0 0 28px rgba(255, 178, 31, 0.32);
+
+  pointer-events: auto;
+
+  animation:
+    geoplayEarthCasinoMarkerPulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+.geoplay-earth-casino-marker::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 26px;
+  height: 26px;
+
+  border: 1px solid rgba(255, 178, 31, 0.65);
+  border-radius: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.65);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  animation:
+    geoplayEarthCasinoMarkerRing
+    2.2s
+    ease-out
+    infinite;
+}
+
+@keyframes geoplayEarthCasinoMarkerPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 5px rgba(255, 178, 31, 0.18),
+      0 0 16px rgba(255, 116, 25, 0.72),
+      0 0 28px rgba(255, 178, 31, 0.32);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(255, 178, 31, 0.10),
+      0 0 22px rgba(255, 116, 25, 0.88),
+      0 0 36px rgba(255, 178, 31, 0.42);
+  }
+}
+
+@keyframes geoplayEarthCasinoMarkerRing {
+  0% {
+    opacity: 0.7;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.55);
+  }
+
+  70% {
+    opacity: 0.15;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.8);
   }
 }
 
@@ -420,6 +526,7 @@
 }
 
 /* Hidden completely while requesting permission and during the camera flight. */
+
 .geoplay-earth-ftue-layer.is-location-result {
   width: 100%;
   height: 100%;
@@ -441,6 +548,7 @@
 }
 
 /* Keep the returning robot away from the centered location marker. */
+
 .geoplay-earth-guide-unit.is-location-result {
   left: auto;
   top: auto;
@@ -450,9 +558,9 @@
   transform: none;
 }
 
-
 /* During nearby search the robot remains in the same lower-right position,
    while its dialogue updates to continue the story. */
+
 .geoplay-earth-guide-unit.is-nearby-searching {
   right: clamp(16px, 3vw, 40px);
   bottom: clamp(18px, 3vh, 30px);
@@ -496,6 +604,7 @@
 }
 
 /* Simple prototype marker; the final YOU ARE HERE design can replace it later. */
+
 .geoplay-earth-location-marker {
   width: 18px;
   height: 18px;
@@ -515,7 +624,12 @@
     animate transform, or it would replace MapLibre's geographic
     positioning and pin the marker to the corner of the map.
   */
-  animation: geoplayEarthLocationMarkerPulse 1.8s ease-in-out infinite;
+
+  animation:
+    geoplayEarthLocationMarkerPulse
+    1.8s
+    ease-in-out
+    infinite;
 }
 
 @keyframes geoplayEarthLocationMarkerPulse {
@@ -535,20 +649,37 @@
 }
 
 @keyframes geoplayEarthRobotEnter {
-  0% { opacity: 0; transform: translateX(115%) scale(0.94); }
-  72% { opacity: 1; transform: translateX(-3%) scale(1.01); }
-  100% { opacity: 1; transform: translateX(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateX(115%) scale(0.94);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateX(-3%) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
 }
 
 @keyframes geoplayEarthRobotFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
 }
 
 /*
   Same visual treatment as the FTUEWelcome greeting bubble.
   It is intentionally revealed only after the robot entrance.
 */
+
 .geoplay-earth-dialogue {
   position: relative;
 
@@ -646,42 +777,6 @@
     rotate(45deg);
 }
 
-@keyframes geoplayEarthRobotEnter {
-  0% {
-    opacity: 0;
-
-    transform:
-      translateX(115%)
-      scale(0.94);
-  }
-
-  72% {
-    opacity: 1;
-
-    transform:
-      translateX(-3%)
-      scale(1.01);
-  }
-
-  100% {
-    opacity: 1;
-
-    transform:
-      translateX(0)
-      scale(1);
-  }
-}
-
-@keyframes geoplayEarthRobotFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-7px);
-  }
-}
-
 @keyframes geoplayEarthDialogueIn {
   0% {
     opacity: 0;
@@ -718,6 +813,7 @@
   z-index: 6;
 
   /* The FTUE layer is visual-only, but the CTA stack must receive taps. */
+
   pointer-events: auto;
 
   left: 50%;
@@ -751,6 +847,8 @@
     forwards;
 }
 
+/* Primary CTA — same visual treatment as LoginScreen .login-button. */
+
 .geoplay-earth-allow-button,
 .geoplay-earth-deny-button {
   position: relative;
@@ -778,8 +876,6 @@
     background 0.25s ease;
 }
 
-/* Primary CTA — same visual treatment as LoginScreen .login-button. */
-
 .geoplay-earth-allow-button {
   margin-top: 4px;
 
@@ -804,6 +900,7 @@
 /*
   Exact shine treatment used by LoginScreen .login-button.
 */
+
 .geoplay-earth-allow-button::before {
   content: "";
 
@@ -872,7 +969,8 @@
 
   border-color: rgba(255, 178, 31, 0.45);
 
-  box-shadow: 0 0 14px rgba(255, 90, 22, 0.12);
+  box-shadow:
+    0 0 14px rgba(255, 90, 22, 0.12);
 }
 
 .geoplay-earth-deny-button:active {
@@ -932,7 +1030,6 @@
     bottom: 16px;
     width: min(220px, calc(100vw - 24px));
   }
-
 
   .geoplay-earth-guide-unit.is-nearby-searching {
     right: 12px;
@@ -1006,35 +1103,10 @@
     font-size: 12.5px;
   }
 
-
   .geoplay-earth-allow-button,
   .geoplay-earth-deny-button {
     padding: 12px 17px;
 
     font-size: 12.5px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .geoplay-earth-location-status,
-  .geoplay-earth-location-status-card,
-  .geoplay-earth-location-status-indicator span,
-  .geoplay-earth-robot-image.is-visible,
-  .geoplay-earth-dialogue.is-visible,
-  .geoplay-earth-location-actions.is-visible,
-  .geoplay-earth-guide-unit.is-location-result .geoplay-earth-dialogue.is-visible,
-  .geoplay-earth-location-marker,
-  .geoplay-earth-location-marker.is-searching::before,
-  .geoplay-earth-location-marker.is-searching::after,
-  .geoplay-earth-nearby-search,
-  .geoplay-earth-nearby-search-indicator span {
-    opacity: 1;
-    animation: none;
-  }
-
-  .geoplay-earth-guide-unit.is-location-result .geoplay-earth-guide-content {
-    opacity: 1;
-    transform: none;
-    animation: none;
   }
 }
