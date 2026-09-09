@@ -108,78 +108,56 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   });
 
   const getMetrics = () => {
-    const sheet = sheetRef.current;
     const viewportHeight = window.innerHeight;
 
-    if (!sheet) {
-      return {
-        sheetHeight: 0,
-        collapsedOffset: 0,
-        partialOffset: 0,
-        collapsedVisible: Math.min(250, Math.max(230, viewportHeight * 0.36)),
-        partialVisible: Math.min(520, Math.max(450, viewportHeight * 0.70)),
-      };
-    }
-
-    const sheetHeight = sheet.clientHeight;
-    const collapsedVisible = Math.min(
-      250,
-      Math.max(230, viewportHeight * 0.36)
-    );
-    const partialVisible = Math.min(
-      520,
-      Math.max(450, viewportHeight * 0.70)
-    );
-    const fullVisible = Math.min(
-      viewportHeight - 24,
-      sheetHeight
+    const collapsedHeight = 250;
+    const fullHeight = Math.min(
+      760,
+      Math.max(collapsedHeight, viewportHeight - 24)
     );
 
     return {
-      sheetHeight,
-      collapsedVisible,
-      partialVisible,
-      fullVisible,
-      collapsedOffset: Math.max(0, sheetHeight - collapsedVisible),
-      partialOffset: Math.max(0, sheetHeight - partialVisible),
-      fullOffset: Math.max(0, sheetHeight - fullVisible),
+      collapsedHeight,
+      fullHeight,
     };
   };
 
-  const applyOffset = (offset, animate = true) => {
+  const applyHeight = (height, animate = true) => {
     if (!sheetRef.current) return;
 
     sheetRef.current.style.transition = animate
-      ? "transform 430ms cubic-bezier(0.22, 0.8, 0.2, 1)"
+      ? "height 430ms cubic-bezier(0.22, 0.8, 0.2, 1)"
       : "none";
 
-    sheetRef.current.style.transform =
-      `translate3d(0, ${Math.max(0, offset)}px, 0)`;
+    sheetRef.current.style.height = `${Math.max(0, height)}px`;
   };
 
   const snapTo = (nextSnap, animate = true) => {
     const metrics = getMetrics();
-    const nextOffset =
+    const nextHeight =
       nextSnap === "full"
-        ? metrics.fullOffset
-        : nextSnap === "partial"
-          ? metrics.partialOffset
-          : metrics.collapsedOffset;
+        ? metrics.fullHeight
+        : metrics.collapsedHeight;
 
     snapRef.current = nextSnap;
     setSnap(nextSnap);
-    currentOffsetRef.current = nextOffset;
+    currentOffsetRef.current = nextHeight;
 
     requestAnimationFrame(() => {
-      applyOffset(nextOffset, animate);
+      applyHeight(nextHeight, animate);
     });
+
+    if (nextSnap === "full" && sheetBodyRef.current) {
+      sheetBodyRef.current.scrollTop = 0;
+    }
   };
 
   useEffect(() => {
     const settle = () => {
       setIsEntering(false);
       const metrics = getMetrics();
-      applyOffset(metrics.collapsedOffset, true);
+      currentOffsetRef.current = metrics.collapsedHeight;
+      applyHeight(metrics.collapsedHeight, true);
     };
 
     const frame = window.requestAnimationFrame(settle);
@@ -188,15 +166,13 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
       if (isClosingRef.current) return;
 
       const metrics = getMetrics();
-      const nextOffset =
+      const nextHeight =
         snapRef.current === "full"
-          ? metrics.fullOffset
-          : snapRef.current === "partial"
-            ? metrics.partialOffset
-            : metrics.collapsedOffset;
+          ? metrics.fullHeight
+          : metrics.collapsedHeight;
 
-      currentOffsetRef.current = nextOffset;
-      applyOffset(nextOffset, false);
+      currentOffsetRef.current = nextHeight;
+      applyHeight(nextHeight, false);
     };
 
     window.addEventListener("resize", handleResize);
@@ -213,8 +189,8 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
 
     const frame = window.requestAnimationFrame(() => {
       const metrics = getMetrics();
-      currentOffsetRef.current = metrics.collapsedOffset;
-      applyOffset(metrics.collapsedOffset, false);
+      currentOffsetRef.current = metrics.collapsedHeight;
+      applyHeight(metrics.collapsedHeight, false);
     });
 
     return () => window.cancelAnimationFrame(frame);
@@ -251,17 +227,29 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   const handlePointerDown = (event) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
 
+    const isHandle = Boolean(
+      event.target?.closest?.(".geoplay-casino-sheet-handle-area")
+    );
+    const isGamesScroller = Boolean(
+      event.target?.closest?.(".geoplay-casino-sheet-games-scroller")
+    );
+
+    // At FULL, only the handle controls the sheet.
+    // The rest of the sheet is a native vertical scroll surface.
+    if (snapRef.current === "full" && !isHandle) return;
+
+    // The games carousel owns horizontal gestures.
+    if (isGamesScroller) return;
+
     const metrics = getMetrics();
-    const currentOffset =
+    const currentHeight =
       snapRef.current === "full"
-        ? metrics.fullOffset
-        : snapRef.current === "partial"
-          ? metrics.partialOffset
-          : metrics.collapsedOffset;
+        ? metrics.fullHeight
+        : metrics.collapsedHeight;
 
     dragStartYRef.current = event.clientY;
-    dragStartOffsetRef.current = currentOffset;
-    currentOffsetRef.current = currentOffset;
+    dragStartOffsetRef.current = currentHeight;
+    currentOffsetRef.current = currentHeight;
     lastYRef.current = event.clientY;
     lastTimeRef.current = performance.now();
 
@@ -269,7 +257,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
       event.currentTarget.setPointerCapture(event.pointerId);
     }
 
-    applyOffset(currentOffset, false);
+    applyHeight(currentHeight, false);
   };
 
   const handlePointerMove = (event) => {
@@ -278,19 +266,23 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
     const metrics = getMetrics();
     const deltaY = event.clientY - dragStartYRef.current;
 
-    const minOffset = metrics.fullOffset;
-    const maxOffset = metrics.collapsedOffset;
+    const minHeight = metrics.collapsedHeight;
+    const maxHeight = metrics.fullHeight;
 
-    const nextOffset = Math.min(
-      maxOffset,
-      Math.max(minOffset, dragStartOffsetRef.current + deltaY)
+    const nextHeight = Math.min(
+      maxHeight,
+      Math.max(minHeight, dragStartOffsetRef.current - deltaY)
     );
 
-    currentOffsetRef.current = nextOffset;
-    applyOffset(nextOffset, false);
+    currentOffsetRef.current = nextHeight;
+    applyHeight(nextHeight, false);
 
     lastYRef.current = event.clientY;
     lastTimeRef.current = performance.now();
+
+    if (Math.abs(deltaY) > 8) {
+      event.preventDefault();
+    }
   };
 
   const handlePointerUp = (event) => {
@@ -321,56 +313,36 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
     }
 
     if (deltaY < -45 || velocity < -0.45) {
-      if (snapRef.current === "collapsed") {
-        snapTo("partial");
-      } else if (snapRef.current === "partial") {
-        snapTo("full");
-      }
+      snapTo("full");
       return;
     }
 
     if (deltaY > 45 || velocity > 0.45) {
       if (snapRef.current === "full") {
-        snapTo("partial");
-      } else {
         snapTo("collapsed");
+      } else {
+        handleClose();
       }
       return;
     }
 
-    const stops = [
-      { name: "collapsed", offset: metrics.collapsedOffset },
-      { name: "partial", offset: metrics.partialOffset },
-      { name: "full", offset: metrics.fullOffset },
-    ];
+    const midpoint = (metrics.collapsedHeight + metrics.fullHeight) / 2;
 
-    const nearestStop = stops.reduce((nearest, stop) =>
-      Math.abs(currentOffsetRef.current - stop.offset) <
-      Math.abs(currentOffsetRef.current - nearest.offset)
-        ? stop
-        : nearest
+    snapTo(
+      currentOffsetRef.current >= midpoint ? "full" : "collapsed"
     );
-
-    snapTo(nearestStop.name);
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "ArrowUp") {
       event.preventDefault();
-
-      if (snapRef.current === "collapsed") {
-        snapTo("partial");
-      } else if (snapRef.current === "partial") {
-        snapTo("full");
-      }
+      snapTo("full");
     }
 
     if (event.key === "ArrowDown") {
       event.preventDefault();
 
       if (snapRef.current === "full") {
-        snapTo("partial");
-      } else if (snapRef.current === "partial") {
         snapTo("collapsed");
       } else {
         handleClose();
@@ -442,16 +414,16 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
           isEntering ? " is-entering" : ""
         }${isClosing ? " is-closing" : ""}`}
         aria-label={`${casino.name} details`}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
       >
         <div
           className="geoplay-casino-sheet-handle-area"
           role="button"
           tabIndex={0}
           aria-label="Drag to resize casino details"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
           onKeyDown={handleKeyDown}
         >
           <div className="geoplay-casino-sheet-handle" />
@@ -466,6 +438,10 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
           ×
         </button>
 
+        <div
+          ref={sheetBodyRef}
+          className="geoplay-casino-sheet-body"
+        >
         <div className="geoplay-casino-sheet-hero">
           {branding.hero && (
             <img
@@ -502,10 +478,6 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
           </div>
         </div>
 
-        <div
-          ref={sheetBodyRef}
-          className="geoplay-casino-sheet-body"
-        >
           <div className="geoplay-casino-sheet-partial-content">
           <div
             className="geoplay-casino-sheet-actions"

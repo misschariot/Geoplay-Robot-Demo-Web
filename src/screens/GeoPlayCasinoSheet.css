@@ -1,14 +1,12 @@
 /* --------------------------------------------------
    GeoPlay Casino Sheet
-   Continuous-sheet foundation:
-   collapsed → partial
+   Continuous two-state sheet:
+   collapsed ↔ full
 
    One physical sheet.
-   Snap states only change how far the same sheet is
-   translated upward. The hero/header never changes.
-
-   Full content will be added below the current partial
-   content later without introducing another header.
+   The entire casino UI is one continuous surface.
+   Collapsed height shows the hero; full height exposes
+   the same content as a native vertical scroll surface.
 -------------------------------------------------- */
 
 .geoplay-casino-sheet-scrim {
@@ -43,9 +41,9 @@
   bottom: 0;
 
   width: 100%;
-  height: calc(100vh - 24px);
+  height: 250px;
   max-height: 760px;
-  min-height: 250px;
+  min-height: 230px;
 
   box-sizing: border-box;
   overflow: hidden;
@@ -58,7 +56,7 @@
   will-change: transform;
   transform: translate3d(0, 0, 0);
 
-  transition: transform 430ms cubic-bezier(0.22, 0.8, 0.2, 1);
+  transition: height 430ms cubic-bezier(0.22, 0.8, 0.2, 1);
 }
 
 .geoplay-casino-sheet.is-entering {
@@ -70,6 +68,19 @@
   transform: translate3d(0, 100%, 0) !important;
   transition: transform 430ms cubic-bezier(0.22, 0.8, 0.2, 1) !important;
   pointer-events: none;
+}
+
+
+.geoplay-casino-sheet.is-collapsed {
+  cursor: grab;
+}
+
+.geoplay-casino-sheet.is-collapsed:active {
+  cursor: grabbing;
+}
+
+.geoplay-casino-sheet.is-full {
+  cursor: default;
 }
 
 /* --------------------------------------------------
@@ -328,11 +339,17 @@
 
 .geoplay-casino-sheet-body {
   width: 100%;
-  height: calc(100% - 250px);
+  height: 100%;
   min-height: 0;
-  overflow: hidden;
   box-sizing: border-box;
+  overflow: hidden;
   touch-action: pan-y;
+  overscroll-behavior-y: contain;
+}
+
+.geoplay-casino-sheet.is-collapsed .geoplay-casino-sheet-body {
+  overflow: hidden;
+  touch-action: none;
 }
 
 .geoplay-casino-sheet.is-full .geoplay-casino-sheet-body {
@@ -347,8 +364,9 @@
   display: none;
 }
 
+
 /* --------------------------------------------------
-   Partial content
+   Continuous sheet content
 -------------------------------------------------- */
 
 .geoplay-casino-sheet-partial-content {
@@ -610,7 +628,7 @@
 
 
 /* --------------------------------------------------
-   Full view — Available Games
+   Available Games
 -------------------------------------------------- */
 
 .geoplay-casino-sheet-full-content {
@@ -796,7 +814,7 @@
 
 
 /* --------------------------------------------------
-   Full view — Latest Winners
+   Latest Winners
 -------------------------------------------------- */
 
 .geoplay-casino-sheet-winners-section {
