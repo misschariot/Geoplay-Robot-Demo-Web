@@ -91,6 +91,9 @@ function GeoPlayMap({ startFtue = false }) {
   const nearbySearchTimerRef = useRef(null);
   const nearbyCasinosRef = useRef([]);
   const nearbyCameraTimerRef = useRef(null);
+  const nearbyRobotReturnTimerRef = useRef(null);
+  const nearbyFtueCompletionTimerRef = useRef(null);
+  const nearbyFtueInteractiveTimerRef = useRef(null);
   const isFlyingToLocationRef = useRef(false);
 
   const [ftuePhase, setFtuePhase] = useState("earth");
@@ -100,6 +103,16 @@ function GeoPlayMap({ startFtue = false }) {
     useState(null);
   const [selectedCasino, setSelectedCasino] =
     useState(null);
+  const [isNearbySearchPopupVisible, setIsNearbySearchPopupVisible] =
+    useState(false);
+  const [isNearbySearchPopupFading, setIsNearbySearchPopupFading] =
+    useState(false);
+  const [isNearbySearchResultReady, setIsNearbySearchResultReady] =
+    useState(false);
+  const [isNearbyResultDialogueFading, setIsNearbyResultDialogueFading] =
+    useState(false);
+  const [isFtueComplete, setIsFtueComplete] =
+    useState(false);
 
   function clearCasinoMarkers() {
     casinoMarkerRefs.current.forEach(
@@ -194,6 +207,39 @@ function GeoPlayMap({ startFtue = false }) {
       );
 
       nearbyCameraTimerRef.current = null;
+    }
+
+    if (
+      nearbyRobotReturnTimerRef.current !==
+      null
+    ) {
+      window.clearTimeout(
+        nearbyRobotReturnTimerRef.current
+      );
+
+      nearbyRobotReturnTimerRef.current = null;
+    }
+
+    if (
+      nearbyFtueCompletionTimerRef.current !==
+      null
+    ) {
+      window.clearTimeout(
+        nearbyFtueCompletionTimerRef.current
+      );
+
+      nearbyFtueCompletionTimerRef.current = null;
+    }
+
+    if (
+      nearbyFtueInteractiveTimerRef.current !==
+      null
+    ) {
+      window.clearTimeout(
+        nearbyFtueInteractiveTimerRef.current
+      );
+
+      nearbyFtueInteractiveTimerRef.current = null;
     }
   }
 
@@ -320,7 +366,7 @@ function GeoPlayMap({ startFtue = false }) {
         center: [longitude, latitude],
         zoom: 17.5,
         curve: 1.0,
-        speed: 1.2,
+        speed: 2.2,
         essential: true,
       });
 
@@ -443,7 +489,7 @@ function GeoPlayMap({ startFtue = false }) {
             }
           );
 
-          if (accuracy <= 50) {
+          if (accuracy <= 100) {
             finishLocationLookup();
           }
         },
@@ -472,7 +518,7 @@ function GeoPlayMap({ startFtue = false }) {
     locationWatchTimeoutRef.current =
       window.setTimeout(() => {
         finishLocationLookup();
-      }, 8000);
+      }, 5000);
   }
 
   useEffect(() => {
@@ -603,13 +649,25 @@ function GeoPlayMap({ startFtue = false }) {
       center: [0, 15],
       zoom: 1.1,
       attributionControl: true,
-      interactive: false,
+      interactive: true,
       maxPitch: 85,
       minZoom: 0,
       maxZoom: 19,
     });
 
     map.current = earthMap;
+
+    /*
+      Keep MapLibre's interaction handlers available throughout the FTUE,
+      but disable them until the final dialogue has disappeared.
+    */
+    earthMap.dragPan.disable();
+    earthMap.scrollZoom.disable();
+    earthMap.boxZoom.disable();
+    earthMap.doubleClickZoom.disable();
+    earthMap.dragRotate.disable();
+    earthMap.keyboard.disable();
+    earthMap.touchZoomRotate.disable();
 
     const setResponsiveGlobeView =
       () => {
@@ -713,6 +771,35 @@ function GeoPlayMap({ startFtue = false }) {
       locationStatus !== "searching" ||
       !playerLocation
     ) {
+      setIsNearbySearchPopupVisible(false);
+      setIsNearbySearchPopupFading(false);
+      setIsNearbySearchResultReady(false);
+      setIsNearbyResultDialogueFading(false);
+      setIsFtueComplete(false);
+      return;
+    }
+
+    setIsNearbySearchPopupVisible(false);
+    setIsNearbySearchPopupFading(false);
+    setIsNearbySearchResultReady(false);
+    setIsNearbyResultDialogueFading(false);
+    setIsFtueComplete(false);
+
+    const popupTimer = window.setTimeout(() => {
+      setIsNearbySearchPopupVisible(true);
+      setIsNearbySearchPopupFading(false);
+    }, 2350);
+
+    return () => {
+      window.clearTimeout(popupTimer);
+    };
+  }, [locationStatus, playerLocation]);
+
+  useEffect(() => {
+    if (
+      !isNearbySearchPopupVisible ||
+      !playerLocation
+    ) {
       return;
     }
 
@@ -765,8 +852,8 @@ function GeoPlayMap({ startFtue = false }) {
     );
 
     /*
-      Give the SEARCHING NEARBY state a short moment
-      before beginning the regional camera reveal.
+      Let the SEARCHING NEARBY card finish entering,
+      then give it a calm pause before the camera reveal.
     */
     nearbyCameraTimerRef.current =
       window.setTimeout(() => {
@@ -928,7 +1015,58 @@ function GeoPlayMap({ startFtue = false }) {
               ),
           }))
         );
-      }, 900);
+
+        /*
+          Let the camera finish its reveal before
+          gracefully fading the SEARCHING NEARBY card away.
+        */
+        currentMap.once("moveend", () => {
+          setIsNearbySearchPopupFading(true);
+
+          window.setTimeout(() => {
+            setIsNearbySearchPopupVisible(false);
+            setIsNearbySearchPopupFading(false);
+
+            /*
+              Give the scene a little breathing room after
+              the SEARCHING NEARBY card disappears before
+              the robot returns with the casino result.
+            */
+            nearbyRobotReturnTimerRef.current =
+              window.setTimeout(() => {
+                nearbyRobotReturnTimerRef.current =
+                  null;
+
+                setIsNearbySearchResultReady(true);
+
+                /*
+                  Give the player time to read the result message.
+                  Then fade only the dialogue bubble away, leaving
+                  the robot on screen.
+                */
+                nearbyFtueCompletionTimerRef.current =
+                  window.setTimeout(() => {
+                    nearbyFtueCompletionTimerRef.current =
+                      null;
+
+                    setIsNearbyResultDialogueFading(true);
+
+                    /*
+                      Wait for the bubble fade to finish before
+                      handing control of the map back to the player.
+                    */
+                    nearbyFtueInteractiveTimerRef.current =
+                      window.setTimeout(() => {
+                        nearbyFtueInteractiveTimerRef.current =
+                          null;
+
+                        setIsFtueComplete(true);
+                      }, 500);
+                  }, 5000);
+              }, 700);
+          }, 500);
+        });
+      }, 1400);
 
     return () => {
       if (
@@ -944,7 +1082,7 @@ function GeoPlayMap({ startFtue = false }) {
       }
     };
   }, [
-    locationStatus,
+    isNearbySearchPopupVisible,
     playerLocation,
   ]);
 
@@ -963,6 +1101,40 @@ function GeoPlayMap({ startFtue = false }) {
     );
   }, [selectedCasino]);
 
+  useEffect(() => {
+    const earthMap = map.current;
+
+    if (!earthMap || !isFtueComplete) {
+      return;
+    }
+
+    /*
+      The map is intentionally non-interactive during the FTUE.
+      Once the final dialogue has faded away, return control to
+      the player and stop the automatic globe rotation.
+    */
+    if (rotationFrameRef.current !== null) {
+      cancelAnimationFrame(
+        rotationFrameRef.current
+      );
+
+      rotationFrameRef.current = null;
+    }
+
+    earthMap.dragPan.enable();
+    earthMap.scrollZoom.enable();
+    earthMap.boxZoom.enable();
+    earthMap.doubleClickZoom.enable();
+    earthMap.dragRotate.enable();
+    earthMap.keyboard.enable();
+    earthMap.touchZoomRotate.enable();
+    earthMap.getCanvas().style.pointerEvents = "auto";
+
+    console.log(
+      "GeoPlay FTUE complete: map interaction enabled."
+    );
+  }, [isFtueComplete]);
+
   const isLocationFlightActive =
     locationStatus === "requesting" ||
     locationStatus === "flying" ||
@@ -973,7 +1145,8 @@ function GeoPlayMap({ startFtue = false }) {
     locationStatus === "flight";
 
   const isNearbySearchActive =
-    locationStatus === "searching";
+    locationStatus === "searching" &&
+    !isNearbySearchResultReady;
 
   useEffect(() => {
     if (
@@ -1008,9 +1181,17 @@ function GeoPlayMap({ startFtue = false }) {
         />
       )}
 
-      {isNearbySearchActive &&
+      {isNearbySearchPopupVisible &&
         !selectedCasino && (
-          <GeoPlayNearbySearch />
+          <div
+            className={
+              isNearbySearchPopupFading
+                ? "geoplay-earth-nearby-search-wrapper is-fading"
+                : "geoplay-earth-nearby-search-wrapper"
+            }
+          >
+            <GeoPlayNearbySearch />
+          </div>
         )}
 
       <div
@@ -1037,6 +1218,15 @@ function GeoPlayMap({ startFtue = false }) {
                 ftuePhase={ftuePhase}
                 locationStatus={
                   locationStatus
+                }
+                isNearbySearchActive={
+                  isNearbySearchActive
+                }
+                isNearbySearchResultReady={
+                  isNearbySearchResultReady
+                }
+                isNearbyResultDialogueFading={
+                  isNearbyResultDialogueFading
                 }
               />
 

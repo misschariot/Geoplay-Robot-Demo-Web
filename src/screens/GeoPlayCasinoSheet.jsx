@@ -56,6 +56,34 @@ function getCasinoBranding(casino) {
   return CASINO_BRANDING[casino.name] || {};
 }
 
+function getVerificationStatus(casino) {
+  if (casino.verificationStatus) {
+    const normalized = String(casino.verificationStatus)
+      .trim()
+      .toLowerCase();
+
+    if (normalized === "processing") return "Processing";
+    if (normalized === "verified") return "Verified";
+    if (normalized === "not verified") return "Not Verified";
+  }
+
+  return casino.identityVerified ? "Verified" : "Not Verified";
+}
+
+function getVerificationIcon(status) {
+  if (status === "Verified") return "✓";
+  if (status === "Processing") return "•";
+  return "×";
+}
+
+function getVerificationClass(status) {
+  return status.toLowerCase().replace(/\s+/g, "-");
+}
+
+function getVerificationLabel(status) {
+  return status === "Verified" ? "ID Verified" : status;
+}
+
 const SNAP_ORDER = ["full", "partial", "collapsed"];
 
 function GeoPlayCasinoSheet({ casino, onClose }) {
@@ -73,8 +101,8 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
     const sheetHeight = Math.min(viewportHeight * 0.88, 720);
 
     const collapsedVisibleHeight = Math.min(
-      210,
-      Math.max(188, viewportHeight * 0.27)
+      270,
+      Math.max(230, viewportHeight * 0.36)
     );
 
     const partialVisibleHeight = Math.min(
@@ -269,6 +297,10 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   };
 
   const branding = getCasinoBranding(casino);
+  const verificationStatus = getVerificationStatus(casino);
+  const verificationClass = getVerificationClass(verificationStatus);
+  const verificationIcon = getVerificationIcon(verificationStatus);
+  const verificationLabel = getVerificationLabel(verificationStatus);
 
   const demoWinners = [
     {
@@ -335,6 +367,27 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
               />
             )}
             <div className="geoplay-casino-sheet-hero-overlay" />
+
+            <div className="geoplay-casino-sheet-collapsed-info">
+              <h2>{casino.name}</h2>
+
+              <div className="geoplay-casino-sheet-collapsed-meta">
+                <span className="geoplay-casino-sheet-collapsed-distance">
+                  <span
+                    className="geoplay-casino-sheet-collapsed-pin"
+                    aria-hidden="true"
+                  />
+                  {casino.distanceMiles.toFixed(1)} mi away
+                </span>
+
+                <span
+                  className={`geoplay-casino-sheet-collapsed-verified is-${verificationClass}`}
+                >
+                  <span aria-hidden="true">{verificationIcon}</span>
+                  {verificationLabel}
+                </span>
+              </div>
+            </div>
           </div>
 
           {branding.logo && (
@@ -353,9 +406,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
               <span>{casino.distanceMiles.toFixed(1)} MILES AWAY</span>
               <span>•</span>
               <span>
-                ✓ {casino.identityVerified
-                  ? "GEOPLAY VERIFIED"
-                  : "GEOPLAY CUSTOMER"}
+                {verificationIcon} {verificationLabel}
               </span>
             </div>
           </div>

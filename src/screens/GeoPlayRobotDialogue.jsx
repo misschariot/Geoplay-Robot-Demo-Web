@@ -1,6 +1,9 @@
 function GeoPlayRobotDialogue({
   ftuePhase,
   locationStatus,
+  isNearbySearchActive,
+  isNearbySearchResultReady,
+  isNearbyResultDialogueFading,
 }) {
   const isLocationResult =
     locationStatus === "located" || locationStatus === "searching";
@@ -12,26 +15,45 @@ function GeoPlayRobotDialogue({
     locationStatus === "searching";
 
   const dialogueText =
-    locationStatus === "searching"
-      ? "Now let me see what’s nearby."
-      : locationStatus === "located"
-        ? "There you are!"
-        : "Before we find casinos that serve Geoplay games, I need to check your location.";
+    isNearbySearchResultReady
+      ? "You can play Geoplay games at these locations!"
+      : locationStatus === "searching"
+        ? "Now let me see what’s nearby."
+        : locationStatus === "located"
+          ? "There you are!"
+          : "Before we find casinos that serve Geoplay games, I need to check your location.";
 
   return (
     <div
       className={`geoplay-earth-guide-unit ${
         isLocationResult ? "is-location-result" : ""
       } ${
-        locationStatus === "searching" ? "is-nearby-searching" : ""
+        isNearbySearchActive
+          ? "is-nearby-searching"
+          : ""
+      } ${
+        isNearbySearchResultReady
+          ? "is-nearby-search-complete"
+          : ""
       }`}
     >
-      <div className="geoplay-earth-guide-content">
+      <div
+        key={
+          isNearbySearchResultReady
+            ? "nearby-search-result"
+            : "default"
+        }
+        className="geoplay-earth-guide-content"
+      >
         <div
           className={`geoplay-earth-dialogue ${
             isDialogueVisible ? "is-visible" : ""
           } ${
             isLocationResult ? "is-location-result" : ""
+          } ${
+            isNearbyResultDialogueFading
+              ? "is-nearby-result-fading"
+              : ""
           }`}
         >
           {dialogueText}
