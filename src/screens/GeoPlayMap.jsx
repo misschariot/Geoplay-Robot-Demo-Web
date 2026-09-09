@@ -1228,6 +1228,9 @@ function GeoPlayMap({ startFtue = false }) {
                 isNearbyResultDialogueFading={
                   isNearbyResultDialogueFading
                 }
+                isFtueComplete={
+                  isFtueComplete
+                }
               />
 
               <GeoPlayLocationActions

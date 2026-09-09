@@ -4,15 +4,19 @@ function GeoPlayRobotDialogue({
   isNearbySearchActive,
   isNearbySearchResultReady,
   isNearbyResultDialogueFading,
+  isFtueComplete,
 }) {
   const isLocationResult =
     locationStatus === "located" || locationStatus === "searching";
 
   const isDialogueVisible =
-    ftuePhase === "dialogue" ||
-    ftuePhase === "actions" ||
-    locationStatus === "located" ||
-    locationStatus === "searching";
+    !isFtueComplete &&
+    (
+      ftuePhase === "dialogue" ||
+      ftuePhase === "actions" ||
+      locationStatus === "located" ||
+      locationStatus === "searching"
+    );
 
   const dialogueText =
     isNearbySearchResultReady

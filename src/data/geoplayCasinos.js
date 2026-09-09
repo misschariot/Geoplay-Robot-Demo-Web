@@ -9,9 +9,9 @@ const geoplayCasinos = [
     identityVerified: true,
     games: [
       {
-        name: "Bingo Blast!",
+        name: "Relax-n-Bingo",
         genre: "Bingo",
-        image: "/games/bingo-blast.png",
+        image: "/games/relax-n-bingo.png",
       },
       {
         name: "Turbo Rush",
@@ -83,9 +83,9 @@ const geoplayCasinos = [
     identityVerified: false,
     games: [
       {
-        name: "Bingo Blast!",
+        name: "Relax-n-Bingo",
         genre: "Bingo",
-        image: "/games/bingo-blast.png",
+        image: "/games/relax-n-bingo.png",
       },
       {
         name: "Treasure Tabs",
@@ -158,9 +158,9 @@ const geoplayCasinos = [
     identityVerified: true,
     games: [
       {
-        name: "Bingo Blast!",
+        name: "Relax-n-Bingo",
         genre: "Bingo",
-        image: "/games/bingo-blast.png",
+        image: "/games/relax-n-bingo.png",
       },
       {
         name: "Lucky Lanterns",
@@ -232,9 +232,9 @@ const geoplayCasinos = [
     identityVerified: true,
     games: [
       {
-        name: "Bingo Blast!",
+        name: "Relax-n-Bingo",
         genre: "Bingo",
-        image: "/games/bingo-blast.png",
+        image: "/games/relax-n-bingo.png",
       },
       {
         name: "Treasure Tabs",
@@ -306,9 +306,9 @@ const geoplayCasinos = [
     identityVerified: false,
     games: [
       {
-        name: "Bingo Blast!",
+        name: "Relax-n-Bingo",
         genre: "Bingo",
-        image: "/games/bingo-blast.png",
+        image: "/games/relax-n-bingo.png",
       },
       {
         name: "Lucky Lanterns",
@@ -380,9 +380,9 @@ const geoplayCasinos = [
     identityVerified: true,
     games: [
       {
-        name: "Bingo Blast!",
+        name: "Relax-n-Bingo",
         genre: "Bingo",
-        image: "/games/bingo-blast.png",
+        image: "/games/relax-n-bingo.png",
       },
       {
         name: "Lucky Lanterns",
