@@ -79,7 +79,7 @@ function findNearbyGeoplayCasinos(latitude, longitude) {
     );
 }
 
-function GeoPlayMap({ startFtue = false }) {
+function GeoPlayMap({ startFtue = false, onGoHome }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const rotationFrameRef = useRef(null);
@@ -1241,11 +1241,12 @@ function GeoPlayMap({ startFtue = false }) {
                 onAllowLocation={
                   handleAllowLocation
                 }
-                onNotNow={() =>
-                  setFtuePhase(
-                    "dialogue"
-                  )
-                }
+                onNotNow={() => {
+                  setLocationStatus("denied");
+                  setFtuePhase("actions");
+                }}
+                onTryAgain={handleAllowLocation}
+                onExploreGeoplay={onGoHome}
               />
             </>
           )}
