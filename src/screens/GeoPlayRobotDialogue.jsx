@@ -15,7 +15,8 @@ function GeoPlayRobotDialogue({
       ftuePhase === "dialogue" ||
       ftuePhase === "actions" ||
       locationStatus === "located" ||
-      locationStatus === "searching"
+      locationStatus === "searching" ||
+      locationStatus === "denied"
     );
 
   const dialogueText =
@@ -25,7 +26,9 @@ function GeoPlayRobotDialogue({
         ? "Now let me see what’s nearby."
         : locationStatus === "located"
           ? "There you are!"
-          : "Before we find casinos that serve Geoplay games, I need to check your location.";
+          : locationStatus === "denied"
+            ? "No problem. I couldn’t access your location."
+            : "Before we find casinos that serve Geoplay games, I need to check your location.";
 
   return (
     <div

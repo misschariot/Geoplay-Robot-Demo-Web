@@ -63,7 +63,7 @@ const geoplayCasinos = [
       {
         name: "Realm of Ember",
         genre: "RPG",
-        image: "/games/realm-ember.png",
+        image: "/games/realm-of-ember.png",
       },
       {
         name: "Harvest Heroes",
@@ -105,7 +105,7 @@ const geoplayCasinos = [
       {
         name: "Realm of Ember",
         genre: "RPG",
-        image: "/games/realm-ember.png",
+        image: "/games/realm-of-ember.png",
       },
     ],
   },
@@ -180,7 +180,7 @@ const geoplayCasinos = [
       {
         name: "Realm of Ember",
         genre: "RPG",
-        image: "/games/realm-ember.png",
+        image: "/games/realm-of-ember.png",
       },
     ],
   },
@@ -249,7 +249,7 @@ const geoplayCasinos = [
       {
         name: "Realm of Ember",
         genre: "RPG",
-        image: "/games/realm-ember.png",
+        image: "/games/realm-of-ember.png",
       },
       {
         name: "Starfire Squadron",
@@ -264,7 +264,7 @@ const geoplayCasinos = [
     name: "Downstream Casino Resort",
     address: "69300 E Nee Rd, Quapaw, OK 74363",
     website: "http://www.downstreamcasino.com/",
-    latitude: 36.99846550743501,
+    latitude: 36.99846550703501,
     longitude: -94.62533510828624,
     identityVerified: true,
     games: [
@@ -323,7 +323,7 @@ const geoplayCasinos = [
       {
         name: "Realm of Ember",
         genre: "RPG",
-        image: "/games/realm-ember.png",
+        image: "/games/realm-of-ember.png",
       },
       {
         name: "Harvest Heroes",
@@ -402,7 +402,7 @@ const geoplayCasinos = [
       {
         name: "Realm of Ember",
         genre: "RPG",
-        image: "/games/realm-ember.png",
+        image: "/games/realm-of-ember.png",
       },
     ],
   },
