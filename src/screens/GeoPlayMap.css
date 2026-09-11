@@ -417,22 +417,40 @@
 .geoplay-earth-casino-marker {
   position: relative;
 
-  width: 20px;
-  height: 20px;
+  width: 38px;
+  height: 38px;
+
+  box-sizing: border-box;
+
+  overflow: visible;
+
+  pointer-events: auto;
+}
+
+.geoplay-earth-casino-marker-visual {
+  position: relative;
+
+  width: 38px;
+  height: 38px;
 
   box-sizing: border-box;
 
   border: 3px solid #ffffff;
   border-radius: 50%;
 
-  background: #ffb21f;
+  background: #ffffff;
+  overflow: hidden;
 
   box-shadow:
     0 0 0 5px rgba(255, 178, 31, 0.18),
     0 0 16px rgba(255, 116, 25, 0.72),
     0 0 28px rgba(255, 178, 31, 0.32);
 
-  pointer-events: auto;
+  transform: scale(1);
+  transform-origin: center;
+
+  transition:
+    transform 2600ms cubic-bezier(0.16, 0.82, 0.24, 1);
 
   animation:
     geoplayEarthCasinoMarkerPulse
@@ -441,7 +459,30 @@
     infinite;
 }
 
-.geoplay-earth-casino-marker::before {
+.geoplay-earth-casino-marker.is-ftue-target
+  .geoplay-earth-casino-marker-visual {
+  transform: scale(1.37);
+}
+
+.geoplay-earth-casino-marker-logo {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.geoplay-earth-casino-marker-visual::before {
   content: "";
 
   position: absolute;
@@ -449,8 +490,8 @@
   left: 50%;
   top: 50%;
 
-  width: 26px;
-  height: 26px;
+  width: 48px;
+  height: 48px;
 
   border: 1px solid rgba(255, 178, 31, 0.65);
   border-radius: 50%;
@@ -504,7 +545,7 @@
 
     transform:
       translate(-50%, -50%)
-      scale(1.8);
+      scale(2.0);
   }
 }
 
@@ -756,6 +797,8 @@
     1.15s
     forwards;
 }
+
+
 
 .geoplay-earth-dialogue::after {
   content: "";
@@ -1113,6 +1156,161 @@
 }
 
 /* --------------------------------------------------
+   Final FTUE — Explore Geoplay CTA
+-------------------------------------------------- */
+
+/*
+  Reuse the existing ALLOW LOCATION button styling. The final CTA
+  simply sits below the centered robot after the final chat bubble
+  has finished entering.
+*/
+.geoplay-earth-wrap-up-actions {
+  /*
+    Keep the final CTA out of the robot/dialogue flex flow, just like
+    the ALLOW LOCATION / DENY button stack. This prevents the button
+    from pushing the robot and chat bubble upward when it appears.
+  */
+  position: absolute;
+
+  z-index: 6;
+
+  pointer-events: auto;
+
+  left: 50%;
+  top: calc(100% + 16px);
+
+  width: 100vw;
+
+  display: flex;
+  justify-content: center;
+
+  opacity: 0;
+  transform:
+    translateX(-50%)
+    translateY(8px)
+    scale(0.98);
+
+  animation:
+    geoplayEarthWrapUpButtonIn
+    500ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    forwards;
+}
+
+/*
+  Final FTUE CTA:
+  Match the supplied GeoPlayLocationActions.css ALLOW LOCATION button
+  exactly in physical size, shape, typography, gradient, glow, and shine.
+*/
+.geoplay-earth-wrap-up-actions .geoplay-earth-allow-button {
+  position: relative;
+
+  width: 70%;
+  height: 56px;
+  box-sizing: border-box;
+  align-self: center;
+
+  margin: 0;
+  padding: 0 20px;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    135deg,
+    #ff5a16 0%,
+    #ff7419 48%,
+    #ffb21f 100%
+  );
+
+  color: #ffffff;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+
+  cursor: pointer;
+  overflow: hidden;
+
+  -webkit-appearance: none;
+  appearance: none;
+
+  box-shadow:
+    0 12px 30px rgba(255, 90, 22, 0.22),
+    0 0 20px rgba(255, 90, 22, 0.08);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+/*
+  Use the same moving shine treatment as ALLOW LOCATION.
+  Remove the older ::before shine so there is only one shine layer.
+*/
+.geoplay-earth-wrap-up-actions .geoplay-earth-allow-button::before {
+  display: none;
+}
+
+.geoplay-earth-wrap-up-actions .geoplay-earth-allow-button::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -45%;
+
+  width: 30%;
+  height: 100%;
+
+  transform: skewX(-20deg);
+
+  background: rgba(255, 255, 255, 0.18);
+
+  animation: loginShine 4s ease-in-out infinite;
+}
+
+.geoplay-earth-wrap-up-actions .geoplay-earth-allow-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 36px rgba(255, 90, 22, 0.3),
+    0 0 28px rgba(255, 90, 22, 0.12);
+
+  filter: brightness(1.04);
+}
+
+.geoplay-earth-wrap-up-actions .geoplay-earth-allow-button:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 8px 20px rgba(255, 90, 22, 0.18);
+}
+
+@keyframes geoplayEarthWrapUpButtonIn {
+  0% {
+    opacity: 0;
+    transform:
+      translateX(-50%)
+      translateY(8px)
+      scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* --------------------------------------------------
    Nearby search — robot fade out
 -------------------------------------------------- */
 
@@ -1181,35 +1379,139 @@
    Nearby search — robot returns with casino result
 -------------------------------------------------- */
 
+/*
+  Keep the existing robot entrance: it slides in from the right.
+  Only the robot image is animated here; the parent remains static
+  so the chat bubble does not travel with the robot.
+*/
+
 .geoplay-earth-guide-unit.is-nearby-search-complete
   .geoplay-earth-guide-content {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+.geoplay-earth-guide-unit.is-nearby-search-complete
+  .geoplay-earth-robot-image.is-visible {
   animation:
-    geoplayEarthRobotReturn
-    1.3s
+    geoplayEarthRobotReturnWithFloat
+    4.7s
     ease-out
+    0s
     forwards;
 }
 
-@keyframes geoplayEarthRobotReturn {
+/*
+  Use a distinct animation name for the nearby-result bubble.
+  The dialogue element is already mounted during the nearby search,
+  so reusing geoplayEarthDialogueIn does not reliably restart its
+  animation when the text changes. A new animation name forces a
+  fresh animation when the nearby-result state begins.
+
+  The robot reaches its final horizontal position at 27.7% of 4.7s,
+  which is approximately 1.30s. Start the bubble just after that point.
+*/
+.geoplay-earth-guide-unit.is-nearby-search-complete
+  .geoplay-earth-dialogue.is-visible {
+  animation:
+    geoplayEarthNearbyDialogueIn
+    650ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    1.35s
+    forwards;
+}
+
+@keyframes geoplayEarthNearbyDialogueIn {
   0% {
     opacity: 0;
+
     transform:
-      translateX(115%)
-      scale(0.94);
+      translateY(10px)
+      scale(0.92);
   }
 
-  72% {
-    opacity: 1;
+  60% {
+    opacity: 0.92;
+
     transform:
-      translateX(-3%)
+      translateY(-5px)
       scale(1.01);
   }
 
   100% {
     opacity: 1;
+
     transform:
-      translateX(0)
+      translateY(0)
       scale(1);
+  }
+}
+
+/* Keep the robot in its normal idle float while the "Let's go to a casino!" dialogue is visible. */
+.geoplay-earth-ftue-layer.is-going-to-casino
+  .geoplay-earth-robot-image.is-visible {
+  opacity: 1;
+  animation:
+    geoplayEarthRobotFloat
+    3.4s
+    ease-in-out
+    0s
+    infinite;
+}
+
+/*
+  After the "Let's go to a casino!" dialogue has been visible for
+  3 seconds, fade the robot and dialogue out together.
+*/
+.geoplay-earth-ftue-layer.is-going-to-casino-fading
+  .geoplay-earth-guide-content {
+  animation:
+    geoplayEarthRobotAndDialogueOut
+    650ms
+    ease-in-out
+    forwards;
+}
+
+@keyframes geoplayEarthRobotAndDialogueOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes geoplayEarthRobotReturnWithFloat {
+  0% {
+    opacity: 0;
+    transform: translateX(115%) scale(0.94);
+  }
+
+  15.3% {
+    opacity: 1;
+    transform: translateX(-3%) scale(1.01);
+  }
+
+  27.7% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  63.8% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+  }
+
+  81.9% {
+    opacity: 1;
+    transform: translateX(0) translateY(-7px) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
   }
 }
 
@@ -1240,5 +1542,191 @@
     transform:
       translateY(-5px)
       scale(0.985);
+  }
+}
+
+
+/* --------------------------------------------------
+   FTUE casino sheet — exit after verification reminder
+-------------------------------------------------- */
+
+.geoplay-earth-casino-sheet-ftue-fading {
+  animation:
+    geoplayEarthCasinoSheetFtueOut
+    650ms
+    ease-in-out
+    forwards;
+}
+
+@keyframes geoplayEarthCasinoSheetFtueOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+/* --------------------------------------------------
+   FTUE verification reminder — robot returns after
+   the casino full sheet has finished entering
+-------------------------------------------------- */
+
+.geoplay-earth-ftue-verification-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/*
+  After the verification bubble has been fully visible for 5 seconds,
+  fade the robot and bubble out together.
+*/
+.geoplay-earth-ftue-verification-layer.is-fading
+  .geoplay-earth-guide-content {
+  animation:
+    geoplayEarthVerificationDialogueOut
+    650ms
+    ease-in-out
+    forwards;
+}
+
+@keyframes geoplayEarthVerificationDialogueOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.geoplay-earth-guide-unit.is-ftue-verification {
+  left: auto;
+  top: auto;
+  right: clamp(16px, 3vw, 40px);
+  bottom: clamp(18px, 3vh, 30px);
+  width: min(285px, calc(100vw - 32px));
+  transform: none;
+}
+
+.geoplay-earth-guide-unit.is-ftue-verification
+  .geoplay-earth-guide-content {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+/*
+  Override the verification entrance state when the parent layer begins
+  its fade-out. This keeps the existing timing and all previous FTUE flow
+  unchanged.
+*/
+.geoplay-earth-ftue-verification-layer.is-fading
+  .geoplay-earth-guide-unit.is-ftue-verification
+  .geoplay-earth-guide-content {
+  animation:
+    geoplayEarthVerificationDialogueOut
+    650ms
+    ease-in-out
+    forwards;
+}
+
+.geoplay-earth-guide-unit.is-ftue-verification
+  .geoplay-earth-robot-image.is-visible {
+  animation:
+    geoplayEarthRobotVerificationReturn
+    1.3s
+    ease-out
+    0s
+    forwards;
+}
+
+.geoplay-earth-guide-unit.is-ftue-verification
+  .geoplay-earth-dialogue.is-visible {
+  animation:
+    geoplayEarthVerificationDialogueIn
+    650ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    1.35s
+    forwards;
+}
+
+@keyframes geoplayEarthRobotVerificationReturn {
+  0% {
+    opacity: 0;
+    transform: translateX(115%) scale(0.94);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateX(-3%) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes geoplayEarthVerificationDialogueIn {
+  0% {
+    opacity: 0;
+    transform:
+      translateY(10px)
+      scale(0.92);
+  }
+
+  60% {
+    opacity: 0.92;
+    transform:
+      translateY(-5px)
+      scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  .geoplay-earth-wrap-up-actions .geoplay-earth-allow-button {
+    width: 70%;
+    height: 54px;
+    border-radius: 999px;
+    font-size: 13px;
+  }
+
+  .geoplay-earth-guide-unit.is-ftue-verification {
+    right: 12px;
+    bottom: 16px;
+    width: min(220px, calc(100vw - 24px));
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .geoplay-earth-wrap-up-actions .geoplay-earth-allow-button {
+    transition: none;
+  }
+
+  .geoplay-earth-wrap-up-actions .geoplay-earth-allow-button::after {
+    animation: none;
+  }
+}
+
+
+@media (max-width: 430px) {
+  .geoplay-earth-wrap-up-actions .geoplay-earth-allow-button {
+    height: 52px;
+    border-radius: 999px;
+    font-size: 12.5px;
   }
 }

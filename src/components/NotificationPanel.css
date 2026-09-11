@@ -1,0 +1,59 @@
+:root {
+  --geoplay-nav-orange: #ff5a16;
+  --geoplay-nav-orange-bright: #ff8a35;
+  --geoplay-nav-gold: #ffb21f;
+}
+
+.global-bottom-nav-notification-panel {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 0;
+  height: 50vh;
+  z-index: -1;
+  overflow: hidden;
+  border: 1px solid rgba(255, 133, 0, 0.68);
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 26, 31, 0.99),
+    rgba(7, 11, 14, 0.99)
+  );
+  box-shadow:
+    0 0 34px rgba(255, 90, 22, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  pointer-events: none;
+  clip-path: inset(100% 0 0 0);
+  transform: translateY(100%);
+  transition:
+    transform 0.36s cubic-bezier(0.4, 0, 1, 1),
+    clip-path 0s linear 0.36s;
+}
+
+.global-bottom-nav-notification-panel.is-open {
+  pointer-events: auto;
+  transform: translateY(0);
+  clip-path: inset(0);
+  transition:
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    clip-path 0s linear;
+}
+
+@media (max-width: 599px) {
+  .global-bottom-nav-notification-panel {
+    height: 50vh;
+  }
+}
+
+@media (max-width: 359px) {
+  .global-bottom-nav-notification-panel {
+    height: 50vh;
+  }
+}
+
+@media (min-width: 600px) {
+  .global-bottom-nav-notification-panel {
+    height: 50vh;
+  }
+}

@@ -77,10 +77,7 @@ button {
   z-index: 1;
   width: min(100%, 420px);
   padding: 36px 28px 30px;
-
-  /* No outer card border */
   border: none;
-
   border-radius: 24px;
   background: rgba(8, 13, 16, 0.94);
   box-shadow:
@@ -279,6 +276,7 @@ button {
   }
 }
 
+
 /* Home placeholder
    Temporary styling for the Home destination.
    This will be replaced when the Home experience is built. */
@@ -286,13 +284,24 @@ button {
   width: 100%;
   height: 100%;
   min-height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #05090b;
+  color: #ffffff;
+}
+
+.home-content {
+  flex: 1;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   padding: 24px;
-  background: #05090b;
-  color: #ffffff;
+
   text-align: center;
 }
 

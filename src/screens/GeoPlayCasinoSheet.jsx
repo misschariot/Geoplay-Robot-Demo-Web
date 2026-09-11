@@ -1,60 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./GeoPlayCasinoSheet.css";
 import { getGeoPlayWinners } from "../data/GeoPlayWinnerData";
-
-const CASINO_BRANDING = {
-  "Agua Caliente Resort Casino Spa Rancho Mirage": {
-    hero: "/hero/agua-hero.jpg",
-    logo: "/logos/agua-logo.jpg",
-  },
-  "Buffalo Run Casino & Resort": {
-    hero: "/hero/buffalo-hero.jpg",
-    logo: "/logos/buffalo-logo.jpg",
-  },
-  "Cherokee Casino Grove": {
-    hero: "/hero/cherokee-hero.jpg",
-    logo: "/logos/cherokee-logo.jpg",
-  },
-  "Downstream Casino Resort": {
-    hero: "/hero/downstream-hero.jpg",
-    logo: "/logos/downstream-logo.png",
-  },
-  "High Winds Casino": {
-    hero: "/hero/high-hero.jpg",
-    logo: "/logos/high-logo.jpg",
-  },
-  "Indigo Sky Casino": {
-    hero: "/hero/indigo-hero.jpg",
-    logo: "/logos/indigo-logo.PNG",
-  },
-  "Morongo Casino Resort & Spa": {
-    hero: "/hero/morongo-hero.jpg",
-    logo: "/logos/morongo-logo.PNG",
-  },
-  "Osage Casino Hotel - Tulsa": {
-    hero: "/hero/osage-hero.jpg",
-    logo: "/logos/osage-logo.jpg",
-  },
-  "Pala Casino Spa Resort": {
-    hero: "/hero/pala-hero.jpg",
-    logo: "/logos/pala-logo.png",
-  },
-  "Casino Pauma": {
-    hero: "/hero/pauma-hero.jpg",
-    logo: "/logos/pauma-logo.jpg",
-  },
-  "Pechanga Resort Casino": {
-    hero: "/hero/pechanga-hero.jpg",
-    logo: "/logos/pechanga-logo.PNG",
-  },
-  "Yaamava' Resort & Casino": {
-    hero: "/hero/yaamava-hero.jpg",
-    logo: "/logos/yaamava-logo.PNG",
-  },
-};
+import casinoBranding from "../data/casinoBranding";
 
 function getCasinoBranding(casino) {
-  return CASINO_BRANDING[casino.name] || {};
+  return casinoBranding[casino.id] || {};
 }
 
 function getVerificationStatus(casino) {
@@ -85,10 +35,19 @@ function getVerificationLabel(status) {
   return status === "Verified" ? "ID Verified" : status;
 }
 
-function GeoPlayCasinoSheet({ casino, onClose }) {
-  const [snap, setSnap] = useState("collapsed");
+function GeoPlayCasinoSheet({
+  casino,
+  onClose,
+  initialSnap = "collapsed",
+  isFtueSheetFading = false,
+  isFtueCasinoSheet = false,
+}) {
+  const startingSnap = initialSnap === "full" ? "full" : "collapsed";
+
+  const [snap, setSnap] = useState(startingSnap);
   const [isEntering, setIsEntering] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
+  const [isAutoFullOpening, setIsAutoFullOpening] = useState(false);
 
   const sheetRef = useRef(null);
   const sheetBodyRef = useRef(null);
@@ -99,6 +58,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   const lastYRef = useRef(0);
   const lastTimeRef = useRef(0);
   const closeTimerRef = useRef(null);
+  const autoFullOpenTimerRef = useRef(null);
   const snapRef = useRef("collapsed");
   const gamesScrollerRef = useRef(null);
   const gamesDragRef = useRef({
@@ -154,10 +114,28 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
 
   useEffect(() => {
     const settle = () => {
-      setIsEntering(false);
       const metrics = getMetrics();
-      currentOffsetRef.current = metrics.collapsedHeight;
-      applyHeight(metrics.collapsedHeight, true);
+      const nextHeight =
+        startingSnap === "full"
+          ? metrics.fullHeight
+          : metrics.collapsedHeight;
+
+      snapRef.current = startingSnap;
+      setSnap(startingSnap);
+      currentOffsetRef.current = nextHeight;
+      applyHeight(nextHeight, false);
+
+      if (startingSnap === "full") {
+        setIsAutoFullOpening(true);
+        autoFullOpenTimerRef.current = window.setTimeout(() => {
+          autoFullOpenTimerRef.current = null;
+          setIsEntering(false);
+          setIsAutoFullOpening(false);
+        }, 760);
+      } else {
+        setIsEntering(false);
+        applyHeight(nextHeight, true);
+      }
     };
 
     const frame = window.requestAnimationFrame(settle);
@@ -181,23 +159,34 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [startingSnap]);
 
   useEffect(() => {
-    snapRef.current = "collapsed";
-    setSnap("collapsed");
+    snapRef.current = startingSnap;
+    setSnap(startingSnap);
 
     const frame = window.requestAnimationFrame(() => {
       const metrics = getMetrics();
-      currentOffsetRef.current = metrics.collapsedHeight;
-      applyHeight(metrics.collapsedHeight, false);
+      const nextHeight =
+        startingSnap === "full"
+          ? metrics.fullHeight
+          : metrics.collapsedHeight;
+      currentOffsetRef.current = nextHeight;
+      applyHeight(nextHeight, false);
     });
 
-    return () => window.cancelAnimationFrame(frame);
-  }, [casino.id]);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      if (autoFullOpenTimerRef.current !== null) {
+        window.clearTimeout(autoFullOpenTimerRef.current);
+        autoFullOpenTimerRef.current = null;
+      }
+    };
+  }, [casino.id, startingSnap]);
 
-  const handleClose = () => {
-    if (isClosing) return;
+  const handleClose = (force = false) => {
+    if (!force && isFtueCasinoSheet) return;
+    if (isClosingRef.current) return;
 
     isClosingRef.current = true;
     setIsClosing(true);
@@ -216,15 +205,32 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
     }, 430);
   };
 
+  /*
+    FTUE close trigger:
+    GeoPlayMap waits until the robot and verification dialogue have
+    completely finished fading, then sets isFtueSheetFading.
+    Reuse the sheet's existing handleClose() so the normal 430ms
+    slide-down animation and cleanup path remain unchanged.
+  */
+  useEffect(() => {
+    if (!isFtueSheetFading) return;
+
+    handleClose(true);
+  }, [isFtueSheetFading]);
+
   useEffect(() => {
     return () => {
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
       }
+      if (autoFullOpenTimerRef.current !== null) {
+        window.clearTimeout(autoFullOpenTimerRef.current);
+      }
     };
   }, []);
 
   const handlePointerDown = (event) => {
+    if (isFtueCasinoSheet) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
 
     const isHandle = Boolean(
@@ -270,6 +276,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   };
 
   const handlePointerMove = (event) => {
+    if (isFtueCasinoSheet) return;
     if (dragStartYRef.current === null || !sheetRef.current) return;
 
     const metrics = getMetrics();
@@ -295,6 +302,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   };
 
   const handlePointerUp = (event) => {
+    if (isFtueCasinoSheet) return;
     if (dragStartYRef.current === null) return;
 
     const deltaY = event.clientY - dragStartYRef.current;
@@ -350,6 +358,11 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   };
 
   const handleKeyDown = (event) => {
+    if (isFtueCasinoSheet) {
+      event.preventDefault();
+      return;
+    }
+
     if (event.key === "ArrowUp") {
       event.preventDefault();
       snapTo("full");
@@ -367,6 +380,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   };
 
   const handleGamesPointerDown = (event) => {
+    if (isFtueCasinoSheet) return;
     if (event.pointerType === "mouse" && event.button !== 0) {
       return;
     }
@@ -384,6 +398,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   };
 
   const handleGamesPointerMove = (event) => {
+    if (isFtueCasinoSheet) return;
     const scroller = gamesScrollerRef.current;
     const drag = gamesDragRef.current;
 
@@ -395,6 +410,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
   };
 
   const endGamesPointerDrag = (event) => {
+    if (isFtueCasinoSheet) return;
     const scroller = gamesScrollerRef.current;
     if (!scroller) return;
 
@@ -425,7 +441,9 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
         type="button"
         className={`geoplay-casino-sheet-scrim${
           isEntering ? " is-entering" : ""
-        }${isClosing ? " is-closing" : ""}`}
+        }${isClosing ? " is-closing" : ""}${
+          isFtueSheetFading ? " is-ftue-fading" : ""
+        }${isFtueCasinoSheet ? " is-ftue-locked" : ""}`}
         aria-label="Close casino details"
         onClick={handleClose}
       />
@@ -434,7 +452,9 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
         ref={sheetRef}
         className={`geoplay-casino-sheet is-${snap}${
           isEntering ? " is-entering" : ""
-        }${isClosing ? " is-closing" : ""}`}
+        }${isAutoFullOpening ? " is-auto-full-opening" : ""}${
+          isClosing ? " is-closing" : ""
+        }${isFtueCasinoSheet ? " is-ftue-locked" : ""}`}
         aria-label={`${casino.name} details`}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
@@ -443,9 +463,13 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
       >
         <div
           className="geoplay-casino-sheet-handle-area"
-          role="button"
-          tabIndex={0}
-          aria-label="Drag to resize casino details"
+          role={isFtueCasinoSheet ? undefined : "button"}
+          tabIndex={isFtueCasinoSheet ? -1 : 0}
+          aria-label={
+            isFtueCasinoSheet
+              ? undefined
+              : "Drag to resize casino details"
+          }
           onKeyDown={handleKeyDown}
         >
           <div className="geoplay-casino-sheet-handle" />
@@ -455,6 +479,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
           type="button"
           className="geoplay-casino-sheet-close"
           aria-label="Close casino details"
+          disabled={isFtueCasinoSheet}
           onClick={handleClose}
         >
           ×
@@ -516,6 +541,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
               <button
                 type="button"
                 className="geoplay-casino-sheet-play-here-button"
+                disabled={isFtueCasinoSheet}
               >
                 PLAY HERE
               </button>
@@ -528,6 +554,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
               <button
                 type="button"
                 className="geoplay-casino-sheet-action"
+                disabled={isFtueCasinoSheet}
                 aria-label={`Call ${casino.name}`}
                 onClick={() =>
                   console.log(
@@ -553,6 +580,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
               <button
                 type="button"
                 className="geoplay-casino-sheet-action"
+                disabled={isFtueCasinoSheet}
                 aria-label={`Open ${casino.name} website`}
                 onClick={() =>
                   console.log(
@@ -579,6 +607,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
               <button
                 type="button"
                 className="geoplay-casino-sheet-action"
+                disabled={isFtueCasinoSheet}
                 aria-label={`Save ${casino.name}`}
                 onClick={() =>
                   console.log(
@@ -604,6 +633,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
               <button
                 type="button"
                 className="geoplay-casino-sheet-action"
+                disabled={isFtueCasinoSheet}
                 aria-label={`Share ${casino.name}`}
                 onClick={() =>
                   console.log(
@@ -650,6 +680,7 @@ function GeoPlayCasinoSheet({ casino, onClose }) {
               <button
                 type="button"
                 className="geoplay-casino-sheet-directions"
+                disabled={isFtueCasinoSheet}
                 aria-label={`Get directions to ${casino.name}`}
                 onClick={() =>
                   console.log(

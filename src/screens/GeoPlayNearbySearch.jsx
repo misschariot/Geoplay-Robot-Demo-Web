@@ -3,7 +3,7 @@ function GeoPlayNearbySearch() {
     <div
       className="geoplay-earth-nearby-search"
       aria-live="polite"
-      aria-label="Searching nearby for casinos with Geoplay games"
+      aria-label="Searching nearby for casinos with geoplay games"
     >
       <div className="geoplay-earth-nearby-search-card">
         <div className="geoplay-earth-nearby-search-title">
@@ -11,7 +11,7 @@ function GeoPlayNearbySearch() {
         </div>
 
         <div className="geoplay-earth-nearby-search-message">
-          Looking for casinos with Geoplay games...
+          Looking for casinos...
         </div>
 
         <div

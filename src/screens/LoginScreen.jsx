@@ -1,17 +1,15 @@
 import { useState } from "react";
 import "./LoginScreen.css";
 
-function LoginScreen({ onSignUp, onMapShortcut }) {
+function LoginScreen({ onSignUp, onMapShortcut, onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleLogin(event) {
     event.preventDefault();
 
-    console.log("Login submitted:", {
-      email,
-      password,
-    });
+    // Demo behavior: fields may be empty; Login goes directly to Home.
+    onLogin();
   }
 
   return (

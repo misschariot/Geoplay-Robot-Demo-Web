@@ -1,0 +1,593 @@
+.global-header {
+  position: relative;
+  z-index: 100;
+
+  width: 100%;
+  height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(14, 20, 23, 0.97),
+      rgba(7, 12, 15, 0.98)
+    );
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  overflow: hidden;
+}
+
+/* Stationary bottom trim */
+.global-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(255, 90, 22, 0.16) 0%,
+    rgba(255, 90, 22, 0.68) 22%,
+    rgba(255, 178, 31, 0.88) 50%,
+    rgba(255, 90, 22, 0.62) 78%,
+    rgba(255, 90, 22, 0.16) 100%
+  );
+
+  box-shadow:
+    0 0 9px rgba(255, 90, 22, 0.22),
+    0 1px 0 rgba(255, 178, 31, 0.10);
+}
+
+/* Traveling highlight over the stationary trim */
+.global-header::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 0;
+
+  width: 18%;
+  min-width: 56px;
+  max-width: 110px;
+  height: 2px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 178, 31, 0.08) 15%,
+    rgba(255, 226, 150, 0.78) 50%,
+    rgba(255, 178, 31, 0.08) 85%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 8px rgba(255, 178, 31, 0.30),
+    0 0 15px rgba(255, 90, 22, 0.16);
+
+  opacity: 0;
+  pointer-events: none;
+
+  animation: global-header-rail-highlight 7s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+/*
+  7-second cycle:
+  ~2 seconds for the shine to travel from edge to edge,
+  followed by ~5 seconds of quiet.
+
+  The movement uses the header's actual width via `left: 0%`
+  to `left: 100%`, rather than translating by a percentage
+  of the shine element itself. This keeps the endpoint aligned
+  with the browser edge on phones, tablets, and desktop.
+*/
+@keyframes global-header-rail-highlight {
+  0% {
+    left: 0%;
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 0.15;
+  }
+
+  10% {
+    opacity: 0.75;
+  }
+
+  20% {
+    left: 100%;
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  25% {
+    left: 100%;
+    transform: translateX(0%);
+    opacity: 0;
+  }
+
+  100% {
+    left: 100%;
+    transform: translateX(0%);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.global-header-brand {
+  position: relative;
+
+  width: 54px;
+  height: 54px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  animation: global-header-logo-float 4.5s ease-in-out infinite;
+}
+
+.global-header-brand::before {
+  content: "";
+
+  position: absolute;
+  inset: 3px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 178, 31, 0.13) 0%,
+      rgba(255, 90, 22, 0.055) 42%,
+      transparent 72%
+    );
+
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.global-header-logo {
+  position: relative;
+  z-index: 1;
+
+  width: 56px;
+  height: 56px;
+
+  display: block;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 3px 7px rgba(0, 0, 0, 0.22))
+    drop-shadow(0 0 8px rgba(255, 90, 22, 0.20));
+}
+
+@keyframes global-header-logo-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+/* =========================================================
+   CENTERED BALANCE
+   ========================================================= */
+
+.global-header-wallet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  min-width: 0;
+
+  transform: translate(-50%, -50%);
+}
+
+.global-header-balance {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  line-height: 1.05;
+  letter-spacing: -0.15px;
+
+  white-space: nowrap;
+}
+
+.global-header-balance::before {
+  content: "BALANCE";
+
+  margin-bottom: 4px;
+
+  color: #8f989c;
+
+  font-size: 7px;
+  font-weight: 700;
+
+  line-height: 1;
+  letter-spacing: 1.25px;
+}
+
+/* =========================================================
+   ADD BUTTON
+   ========================================================= */
+
+.global-header-add {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  margin-left: 2px;
+  padding: 0;
+
+  border: 1px solid rgba(255, 178, 31, 0.42);
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 90, 22, 0.09),
+      rgba(16, 23, 27, 0.96)
+    );
+
+  color: #ffb21f;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 0 9px rgba(255, 90, 22, 0.06);
+
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.global-header-add:hover {
+  color: #ffffff;
+
+  border-color: rgba(255, 178, 31, 0.68);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 90, 22, 0.14),
+      rgba(20, 27, 31, 0.98)
+    );
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.24),
+    0 0 12px rgba(255, 90, 22, 0.12);
+}
+
+.global-header-add:active {
+  transform: translateY(1px);
+}
+
+.global-header-add:focus-visible {
+  outline: 2px solid rgba(255, 178, 31, 0.85);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+.global-header-profile {
+  position: relative;
+
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: transparent;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease;
+}
+
+.global-header-profile::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      from 215deg,
+      rgba(255, 90, 22, 0.9),
+      rgba(255, 178, 31, 0.95),
+      rgba(255, 178, 31, 0.32),
+      rgba(255, 90, 22, 0.9)
+    );
+
+  filter: drop-shadow(0 0 7px rgba(255, 90, 22, 0.17));
+}
+
+.global-header-profile::after {
+  content: "";
+
+  position: absolute;
+  inset: 2px;
+
+  border-radius: 50%;
+
+  background: #070c0f;
+}
+
+.global-header-profile:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.global-header-profile:active {
+  transform: translateY(1px);
+}
+
+.global-header-profile:focus-visible {
+  outline: 2px solid #ffb21f;
+  outline-offset: 3px;
+}
+
+.global-header-avatar {
+  position: relative;
+  z-index: 1;
+
+  width: 39px;
+  height: 39px;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+}
+
+/* =========================================================
+   TABLET / IPAD
+   ========================================================= */
+
+@media (min-width: 600px) {
+  .global-header {
+    height: 72px;
+    padding: 0 24px;
+  }
+
+  .global-header-brand {
+    width: 58px;
+    height: 58px;
+  }
+
+  .global-header-logo {
+    width: 51px;
+    height: 51px;
+  }
+
+  .global-header-wallet {
+    height: 46px;
+    gap: 8px;
+  }
+
+  .global-header-balance {
+    font-size: 14px;
+  }
+
+  .global-header-balance::before {
+    margin-bottom: 4px;
+    font-size: 7.5px;
+  }
+
+  .global-header-add {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+
+  .global-header-profile {
+    width: 47px;
+    height: 47px;
+  }
+
+  .global-header-avatar {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 1024px) {
+  .global-header {
+    height: 76px;
+    padding: 0 30px;
+  }
+
+  .global-header-brand {
+    width: 64px;
+    height: 64px;
+  }
+
+  .global-header-logo {
+    width: 57px;
+    height: 57px;
+  }
+
+  .global-header-wallet {
+    height: 50px;
+    gap: 9px;
+  }
+
+  .global-header-balance {
+    font-size: 15px;
+  }
+
+  .global-header-balance::before {
+    margin-bottom: 5px;
+    font-size: 8px;
+  }
+
+  .global-header-add {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 19px;
+  }
+
+  .global-header-profile {
+    width: 50px;
+    height: 50px;
+  }
+
+  .global-header-avatar {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 359px) {
+  .global-header {
+    height: 62px;
+    padding: 0 10px;
+  }
+
+  .global-header-brand {
+    width: 43px;
+    height: 43px;
+  }
+
+  .global-header-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .global-header-wallet {
+    gap: 5px;
+  }
+
+  .global-header-balance {
+    font-size: 11px;
+    letter-spacing: -0.2px;
+  }
+
+  .global-header-balance::before {
+    margin-bottom: 2px;
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+
+  .global-header-add {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+
+  .global-header-profile {
+    width: 37px;
+    height: 37px;
+  }
+
+  .global-header-avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .global-header::before {
+    animation: none;
+    opacity: 0;
+  }
+
+  .global-header-brand {
+    animation: none;
+  }
+
+  .global-header-add,
+  .global-header-profile {
+    transition: none;
+  }
+}

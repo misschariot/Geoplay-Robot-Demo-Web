@@ -9,6 +9,7 @@ import GeoPlayRobotDialogue from "./GeoPlayRobotDialogue";
 import GeoPlayLocationActions from "./GeoPlayLocationActions";
 import GeoPlayCasinoSheet from "./GeoPlayCasinoSheet";
 import geoplayCasinos from "../data/geoplayCasinos";
+import casinoBranding from "../data/casinoBranding";
 
 setWorkerUrl(workerUrl);
 
@@ -94,6 +95,11 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
   const nearbyRobotReturnTimerRef = useRef(null);
   const nearbyFtueCompletionTimerRef = useRef(null);
   const nearbyFtueInteractiveTimerRef = useRef(null);
+  const nearbyFtueCasinoSheetTimerRef = useRef(null);
+  const nearbyFtueVerificationTimerRef = useRef(null);
+  const nearbyFtueVerificationFadeTimerRef = useRef(null);
+  const nearbyFtueCasinoSheetFadeTimerRef = useRef(null);
+  const isGoingToCasinoFadeTimerRef = useRef(null);
   const isFlyingToLocationRef = useRef(false);
 
   const [ftuePhase, setFtuePhase] = useState("earth");
@@ -103,15 +109,29 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
     useState(null);
   const [selectedCasino, setSelectedCasino] =
     useState(null);
+  const [isFtueCasinoSheet, setIsFtueCasinoSheet] =
+    useState(false);
+  const [isFtueVerificationDialogue, setIsFtueVerificationDialogue] =
+    useState(false);
+  const [isFtueVerificationFading, setIsFtueVerificationFading] =
+    useState(false);
+  const [isFtueCasinoSheetFading, setIsFtueCasinoSheetFading] =
+    useState(false);
   const [isNearbySearchPopupVisible, setIsNearbySearchPopupVisible] =
     useState(false);
   const [isNearbySearchPopupFading, setIsNearbySearchPopupFading] =
     useState(false);
   const [isNearbySearchResultReady, setIsNearbySearchResultReady] =
     useState(false);
+  const [isGoingToCasino, setIsGoingToCasino] =
+    useState(false);
+  const [isGoingToCasinoFading, setIsGoingToCasinoFading] =
+    useState(false);
   const [isNearbyResultDialogueFading, setIsNearbyResultDialogueFading] =
     useState(false);
   const [isFtueComplete, setIsFtueComplete] =
+    useState(false);
+  const [isFtueWrapUpDialogue, setIsFtueWrapUpDialogue] =
     useState(false);
 
   function clearCasinoMarkers() {
@@ -125,6 +145,7 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
   }
 
   function handleCasinoMarkerTap(casino) {
+    setIsFtueCasinoSheet(false);
     setSelectedCasino(casino);
 
     if (map.current) {
@@ -150,7 +171,14 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
   }
 
   function closeCasinoPanel() {
+    const wasFtueCasinoSheet = isFtueCasinoSheet;
+
     setSelectedCasino(null);
+    setIsFtueCasinoSheet(false);
+
+    if (wasFtueCasinoSheet) {
+      setIsFtueWrapUpDialogue(true);
+    }
   }
 
   function stopLocationWatch() {
@@ -240,6 +268,50 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
       );
 
       nearbyFtueInteractiveTimerRef.current = null;
+    }
+
+    if (
+      nearbyFtueVerificationTimerRef.current !==
+      null
+    ) {
+      window.clearTimeout(
+        nearbyFtueVerificationTimerRef.current
+      );
+
+      nearbyFtueVerificationTimerRef.current = null;
+    }
+
+    if (
+      nearbyFtueVerificationFadeTimerRef.current !==
+      null
+    ) {
+      window.clearTimeout(
+        nearbyFtueVerificationFadeTimerRef.current
+      );
+
+      nearbyFtueVerificationFadeTimerRef.current = null;
+    }
+
+    if (
+      nearbyFtueCasinoSheetFadeTimerRef.current !==
+      null
+    ) {
+      window.clearTimeout(
+        nearbyFtueCasinoSheetFadeTimerRef.current
+      );
+
+      nearbyFtueCasinoSheetFadeTimerRef.current = null;
+    }
+
+    if (
+      isGoingToCasinoFadeTimerRef.current !==
+      null
+    ) {
+      window.clearTimeout(
+        isGoingToCasinoFadeTimerRef.current
+      );
+
+      isGoingToCasinoFadeTimerRef.current = null;
     }
   }
 
@@ -648,7 +720,7 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
 
       center: [0, 15],
       zoom: 1.1,
-      attributionControl: true,
+      attributionControl: false,
       interactive: true,
       maxPitch: 85,
       minZoom: 0,
@@ -668,6 +740,13 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
     earthMap.dragRotate.disable();
     earthMap.keyboard.disable();
     earthMap.touchZoomRotate.disable();
+
+    /*
+      The entire FTUE is a controlled experience.
+      Keep all map and casino-marker pointer input blocked until
+      the user leaves the FTUE for the Geoplay Home screen.
+    */
+    earthMap.getContainer().style.pointerEvents = "none";
 
     const setResponsiveGlobeView =
       () => {
@@ -782,8 +861,14 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
     setIsNearbySearchPopupVisible(false);
     setIsNearbySearchPopupFading(false);
     setIsNearbySearchResultReady(false);
+    setIsGoingToCasino(false);
+    setIsGoingToCasinoFading(false);
     setIsNearbyResultDialogueFading(false);
     setIsFtueComplete(false);
+    setIsFtueWrapUpDialogue(false);
+    setIsFtueVerificationDialogue(false);
+    setIsFtueVerificationFading(false);
+    setIsFtueCasinoSheetFading(false);
 
     const popupTimer = window.setTimeout(() => {
       setIsNearbySearchPopupVisible(true);
@@ -966,6 +1051,13 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
           casinoMarkerElement.className =
             "geoplay-earth-casino-marker";
 
+          /*
+            Casino markers are display-only during the controlled FTUE.
+            The FTUE selects a casino programmatically; the player cannot
+            tap a marker until they leave the FTUE.
+          */
+          casinoMarkerElement.style.pointerEvents = "none";
+
           casinoMarkerElement.dataset.casinoId =
             casino.id;
 
@@ -977,6 +1069,39 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
           casinoMarkerElement.setAttribute(
             "role",
             "button"
+          );
+
+          const casinoMarkerVisual =
+            document.createElement("div");
+
+          casinoMarkerVisual.className =
+            "geoplay-earth-casino-marker-visual";
+
+          const casinoBrand =
+            casinoBranding[casino.id] || {};
+
+          if (casinoBrand.logo) {
+            const casinoLogo =
+              document.createElement("img");
+
+            casinoLogo.className =
+              "geoplay-earth-casino-marker-logo";
+
+            casinoLogo.src = casinoBrand.logo;
+            casinoLogo.alt = "";
+            casinoLogo.draggable = false;
+            casinoLogo.setAttribute(
+              "aria-hidden",
+              "true"
+            );
+
+            casinoMarkerVisual.appendChild(
+              casinoLogo
+            );
+          }
+
+          casinoMarkerElement.appendChild(
+            casinoMarkerVisual
           );
 
           casinoMarkerElement.addEventListener(
@@ -1040,28 +1165,16 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
                 setIsNearbySearchResultReady(true);
 
                 /*
-                  Give the player time to read the result message.
-                  Then fade only the dialogue bubble away, leaving
-                  the robot on screen.
+                  Give the player time to read the result message,
+                  then advance to the next controlled FTUE line.
+                  No map interaction is enabled here.
                 */
                 nearbyFtueCompletionTimerRef.current =
                   window.setTimeout(() => {
                     nearbyFtueCompletionTimerRef.current =
                       null;
 
-                    setIsNearbyResultDialogueFading(true);
-
-                    /*
-                      Wait for the bubble fade to finish before
-                      handing control of the map back to the player.
-                    */
-                    nearbyFtueInteractiveTimerRef.current =
-                      window.setTimeout(() => {
-                        nearbyFtueInteractiveTimerRef.current =
-                          null;
-
-                        setIsFtueComplete(true);
-                      }, 500);
+                    setIsGoingToCasino(true);
                   }, 5000);
               }, 700);
           }, 500);
@@ -1086,54 +1199,235 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
     playerLocation,
   ]);
 
-  useEffect(() => {
-    casinoMarkerRefs.current.forEach(
-      (marker) => {
-        const markerElement =
-          marker.getElement();
-
-        markerElement.classList.toggle(
-          "is-selected",
-          selectedCasino?.id ===
-            markerElement.dataset.casinoId
-        );
-      }
-    );
-  }, [selectedCasino]);
+  /*
+    The "Let's go to a casino!" dialogue currently pauses the FTUE flow.
+    Keep it visible for 3 seconds, then fade out both the robot and
+    dialogue together. The next FTUE step will handle the casino
+    camera movement separately.
+  */
 
   useEffect(() => {
-    const earthMap = map.current;
-
-    if (!earthMap || !isFtueComplete) {
+    if (!isGoingToCasino) {
+      setIsGoingToCasinoFading(false);
       return;
     }
 
-    /*
-      The map is intentionally non-interactive during the FTUE.
-      Once the final dialogue has faded away, return control to
-      the player and stop the automatic globe rotation.
-    */
-    if (rotationFrameRef.current !== null) {
-      cancelAnimationFrame(
-        rotationFrameRef.current
-      );
+    setIsGoingToCasinoFading(false);
 
-      rotationFrameRef.current = null;
+    isGoingToCasinoFadeTimerRef.current =
+      window.setTimeout(() => {
+        isGoingToCasinoFadeTimerRef.current = null;
+        setIsGoingToCasinoFading(true);
+      }, 3000);
+
+    /*
+      Wait until the robot and dialogue have completely finished
+      fading out, then fly to the closest nearby casino marker.
+    */
+    nearbyFtueInteractiveTimerRef.current =
+      window.setTimeout(() => {
+        nearbyFtueInteractiveTimerRef.current = null;
+
+        const earthMap = map.current;
+        const closestCasino =
+          nearbyCasinosRef.current[0];
+
+        if (!earthMap || !closestCasino) {
+          return;
+        }
+
+        const closestCasinoMarker =
+          casinoMarkerRefs.current.find(
+            (marker) =>
+              marker.getElement().dataset.casinoId ===
+              closestCasino.id
+          );
+
+        if (closestCasinoMarker) {
+          closestCasinoMarker
+            .getElement()
+            .classList.add("is-ftue-target");
+        }
+
+        isFlyingToLocationRef.current = true;
+
+        console.log(
+          "GeoPlay flying to closest casino:",
+          {
+            name: closestCasino.name,
+            distanceMiles: Number(
+              closestCasino.distanceMiles.toFixed(
+                1
+              )
+            ),
+          }
+        );
+
+        earthMap.flyTo({
+          center: [
+            closestCasino.longitude,
+            closestCasino.latitude,
+          ],
+          zoom: 14.5,
+          curve: 1.2,
+          speed: 1.4,
+          essential: true,
+        });
+
+        earthMap.once("moveend", () => {
+          isFlyingToLocationRef.current = false;
+
+          console.log(
+            "GeoPlay closest casino camera flight complete:",
+            {
+              name: closestCasino.name,
+              distanceMiles: Number(
+                closestCasino.distanceMiles.toFixed(
+                  1
+                )
+              ),
+            }
+          );
+
+          /*
+            Give the camera a brief moment to settle before
+            introducing the casino sheet. The sheet then keeps
+            its existing graceful full-mode entrance.
+          */
+          nearbyFtueCasinoSheetTimerRef.current =
+            window.setTimeout(() => {
+              nearbyFtueCasinoSheetTimerRef.current = null;
+
+              setIsFtueCasinoSheet(true);
+              setSelectedCasino(closestCasino);
+
+              /*
+                Wait for the existing full-sheet entrance to finish,
+                then bring the robot back in with the verification
+                reminder as the next FTUE step.
+              */
+              nearbyFtueVerificationTimerRef.current =
+                window.setTimeout(() => {
+                  nearbyFtueVerificationTimerRef.current = null;
+                  setIsFtueVerificationDialogue(true);
+                }, 760);
+            }, 600);
+        });
+      }, 3700);
+
+    return () => {
+      if (
+        isGoingToCasinoFadeTimerRef.current !==
+        null
+      ) {
+        window.clearTimeout(
+          isGoingToCasinoFadeTimerRef.current
+        );
+
+        isGoingToCasinoFadeTimerRef.current = null;
+      }
+
+      if (
+        nearbyFtueInteractiveTimerRef.current !==
+        null
+      ) {
+        window.clearTimeout(
+          nearbyFtueInteractiveTimerRef.current
+        );
+
+        nearbyFtueInteractiveTimerRef.current = null;
+      }
+
+      if (
+        nearbyFtueCasinoSheetTimerRef.current !==
+        null
+      ) {
+        window.clearTimeout(
+          nearbyFtueCasinoSheetTimerRef.current
+        );
+
+        nearbyFtueCasinoSheetTimerRef.current = null;
+      }
+
+      if (
+        nearbyFtueVerificationTimerRef.current !==
+        null
+      ) {
+        window.clearTimeout(
+          nearbyFtueVerificationTimerRef.current
+        );
+
+        nearbyFtueVerificationTimerRef.current = null;
+      }
+    };
+  }, [isGoingToCasino]);
+
+
+  useEffect(() => {
+    if (
+      !isFtueVerificationDialogue ||
+      !selectedCasino
+    ) {
+      setIsFtueVerificationFading(false);
+      return;
     }
 
-    earthMap.dragPan.enable();
-    earthMap.scrollZoom.enable();
-    earthMap.boxZoom.enable();
-    earthMap.doubleClickZoom.enable();
-    earthMap.dragRotate.enable();
-    earthMap.keyboard.enable();
-    earthMap.touchZoomRotate.enable();
-    earthMap.getCanvas().style.pointerEvents = "auto";
+    setIsFtueVerificationFading(false);
 
-    console.log(
-      "GeoPlay FTUE complete: map interaction enabled."
-    );
-  }, [isFtueComplete]);
+    /*
+      The verification bubble begins its entrance 1.35s after the
+      robot appears and takes 650ms to finish entering. Keep the
+      fully visible bubble on screen for 5 seconds, then begin
+      the fade-out.
+    */
+    nearbyFtueVerificationFadeTimerRef.current =
+      window.setTimeout(() => {
+        nearbyFtueVerificationFadeTimerRef.current = null;
+        setIsFtueVerificationFading(true);
+
+        /*
+          Wait for the robot and verification dialogue to finish
+          their 650ms fade, then slide the casino sheet back down.
+        */
+        nearbyFtueCasinoSheetFadeTimerRef.current =
+          window.setTimeout(() => {
+            nearbyFtueCasinoSheetFadeTimerRef.current = null;
+            setIsFtueCasinoSheetFading(true);
+          }, 650);
+      }, 7000);
+
+    return () => {
+      if (
+        nearbyFtueVerificationFadeTimerRef.current !==
+        null
+      ) {
+        window.clearTimeout(
+          nearbyFtueVerificationFadeTimerRef.current
+        );
+
+        nearbyFtueVerificationFadeTimerRef.current = null;
+      }
+
+      if (
+        nearbyFtueCasinoSheetFadeTimerRef.current !==
+        null
+      ) {
+        window.clearTimeout(
+          nearbyFtueCasinoSheetFadeTimerRef.current
+        );
+
+        nearbyFtueCasinoSheetFadeTimerRef.current = null;
+      }
+    };
+  }, [
+    isFtueVerificationDialogue,
+    selectedCasino,
+  ]);
+
+  /*
+    Map interaction intentionally remains disabled throughout the
+    entire FTUE. The user exits the FTUE through the final Home action.
+  */
 
   const isLocationFlightActive =
     locationStatus === "requesting" ||
@@ -1204,6 +1498,14 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
           selectedCasino
             ? "is-casino-selected"
             : ""
+        } ${
+          isGoingToCasino
+            ? "is-going-to-casino"
+            : ""
+        } ${
+          isGoingToCasinoFading
+            ? "is-going-to-casino-fading"
+            : ""
         }`}
         aria-hidden={
           isLocationFlightActive ||
@@ -1212,7 +1514,9 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
       >
         {ftuePhase !== "earth" &&
           !isLocationFlightActive &&
-          !selectedCasino && (
+          !selectedCasino &&
+          !isFtueVerificationDialogue &&
+          !isFtueWrapUpDialogue && (
             <>
               <GeoPlayRobotDialogue
                 ftuePhase={ftuePhase}
@@ -1225,6 +1529,7 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
                 isNearbySearchResultReady={
                   isNearbySearchResultReady
                 }
+                isGoingToCasino={isGoingToCasino}
                 isNearbyResultDialogueFading={
                   isNearbyResultDialogueFading
                 }
@@ -1252,9 +1557,50 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
           )}
       </div>
 
+      {isFtueWrapUpDialogue && (
+        <div className="geoplay-earth-ftue-verification-layer">
+          <GeoPlayRobotDialogue
+            ftuePhase={ftuePhase}
+            locationStatus="idle"
+            isNearbySearchActive={false}
+            isNearbySearchResultReady={false}
+            isGoingToCasino={false}
+            isNearbyResultDialogueFading={false}
+            isFtueComplete={false}
+            isFtueVerificationDialogue={false}
+            isFtueWrapUpDialogue={true}
+            onExploreGeoplay={onGoHome}
+          />
+        </div>
+      )}
+
+      {isFtueVerificationDialogue && selectedCasino && (
+        <div
+          className={`geoplay-earth-ftue-verification-layer ${
+            isFtueVerificationFading
+              ? "is-fading"
+              : ""
+          }`}
+        >
+          <GeoPlayRobotDialogue
+            ftuePhase={ftuePhase}
+            locationStatus={locationStatus}
+            isNearbySearchActive={false}
+            isNearbySearchResultReady={false}
+            isGoingToCasino={false}
+            isNearbyResultDialogueFading={false}
+            isFtueComplete={false}
+            isFtueVerificationDialogue={true}
+          />
+        </div>
+      )}
+
       {selectedCasino && (
         <GeoPlayCasinoSheet
           casino={selectedCasino}
+          initialSnap={isFtueCasinoSheet ? "full" : "collapsed"}
+          isFtueSheetFading={isFtueCasinoSheetFading}
+          isFtueCasinoSheet={isFtueCasinoSheet}
           onClose={closeCasinoPanel}
         />
       )}

@@ -65,6 +65,12 @@
   transition: none !important;
 }
 
+/* FTUE auto-open: glide the full sheet into place after the camera stops. */
+.geoplay-casino-sheet.is-entering.is-auto-full-opening {
+  transform: translate3d(0, 0, 0) !important;
+  transition: transform 760ms cubic-bezier(0.16, 0.82, 0.24, 1) !important;
+}
+
 .geoplay-casino-sheet.is-closing {
   transform: translate3d(0, 100%, 0) !important;
   transition: transform 430ms cubic-bezier(0.22, 0.8, 0.2, 1) !important;
@@ -1160,4 +1166,9 @@
   .geoplay-casino-sheet-play-here-button::after {
     animation: none;
   }
+}
+
+.geoplay-casino-sheet.is-ftue-locked,
+.geoplay-casino-sheet-scrim.is-ftue-locked {
+  pointer-events: none;
 }

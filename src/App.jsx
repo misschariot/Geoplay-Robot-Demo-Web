@@ -127,7 +127,13 @@ function App() {
     );
   }
 
-  return <LoginScreen onSignUp={goToSignUp} onMapShortcut={goToMap} />;
+  return (
+    <LoginScreen
+      onSignUp={goToSignUp}
+      onMapShortcut={goToMap}
+      onLogin={goToHome}
+    />
+  );
 }
 
 export default App;
