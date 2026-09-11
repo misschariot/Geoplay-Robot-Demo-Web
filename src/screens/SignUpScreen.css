@@ -2,9 +2,10 @@
 
 .signup-screen {
   position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
   width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100svh;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
