@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./SignUpScreen.css";
+import GeoPlayButton from "../components/GeoPlayButton";
 
 function SignUpScreen({ onBackToLogin, onVerifyEmail }) {
   const [firstName, setFirstName] = useState("");
@@ -439,13 +440,12 @@ function SignUpScreen({ onBackToLogin, onVerifyEmail }) {
             </p>
           )}
 
-          <button
-            className="signup-submit-button"
+          <GeoPlayButton
             type="button"
             onClick={handleCreateAccount}
           >
-            Create Account
-          </button>
+            CREATE ACCOUNT
+          </GeoPlayButton>
         </form>
 
         <div className="login-row">

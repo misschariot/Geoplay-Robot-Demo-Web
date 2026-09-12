@@ -55,20 +55,49 @@
   box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.42);
 
   will-change: transform;
+  backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
 
   transition: height 430ms cubic-bezier(0.22, 0.8, 0.2, 1);
 }
 
-.geoplay-casino-sheet.is-entering {
+.geoplay-casino-sheet.is-entering:not(.is-auto-full-opening) {
   transform: translate3d(0, 100%, 0) !important;
   transition: none !important;
 }
 
-/* FTUE auto-open: glide the full sheet into place after the camera stops. */
-.geoplay-casino-sheet.is-entering.is-auto-full-opening {
-  transform: translate3d(0, 0, 0) !important;
-  transition: transform 760ms cubic-bezier(0.16, 0.82, 0.24, 1) !important;
+/* FTUE auto-open:
+   Use a real keyframe animation so the sheet always travels
+   from below the viewport to its final full-height position. */
+.geoplay-casino-sheet.is-auto-full-opening {
+  animation:
+    geoplay-casino-sheet-ftue-slide-up
+    760ms
+    cubic-bezier(0.16, 0.82, 0.24, 1)
+    forwards;
+}
+
+@keyframes geoplay-casino-sheet-ftue-slide-up {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
+/*
+  Keep the FTUE entrance focused on one compositor animation.
+  Pause decorative child animations while the full sheet is moving,
+  then let them resume automatically when the entrance class clears.
+*/
+.geoplay-casino-sheet.is-auto-full-opening
+  .geoplay-casino-sheet-winners-track,
+.geoplay-casino-sheet.is-auto-full-opening
+  .geoplay-casino-sheet-play-here .geoplay-button--primary::after {
+  animation-play-state: paused;
 }
 
 .geoplay-casino-sheet.is-closing {
@@ -649,6 +678,11 @@
   .geoplay-casino-sheet.is-closing {
     transition: none !important;
   }
+
+  .geoplay-casino-sheet.is-auto-full-opening {
+    animation: none !important;
+    transform: translate3d(0, 0, 0) !important;
+  }
 }
 
 
@@ -1052,7 +1086,8 @@
 
 /* --------------------------------------------------
    PLAY HERE
-   Matches the existing Login button treatment
+   Shared GeoPlayButton owns the button appearance.
+   This wrapper only controls placement within the sheet.
 -------------------------------------------------- */
 
 .geoplay-casino-sheet-play-here {
@@ -1063,109 +1098,32 @@
   padding: 10px 14px 12px;
 }
 
-.geoplay-casino-sheet-play-here-button {
-  position: relative;
-  width: 70%;
-  height: 56px;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0 20px;
-
-  border: 0;
-  border-radius: 999px;
-
-  background: linear-gradient(
-    135deg,
-    #ff5a16 0%,
-    #ff7419 48%,
-    #ffb21f 100%
-  );
-
-  color: #ffffff;
-
-  font-family: "Poppins", sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.02em;
-
-  cursor: pointer;
-  overflow: hidden;
-  -webkit-appearance: none;
-  appearance: none;
-  -webkit-tap-highlight-color: transparent;
-
-  box-shadow:
-    0 12px 30px rgba(255, 90, 22, 0.22),
-    0 0 20px rgba(255, 90, 22, 0.08);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.25s ease,
-    filter 0.25s ease;
-}
-
-.geoplay-casino-sheet-play-here-button::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -45%;
-  width: 30%;
-  height: 100%;
-  transform: skewX(-20deg);
-  background: rgba(255, 255, 255, 0.18);
-  animation: geoplay-casino-play-here-shine 4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.geoplay-casino-sheet-play-here-button:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 16px 36px rgba(255, 90, 22, 0.3),
-    0 0 28px rgba(255, 90, 22, 0.12);
-
-  filter: brightness(1.04);
-}
-
-.geoplay-casino-sheet-play-here-button:active {
-  transform: translateY(0);
-
-  box-shadow:
-    0 8px 20px rgba(255, 90, 22, 0.18);
-}
-
-@keyframes geoplay-casino-play-here-shine {
-  0%,
-  65% {
-    left: -45%;
-  }
-
-  100% {
-    left: 130%;
-  }
-}
-
 @media (max-width: 480px) {
   .geoplay-casino-sheet-play-here {
     padding: 10px 12px 12px;
   }
-
-  .geoplay-casino-sheet-play-here-button {
-    width: 70%;
-    height: 56px;
-    font-size: 13px;
-  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .geoplay-casino-sheet-play-here-button {
-    transition: none;
-  }
+/*
+  During the FTUE, PLAY HERE must remain non-interactive,
+  but it should keep the full visual treatment of the normal
+  primary GeoPlay button instead of looking dimmed/disabled.
+*/
+.geoplay-casino-sheet.is-ftue-locked
+  .geoplay-casino-sheet-play-here
+  .geoplay-button--primary:disabled {
+  opacity: 1;
+  cursor: default;
 
-  .geoplay-casino-sheet-play-here-button::after {
-    animation: none;
-  }
+  box-shadow:
+    0 12px 30px rgba(255, 90, 22, 0.22),
+    0 0 20px rgba(255, 90, 22, 0.08);
+}
+
+.geoplay-casino-sheet.is-ftue-locked
+  .geoplay-casino-sheet-play-here
+  .geoplay-button--primary:disabled::after {
+  animation-play-state: running;
 }
 
 .geoplay-casino-sheet.is-ftue-locked,

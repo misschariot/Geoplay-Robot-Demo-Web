@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import GeoPlayButton from "../components/GeoPlayButton";
 import "./FTUEWelcomeScreen.css";
 
 const stars = [
@@ -303,13 +304,13 @@ function FTUEWelcomeScreen({ onMaybeLater, onGetStarted }) {
 
           {showGreetingCta && (
             <div className="ftue-robot-greeting-cta">
-              <button
+              <GeoPlayButton
                 type="button"
-                className="ftue-robot-get-started"
+                size="medium"
                 onClick={onGetStarted}
               >
                 GET STARTED
-              </button>
+              </GeoPlayButton>
               <button
                 type="button"
                 className="ftue-robot-maybe-later"

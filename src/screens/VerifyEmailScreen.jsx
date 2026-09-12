@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./VerifyEmailScreen.css";
+import GeoPlayButton from "../components/GeoPlayButton";
 
 function VerifyEmailScreen({ email, onBack, onContinue }) {
   const [code, setCode] = useState("");
@@ -23,23 +24,22 @@ function VerifyEmailScreen({ email, onBack, onContinue }) {
   if (isVerified) {
     return (
       <main className="verify-email-screen">
-        <section className="verify-email-card">
+        <section className="verify-email-card verify-email-card--success">
           <div className="verify-email-brand">
             <div className="verify-email-logo">
               <img src="/geoplay-logo.png" alt="GeoPlay" />
             </div>
 
-            <p className="verify-email-tagline">
-              Welcome to GeoPlay.
-            </p>
+            {/* Success state intentionally keeps the logo clean without a tagline. */}
           </div>
 
           <div className="verify-email-content">
-            <div className="verify-email-success-icon" aria-hidden="true">
-              ✓
-            </div>
+            <div
+              className="verify-email-success-divider"
+              aria-hidden="true"
+            />
 
-            <h1>Account Verified!</h1>
+            <h1>Account Verified</h1>
 
             <p className="verify-email-message">
               Your email has been verified.
@@ -49,13 +49,12 @@ function VerifyEmailScreen({ email, onBack, onContinue }) {
               You're all set.
             </p>
 
-            <button
-              className="verify-email-button"
+            <GeoPlayButton
               type="button"
               onClick={onContinue}
             >
-              Continue
-            </button>
+              CONTINUE
+            </GeoPlayButton>
           </div>
         </section>
       </main>
@@ -118,13 +117,12 @@ function VerifyEmailScreen({ email, onBack, onContinue }) {
               />
             </div>
 
-            <button
-              className="verify-email-button"
+            <GeoPlayButton
               type="submit"
               disabled={code.length !== 6}
             >
-              Verify Email
-            </button>
+              VERIFY EMAIL
+            </GeoPlayButton>
           </form>
 
           <div className="resend-section">

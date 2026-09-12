@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import GeoPlayButton from "../components/GeoPlayButton";
 
 function GeoPlayRobotDialogue({
   ftuePhase,
@@ -73,18 +74,19 @@ function GeoPlayRobotDialogue({
     locationStatus === "located" || locationStatus === "searching";
 
   const isDialogueVisible =
-    (isFtueWrapUpDialogue && isWrapUpDialogueVisible) ||
-    isFtueVerificationDialogue ||
-    (
-      !isFtueComplete &&
-      (
-        ftuePhase === "dialogue" ||
-        ftuePhase === "actions" ||
-        locationStatus === "located" ||
-        locationStatus === "searching" ||
-        locationStatus === "denied"
-      )
-    );
+    isFtueWrapUpDialogue
+      ? isWrapUpDialogueVisible
+      : isFtueVerificationDialogue ||
+        (
+          !isFtueComplete &&
+          (
+            ftuePhase === "dialogue" ||
+            ftuePhase === "actions" ||
+            locationStatus === "located" ||
+            locationStatus === "searching" ||
+            locationStatus === "denied"
+          )
+        );
 
   const dialogueText =
     isFtueWrapUpDialogue
@@ -153,12 +155,13 @@ function GeoPlayRobotDialogue({
 
       {isFtueWrapUpDialogue && isWrapUpButtonVisible && (
         <div className="geoplay-earth-wrap-up-actions">
-          <button
-            className="geoplay-earth-allow-button"
+          <GeoPlayButton
+            type="button"
+            size="medium"
             onClick={onExploreGeoplay}
           >
             EXPLORE GEOPLAY
-          </button>
+          </GeoPlayButton>
         </div>
       )}
     </div>

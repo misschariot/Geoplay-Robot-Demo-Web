@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./LoginScreen.css";
+import GeoPlayButton from "../components/GeoPlayButton";
 
 function LoginScreen({ onSignUp, onMapShortcut, onLogin }) {
   const [email, setEmail] = useState("");
@@ -73,9 +74,9 @@ function LoginScreen({ onSignUp, onMapShortcut, onLogin }) {
             />
           </div>
 
-          <button className="login-button" type="submit">
-            Log In
-          </button>
+          <GeoPlayButton type="submit">
+            LOG IN
+          </GeoPlayButton>
         </form>
 
         <button

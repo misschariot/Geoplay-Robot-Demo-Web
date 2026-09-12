@@ -1,4 +1,5 @@
 import "./GeoPlayLocationActions.css";
+import GeoPlayButton from "../components/GeoPlayButton";
 
 function GeoPlayLocationActions({
   ftuePhase,
@@ -22,35 +23,41 @@ function GeoPlayLocationActions({
     <div className="geoplay-earth-location-actions is-visible">
       {isDenied ? (
         <>
-          <button
-            className="geoplay-earth-allow-button"
+          <GeoPlayButton
+            type="button"
+            size="medium"
             onClick={onTryAgain}
           >
             TRY AGAIN
-          </button>
+          </GeoPlayButton>
 
-          <button
-            className="geoplay-earth-deny-button"
+          <GeoPlayButton
+            type="button"
+            size="medium"
+            variant="secondary"
             onClick={onExploreGeoplay}
           >
             EXPLORE GEOPLAY
-          </button>
+          </GeoPlayButton>
         </>
       ) : (
         <>
-          <button
-            className="geoplay-earth-allow-button"
+          <GeoPlayButton
+            type="button"
+            size="medium"
             onClick={onAllowLocation}
           >
             ALLOW LOCATION
-          </button>
+          </GeoPlayButton>
 
-          <button
-            className="geoplay-earth-deny-button"
+          <GeoPlayButton
+            type="button"
+            size="medium"
+            variant="secondary"
             onClick={onNotNow}
           >
             DENY
-          </button>
+          </GeoPlayButton>
         </>
       )}
     </div>

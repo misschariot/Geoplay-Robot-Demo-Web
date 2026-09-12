@@ -1221,112 +1221,84 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
       }, 3000);
 
     /*
-      Wait until the robot and dialogue have completely finished
-      fading out, then fly to the closest nearby casino marker.
+      Step 2: after the "Let's go to a casino" dialogue fades,
+      select the closest casino from the full Geoplay casino data
+      and fly the map to its location.
+
+      This FTUE selection is intentionally independent of the
+      nearby-search radius so the demo always has a destination.
+
+      The Casino Sheet is intentionally not opened yet.
     */
     nearbyFtueInteractiveTimerRef.current =
       window.setTimeout(() => {
         nearbyFtueInteractiveTimerRef.current = null;
 
         const earthMap = map.current;
-        const closestCasino =
-          nearbyCasinosRef.current[0];
 
-        if (!earthMap || !closestCasino) {
-          return;
-        }
+        const ftueCasino = geoplayCasinos
+          .map((casino) => ({
+            ...casino,
+            distanceMiles: calculateDistanceMiles(
+              playerLocation.latitude,
+              playerLocation.longitude,
+              casino.latitude,
+              casino.longitude
+            ),
+          }))
+          .sort(
+            (casinoA, casinoB) =>
+              casinoA.distanceMiles -
+              casinoB.distanceMiles
+          )[0];
 
-        const closestCasinoMarker =
-          casinoMarkerRefs.current.find(
-            (marker) =>
-              marker.getElement().dataset.casinoId ===
-              closestCasino.id
+        if (!earthMap || !ftueCasino) {
+          console.error(
+            "GeoPlay FTUE: no casino could be selected."
           );
-
-        if (closestCasinoMarker) {
-          closestCasinoMarker
-            .getElement()
-            .classList.add("is-ftue-target");
+          return;
         }
 
         isFlyingToLocationRef.current = true;
 
         console.log(
-          "GeoPlay flying to closest casino:",
+          "GeoPlay FTUE flying to closest casino:",
           {
-            name: closestCasino.name,
+            name: ftueCasino.name,
+            latitude: ftueCasino.latitude,
+            longitude: ftueCasino.longitude,
             distanceMiles: Number(
-              closestCasino.distanceMiles.toFixed(
-                1
-              )
+              ftueCasino.distanceMiles.toFixed(1)
             ),
           }
         );
 
+        earthMap.once("moveend", () => {
+          isFlyingToLocationRef.current = false;
+
+          console.log(
+            "GeoPlay FTUE closest casino camera flight complete:",
+            ftueCasino.name
+          );
+
+          setSelectedCasino(ftueCasino);
+          setIsFtueCasinoSheet(true);
+          setIsFtueCasinoSheetFading(false);
+        });
+
         earthMap.flyTo({
           center: [
-            closestCasino.longitude,
-            closestCasino.latitude,
+            ftueCasino.longitude,
+            ftueCasino.latitude,
           ],
           zoom: 14.5,
           curve: 1.2,
           speed: 1.4,
           essential: true,
         });
-
-        earthMap.once("moveend", () => {
-          isFlyingToLocationRef.current = false;
-
-          console.log(
-            "GeoPlay closest casino camera flight complete:",
-            {
-              name: closestCasino.name,
-              distanceMiles: Number(
-                closestCasino.distanceMiles.toFixed(
-                  1
-                )
-              ),
-            }
-          );
-
-          /*
-            Give the camera a brief moment to settle before
-            introducing the casino sheet. The sheet then keeps
-            its existing graceful full-mode entrance.
-          */
-          nearbyFtueCasinoSheetTimerRef.current =
-            window.setTimeout(() => {
-              nearbyFtueCasinoSheetTimerRef.current = null;
-
-              setIsFtueCasinoSheet(true);
-              setSelectedCasino(closestCasino);
-
-              /*
-                Wait for the existing full-sheet entrance to finish,
-                then bring the robot back in with the verification
-                reminder as the next FTUE step.
-              */
-              nearbyFtueVerificationTimerRef.current =
-                window.setTimeout(() => {
-                  nearbyFtueVerificationTimerRef.current = null;
-                  setIsFtueVerificationDialogue(true);
-                }, 760);
-            }, 600);
-        });
       }, 3700);
 
     return () => {
-      if (
-        isGoingToCasinoFadeTimerRef.current !==
-        null
-      ) {
-        window.clearTimeout(
-          isGoingToCasinoFadeTimerRef.current
-        );
-
-        isGoingToCasinoFadeTimerRef.current = null;
-      }
-
       if (
         nearbyFtueInteractiveTimerRef.current !==
         null
@@ -1339,29 +1311,17 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
       }
 
       if (
-        nearbyFtueCasinoSheetTimerRef.current !==
+        isGoingToCasinoFadeTimerRef.current !==
         null
       ) {
         window.clearTimeout(
-          nearbyFtueCasinoSheetTimerRef.current
+          isGoingToCasinoFadeTimerRef.current
         );
 
-        nearbyFtueCasinoSheetTimerRef.current = null;
-      }
-
-      if (
-        nearbyFtueVerificationTimerRef.current !==
-        null
-      ) {
-        window.clearTimeout(
-          nearbyFtueVerificationTimerRef.current
-        );
-
-        nearbyFtueVerificationTimerRef.current = null;
+        isGoingToCasinoFadeTimerRef.current = null;
       }
     };
   }, [isGoingToCasino]);
-
 
   useEffect(() => {
     if (
@@ -1601,6 +1561,9 @@ function GeoPlayMap({ startFtue = false, onGoHome }) {
           initialSnap={isFtueCasinoSheet ? "full" : "collapsed"}
           isFtueSheetFading={isFtueCasinoSheetFading}
           isFtueCasinoSheet={isFtueCasinoSheet}
+          onFtueOpenComplete={() => {
+            setIsFtueVerificationDialogue(true);
+          }}
           onClose={closeCasinoPanel}
         />
       )}

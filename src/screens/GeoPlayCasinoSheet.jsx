@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./GeoPlayCasinoSheet.css";
 import { getGeoPlayWinners } from "../data/GeoPlayWinnerData";
 import casinoBranding from "../data/casinoBranding";
+import GeoPlayButton from "../components/GeoPlayButton";
 
 function getCasinoBranding(casino) {
   return casinoBranding[casino.id] || {};
@@ -38,6 +39,7 @@ function getVerificationLabel(status) {
 function GeoPlayCasinoSheet({
   casino,
   onClose,
+  onFtueOpenComplete,
   initialSnap = "collapsed",
   isFtueSheetFading = false,
   isFtueCasinoSheet = false,
@@ -58,8 +60,8 @@ function GeoPlayCasinoSheet({
   const lastYRef = useRef(0);
   const lastTimeRef = useRef(0);
   const closeTimerRef = useRef(null);
-  const autoFullOpenTimerRef = useRef(null);
   const snapRef = useRef("collapsed");
+  const hasReportedFtueOpenRef = useRef(false);
   const gamesScrollerRef = useRef(null);
   const gamesDragRef = useRef({
     active: false,
@@ -112,77 +114,93 @@ function GeoPlayCasinoSheet({
     }
   };
 
-  useEffect(() => {
-    const settle = () => {
-      const metrics = getMetrics();
-      const nextHeight =
-        startingSnap === "full"
-          ? metrics.fullHeight
-          : metrics.collapsedHeight;
+  useLayoutEffect(() => {
+    hasReportedFtueOpenRef.current = false;
 
-      snapRef.current = startingSnap;
-      setSnap(startingSnap);
-      currentOffsetRef.current = nextHeight;
-      applyHeight(nextHeight, false);
+    const metrics = getMetrics();
+    const nextHeight =
+      startingSnap === "full"
+        ? metrics.fullHeight
+        : metrics.collapsedHeight;
 
-      if (startingSnap === "full") {
+    /*
+      Establish the final physical height before the browser paints.
+      This keeps translateY(100%) based on one stable sheet height
+      for the entire FTUE entrance instead of changing height as the
+      slide begins.
+    */
+    snapRef.current = startingSnap;
+    setSnap(startingSnap);
+    currentOffsetRef.current = nextHeight;
+    applyHeight(nextHeight, false);
+
+    let entranceFrame = null;
+
+    if (startingSnap === "full") {
+      setIsEntering(true);
+      setIsAutoFullOpening(false);
+
+      /*
+        Start the transform animation on the next frame only after
+        the full-height layout has already been committed.
+      */
+      entranceFrame = window.requestAnimationFrame(() => {
         setIsAutoFullOpening(true);
-        autoFullOpenTimerRef.current = window.setTimeout(() => {
-          autoFullOpenTimerRef.current = null;
-          setIsEntering(false);
-          setIsAutoFullOpening(false);
-        }, 760);
-      } else {
-        setIsEntering(false);
-        applyHeight(nextHeight, true);
-      }
-    };
-
-    const frame = window.requestAnimationFrame(settle);
+      });
+    } else {
+      setIsAutoFullOpening(false);
+      setIsEntering(false);
+    }
 
     const handleResize = () => {
       if (isClosingRef.current) return;
 
-      const metrics = getMetrics();
-      const nextHeight =
+      const nextMetrics = getMetrics();
+      const resizedHeight =
         snapRef.current === "full"
-          ? metrics.fullHeight
-          : metrics.collapsedHeight;
+          ? nextMetrics.fullHeight
+          : nextMetrics.collapsedHeight;
 
-      currentOffsetRef.current = nextHeight;
-      applyHeight(nextHeight, false);
+      currentOffsetRef.current = resizedHeight;
+      applyHeight(resizedHeight, false);
     };
 
     window.addEventListener("resize", handleResize);
 
     return () => {
-      window.cancelAnimationFrame(frame);
+      if (entranceFrame !== null) {
+        window.cancelAnimationFrame(entranceFrame);
+      }
+
       window.removeEventListener("resize", handleResize);
     };
-  }, [startingSnap]);
-
-  useEffect(() => {
-    snapRef.current = startingSnap;
-    setSnap(startingSnap);
-
-    const frame = window.requestAnimationFrame(() => {
-      const metrics = getMetrics();
-      const nextHeight =
-        startingSnap === "full"
-          ? metrics.fullHeight
-          : metrics.collapsedHeight;
-      currentOffsetRef.current = nextHeight;
-      applyHeight(nextHeight, false);
-    });
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      if (autoFullOpenTimerRef.current !== null) {
-        window.clearTimeout(autoFullOpenTimerRef.current);
-        autoFullOpenTimerRef.current = null;
-      }
-    };
   }, [casino.id, startingSnap]);
+
+  const handleSheetAnimationEnd = (event) => {
+    if (event.target !== sheetRef.current) return;
+    if (!isAutoFullOpening) return;
+    if (
+      event.animationName !==
+      "geoplay-casino-sheet-ftue-slide-up"
+    ) {
+      return;
+    }
+
+    setIsEntering(false);
+    setIsAutoFullOpening(false);
+
+    /*
+      The FTUE verification sequence starts from the Casino Sheet's
+      actual completed entrance, not from a guessed timeout.
+    */
+    if (
+      isFtueCasinoSheet &&
+      !hasReportedFtueOpenRef.current
+    ) {
+      hasReportedFtueOpenRef.current = true;
+      onFtueOpenComplete?.();
+    }
+  };
 
   const handleClose = (force = false) => {
     if (!force && isFtueCasinoSheet) return;
@@ -222,9 +240,6 @@ function GeoPlayCasinoSheet({
     return () => {
       if (closeTimerRef.current !== null) {
         window.clearTimeout(closeTimerRef.current);
-      }
-      if (autoFullOpenTimerRef.current !== null) {
-        window.clearTimeout(autoFullOpenTimerRef.current);
       }
     };
   }, []);
@@ -460,6 +475,7 @@ function GeoPlayCasinoSheet({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
+        onAnimationEnd={handleSheetAnimationEnd}
       >
         <div
           className="geoplay-casino-sheet-handle-area"
@@ -538,13 +554,13 @@ function GeoPlayCasinoSheet({
 
           <div className="geoplay-casino-sheet-partial-content">
             <div className="geoplay-casino-sheet-play-here">
-              <button
+              <GeoPlayButton
                 type="button"
-                className="geoplay-casino-sheet-play-here-button"
+                size="large"
                 disabled={isFtueCasinoSheet}
               >
                 PLAY HERE
-              </button>
+              </GeoPlayButton>
             </div>
 
             <div

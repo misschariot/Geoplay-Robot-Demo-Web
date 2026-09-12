@@ -1,0 +1,250 @@
+/* --------------------------------------------------
+   GeoPlay Button
+   Single source of truth for GeoPlay button geometry
+   and branded primary/secondary treatments.
+-------------------------------------------------- */
+
+.geoplay-button {
+  position: relative;
+  box-sizing: border-box;
+  border: 0;
+  overflow: hidden;
+
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+/* --------------------------------------------------
+   Size
+   Size controls physical footprint.
+   Typography stays consistent across all sizes.
+-------------------------------------------------- */
+
+.geoplay-button--large {
+  width: 100%;
+  min-width: 0;
+  margin-top: 4px;
+  padding: 15px 20px;
+  border-radius: 13px;
+}
+
+.geoplay-button--medium {
+  width: min(285px, calc(100vw - 48px));
+  min-width: 0;
+  margin-top: 0;
+  padding: 15px 20px;
+  border-radius: 13px;
+}
+
+.geoplay-button--small {
+  width: min(50%, 240px);
+  min-width: 150px;
+  margin-top: 0;
+  padding: 15px 20px;
+  border-radius: 13px;
+}
+
+/* --------------------------------------------------
+   Primary
+   Canonical GeoPlay CTA treatment.
+-------------------------------------------------- */
+
+.geoplay-button--primary {
+  background: linear-gradient(
+    135deg,
+    #ff5a16 0%,
+    #ff7419 48%,
+    #ffb21f 100%
+  );
+
+  box-shadow:
+    0 12px 30px rgba(255, 90, 22, 0.22),
+    0 0 20px rgba(255, 90, 22, 0.08);
+}
+
+/* --------------------------------------------------
+   Secondary
+   Same physical button geometry and typography as the
+   primary button, with a restrained dark/outlined look.
+-------------------------------------------------- */
+
+.geoplay-button--secondary {
+  border: 1px solid rgba(255, 138, 53, 0.32);
+  background: #050607;
+  color: #ff9a45;
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+/* --------------------------------------------------
+   Primary shine
+-------------------------------------------------- */
+
+.geoplay-button--primary::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -80%;
+
+  width: 55%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+}
+
+.geoplay-button--primary::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -45%;
+
+  width: 30%;
+  height: 100%;
+
+  transform: skewX(-20deg);
+  background: rgba(255, 255, 255, 0.18);
+
+  animation: geoPlayButtonShine 4s ease-in-out infinite;
+}
+
+/* --------------------------------------------------
+   Hover
+-------------------------------------------------- */
+
+.geoplay-button--primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 36px rgba(255, 90, 22, 0.3),
+    0 0 28px rgba(255, 90, 22, 0.12);
+
+  filter: brightness(1.04);
+}
+
+.geoplay-button--primary:hover::before {
+  left: 130%;
+}
+
+.geoplay-button--secondary:hover {
+  transform: translateY(-2px);
+
+  color: #ffb21f;
+  background: #090a0c;
+  border-color: rgba(255, 178, 31, 0.45);
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.32),
+    0 0 14px rgba(255, 90, 22, 0.12);
+}
+
+/* --------------------------------------------------
+   Active
+-------------------------------------------------- */
+
+.geoplay-button:active {
+  transform: translateY(0);
+}
+
+.geoplay-button--primary:active {
+  box-shadow:
+    0 8px 20px rgba(255, 90, 22, 0.18);
+}
+
+/* --------------------------------------------------
+   Focus
+-------------------------------------------------- */
+
+.geoplay-button:focus-visible {
+  outline: 2px solid #ffb21f;
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------
+   Disabled
+-------------------------------------------------- */
+
+.geoplay-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+.geoplay-button--primary:disabled {
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.geoplay-button--secondary:disabled {
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.geoplay-button:disabled:hover {
+  transform: none;
+  filter: none;
+}
+
+.geoplay-button:disabled::before,
+.geoplay-button:disabled::after {
+  animation-play-state: paused;
+}
+
+/* --------------------------------------------------
+   Legacy width prop
+   Width is intentionally no longer allowed to override
+   the size system. Existing width props remain harmless.
+-------------------------------------------------- */
+
+/* --------------------------------------------------
+   Shine animation
+-------------------------------------------------- */
+
+@keyframes geoPlayButtonShine {
+  0%,
+  65% {
+    left: -45%;
+  }
+
+  100% {
+    left: 130%;
+  }
+}
+
+/* --------------------------------------------------
+   Reduced motion
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .geoplay-button,
+  .geoplay-button::before {
+    transition: none;
+  }
+
+  .geoplay-button--primary::after {
+    animation: none;
+  }
+}

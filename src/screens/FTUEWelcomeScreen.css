@@ -3387,7 +3387,7 @@
   flex-direction: column;
   align-items: center;
 
-  width: min(310px, calc(100vw - 42px));
+  width: min(285px, calc(100vw - 48px));
 
   transform:
     translate(-50%, var(--ftue-cta-offset));
@@ -3401,98 +3401,6 @@
     forwards;
 
   pointer-events: auto;
-}
-
-.ftue-robot-get-started {
-  position: relative;
-
-  appearance: none;
-
-  width: auto;
-  min-width: 190px;
-  min-height: 48px;
-
-  margin: 0;
-  padding: 15px 28px;
-
-  border: 0;
-  border-radius: 13px;
-
-  overflow: hidden;
-
-  background: linear-gradient(
-    135deg,
-    #ff5a16 0%,
-    #ff7419 48%,
-    #ffb21f 100%
-  );
-
-  color: #ffffff;
-
-  font-family: Poppins, sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.2;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 12px 30px rgba(255, 90, 22, 0.22),
-    0 0 20px rgba(255, 90, 22, 0.08);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.25s ease,
-    filter 0.25s ease;
-}
-
-.ftue-robot-get-started::before {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  left: -80%;
-
-  width: 55%;
-  height: 100%;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.22),
-    transparent
-  );
-
-  transform: skewX(-20deg);
-
-  transition: left 0.55s ease;
-}
-
-.ftue-robot-get-started:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 16px 36px rgba(255, 90, 22, 0.3),
-    0 0 28px rgba(255, 90, 22, 0.12);
-
-  filter: brightness(1.04);
-}
-
-.ftue-robot-get-started:hover::before {
-  left: 130%;
-}
-
-.ftue-robot-get-started:active {
-  transform: translateY(0);
-
-  box-shadow:
-    0 8px 20px rgba(255, 90, 22, 0.18);
-}
-
-.ftue-robot-get-started:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.9);
-  outline-offset: 3px;
 }
 
 .ftue-robot-maybe-later {
@@ -3548,15 +3456,8 @@
 
 @media (max-width: 600px) {
   .ftue-robot-greeting-cta {
-    width: min(292px, calc(100vw - 34px));
+    width: min(280px, calc(100vw - 44px));
     --ftue-cta-offset: 140px;
-  }
-
-  .ftue-robot-get-started {
-    min-width: 180px;
-    min-height: 46px;
-    padding: 14px 25px;
-    font-size: 14px;
   }
 
   .ftue-robot-maybe-later {

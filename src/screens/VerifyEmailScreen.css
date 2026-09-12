@@ -374,49 +374,49 @@
    Success icon
 -------------------------------------------------- */
 
-.verify-email-success-icon {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  width: 58px;
-  height: 58px;
-
-  margin: 0 auto 22px;
-
-  border-radius: 50%;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 90, 22, 0.16),
-      rgba(255, 178, 31, 0.08)
-    );
-
-  color: #ff9a45;
-
-  font-size: 28px;
-
-  font-weight: 600;
-
-  box-shadow:
-    0 0 28px rgba(255, 90, 22, 0.11),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+.verify-email-card--success .verify-email-brand {
+  margin-bottom: 28px;
 }
 
-.verify-email-success-icon + h1 {
+.verify-email-card--success .verify-email-success-divider {
+  width: min(100%, 390px);
+
+  height: 1px;
+
+  margin: 0 auto 24px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 90, 22, 0.72) 18%,
+    rgba(255, 178, 31, 0.92) 50%,
+    rgba(255, 90, 22, 0.72) 82%,
+    transparent
+  );
+
+  box-shadow:
+    0 0 10px rgba(255, 90, 22, 0.16),
+    0 0 20px rgba(255, 178, 31, 0.06);
+}
+
+.verify-email-card--success .verify-email-success-divider + h1 {
   margin-bottom: 12px;
 }
 
-.verify-email-success-icon ~ .verify-email-message {
-  margin-top: 0;
+.verify-email-card--success .verify-email-success-divider ~ .verify-email-message {
+  margin: 0;
+
+  color: #9ea5a8;
+
+  font-size: 13px;
+
+  line-height: 1.6;
 }
 
-.verify-email-success-icon ~ .verify-email-instructions {
+.verify-email-card--success .verify-email-success-divider ~ .verify-email-instructions {
   max-width: none;
 
-  margin: 4px 0 24px;
+  margin: 5px 0 26px;
 
   color: #a7afb2;
 
@@ -521,103 +521,6 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.025);
 
   transform: translateY(-1px);
-}
-
-/* --------------------------------------------------
-   Verify button
--------------------------------------------------- */
-
-.verify-email-button {
-  position: relative;
-
-  width: 100%;
-
-  margin-top: 2px;
-
-  padding: 15px 20px;
-
-  border: 0;
-
-  border-radius: 13px;
-
-  overflow: hidden;
-
-  background: linear-gradient(
-    135deg,
-    #ff5a16 0%,
-    #ff7419 48%,
-    #ffb21f 100%
-  );
-
-  color: #ffffff;
-
-  font-family: inherit;
-
-  font-size: 15px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 12px 30px rgba(255, 90, 22, 0.22),
-    0 0 20px rgba(255, 90, 22, 0.08);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.25s ease,
-    filter 0.25s ease,
-    opacity 0.25s ease;
-}
-
-.verify-email-button::before {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  left: -80%;
-
-  width: 55%;
-  height: 100%;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.22),
-    transparent
-  );
-
-  transform: skewX(-20deg);
-
-  transition: left 0.55s ease;
-}
-
-.verify-email-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 16px 36px rgba(255, 90, 22, 0.3),
-    0 0 28px rgba(255, 90, 22, 0.12);
-
-  filter: brightness(1.04);
-}
-
-.verify-email-button:hover:not(:disabled)::before {
-  left: 130%;
-}
-
-.verify-email-button:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.verify-email-button:disabled {
-  opacity: 0.38;
-
-  cursor: not-allowed;
-
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 /* --------------------------------------------------
@@ -894,17 +797,16 @@
     font-size: 23px;
   }
 
-  .verify-email-success-icon {
-    width: 54px;
-    height: 54px;
-
-    margin-bottom: 19px;
-
-    font-size: 26px;
+  .verify-email-card--success .verify-email-brand {
+    margin-bottom: 24px;
   }
 
-  .verify-email-success-icon ~ .verify-email-instructions {
-    margin-bottom: 20px;
+  .verify-email-card--success .verify-email-success-divider {
+    margin-bottom: 21px;
+  }
+
+  .verify-email-card--success .verify-email-success-divider ~ .verify-email-instructions {
+    margin-bottom: 22px;
   }
 
   .verify-email-form {
@@ -923,9 +825,7 @@
     font-size: 19px;
   }
 
-  .verify-email-button {
-    padding: 14px 18px;
-  }
+  /* Verification buttons intentionally inherit the exact Login button style. */
 
   .resend-section {
     margin-top: 17px;
@@ -983,9 +883,7 @@
     padding: 12px 14px;
   }
 
-  .verify-email-button {
-    padding: 13px 18px;
-  }
+  /* Verification buttons intentionally inherit the exact Login button style. */
 
   .resend-section {
     margin-top: 13px;
@@ -995,17 +893,16 @@
     margin-top: 13px;
   }
 
-  .verify-email-success-icon {
-    width: 50px;
-    height: 50px;
-
-    margin-bottom: 15px;
-
-    font-size: 24px;
+  .verify-email-card--success .verify-email-brand {
+    margin-bottom: 19px;
   }
 
-  .verify-email-success-icon ~ .verify-email-instructions {
+  .verify-email-card--success .verify-email-success-divider {
     margin-bottom: 17px;
+  }
+
+  .verify-email-card--success .verify-email-success-divider ~ .verify-email-instructions {
+    margin-bottom: 18px;
   }
 }
 
@@ -1077,11 +974,7 @@
     font-size: 17px;
   }
 
-  .verify-email-button {
-    padding: 11px 16px;
-
-    font-size: 14px;
-  }
+  /* Verification buttons intentionally inherit the exact Login button style. */
 
   .resend-section {
     margin-top: 10px;
@@ -1095,22 +988,21 @@
     font-size: 11px;
   }
 
-  .verify-email-success-icon {
-    width: 46px;
-    height: 46px;
-
-    margin-bottom: 11px;
-
-    font-size: 22px;
+  .verify-email-card--success .verify-email-brand {
+    margin-bottom: 15px;
   }
 
-  .verify-email-success-icon + h1 {
+  .verify-email-card--success .verify-email-success-divider {
+    margin-bottom: 13px;
+  }
+
+  .verify-email-card--success .verify-email-success-divider + h1 {
     margin-bottom: 8px;
   }
 
-  .verify-email-success-icon ~ .verify-email-instructions {
+  .verify-email-card--success .verify-email-success-divider ~ .verify-email-instructions {
     margin-top: 2px;
-    margin-bottom: 13px;
+    margin-bottom: 14px;
 
     font-size: 12px;
   }
