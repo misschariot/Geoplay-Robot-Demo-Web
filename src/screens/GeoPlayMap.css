@@ -1046,6 +1046,16 @@
 @media (max-width: 600px) {
   .geoplay-earth-location-status {
     padding: 20px;
+
+    /*
+      Optical centering for real mobile browser viewports.
+      The Earth remains mathematically centered in the dynamic viewport,
+      while this temporary status card sits slightly above that midpoint
+      so it reads visually centered around the globe across phone heights.
+    */
+    transform: translateY(
+      clamp(-48px, -5dvh, -30px)
+    );
   }
 
   .geoplay-earth-location-status-card {
