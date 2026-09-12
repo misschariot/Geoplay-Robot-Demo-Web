@@ -2,6 +2,7 @@
   position: relative;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background:
     radial-gradient(
@@ -33,6 +34,7 @@
 @media (max-width: 600px) {
   .geoplay-earth {
     height: 100vh;
+    height: 100dvh;
   }
 }
 
